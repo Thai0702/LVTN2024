@@ -1,0 +1,49 @@
+.register-form-container {
+    width: 520px;
+    padding: 48px;
+    box-shadow: 0px 0px 21px rgba(0, 0, 0, 0.2);
+    background: peachpuff;
+}
+h1.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.register-page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+label.form-label {
+    width: 150px;
+    display: inline-block; /* Thay đổi từ block sang inline-block để nằm cạnh nhau */
+    font-weight: bold;
+    margin-bottom: 8px; /* Thêm khoảng cách dưới cho nhãn */
+}
+
+.form-control {
+    height: 40px;
+    display: block;
+    width: 100%;
+    padding: 6px 12px;
+    border: 1px solid steelblue; /* Thêm border cho ô input */
+    box-sizing: border-box; /* Đảm bảo rằng padding không làm tăng kích thước */
+    margin-bottom: 16px; /* Thêm khoảng cách dưới cho ô input */
+}
+
+button.submit-btn {
+    height: 40px; /* Đảm bảo chiều cao của nút là cố định */
+    width: 100%; /* Nút trải rộng theo phần tử chứa */
+    border: none; /* Loại bỏ border của nút */
+    background-color: steelblue; /* Màu nền của nút */
+    color: white; /* Màu chữ của nút */
+    font-weight: bold;
+    cursor: pointer; /* Hiển thị con trỏ khi di chuột qua */
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+}
+
+button.submit-btn:hover {
+    background-color: darkblue; /* Màu nền của nút khi di chuột qua */
+}

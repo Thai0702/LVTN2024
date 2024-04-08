@@ -1,5 +1,6 @@
+import RegisterPage from "./RegisterAccount/RegisterAccount";
 function App() {
-  return <p>Lê Văn Thái</p>
+  return <RegisterPage/>;
 }
 
 export default App;
