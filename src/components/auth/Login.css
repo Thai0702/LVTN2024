@@ -1,0 +1,120 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+}
+p.mt-3 {
+  display: flex;
+  width: 400px;
+}
+#navbarNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: chocolate;
+}
+a.navbar-brand {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: chocolate;
+}
+.navbar {
+  background-color: chocolate;
+}
+
+.navbar-brand {
+  color: white; /* Màu chữ cho navbar brand */
+}
+
+.navbar-nav .nav-link {
+  color: white; /* Màu chữ cho các liên kết */
+}
+
+#navbarNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: chocolate;
+  padding-right: 50px;
+}
+
+.container {
+  max-width: 1200px; /* Để giữ navbar ở giữa trang */
+}
+
+.navbar-toggler {
+  border-color: white; /* Màu viền cho toggle button */
+}
+
+.navbar-toggler-icon {
+  background-color: white; /* Màu của biểu tượng toggle */
+}
+
+/* Để tạo màu hover khi di chuột qua các liên kết */
+.navbar-nav .nav-link:hover {
+  color: #ffd700; /* Màu chữ khi di chuột qua */
+}
+
+/* Để tạo màu khi liên kết đang được chọn */
+.navbar-nav .nav-item.active .nav-link {
+  color: #ffd700; /* Màu chữ khi liên kết được chọn */
+}
+.navbar-brand {
+  color: white; /* Màu chữ cho navbar brand */
+  margin-right: 15px; /* Tăng khoảng cách giữa chữ và toggle button */
+}
+.container{
+  width: 500px;
+}
