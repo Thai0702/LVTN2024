@@ -4,9 +4,8 @@ import Navbar from '../components/auth/Navbar';
 const Home = () => {
   return (
     <div>
-      <Navbar />
-     
-    </div>
+     <Navbar/>    
+    </div> 
   );
 };
 

@@ -15,13 +15,17 @@ const Login = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:8080/api/account', {
+      const response = await axios.post('http://localhost:3000/login', {
         user_email: user_email,
         user_password: user_password
       });
       
       if (response.status === 200) {
+        
         navigate("/", { replace: true });
+        const { user_email } = response.data; // Assuming the response data contains user_email
+        handleLogin(user_email);
+        
       } else {
         setError('Không hợp lê.');
       }

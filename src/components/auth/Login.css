@@ -118,3 +118,101 @@ a.navbar-brand {
 .container{
   width: 500px;
 }
+.header {
+  position: fixed; /* Đặt header cố định */
+  top: 0; /* Đặt header ở đỉnh trang */
+  left: 0; /* Đặt header bắt đầu từ bên trái */
+  width: 100%; /* Đặt chiều rộng bằng 100% của trang */
+  background-color: #9bc9b0; /* Màu nền của header */
+  padding: 10px 20px; /* Khoảng cách nội dung */
+  z-index: 1000; /* Đặt z-index cao để đảm bảo header hiển thị trên tất cả các phần tử khác */
+  display: flex;
+  height: 60px;
+}
+
+.additional-components {
+  position: absolute; /* Đặt vị trí tuyệt đối */
+  top: 100%; /* Hiển thị ở phía dưới của .logo */
+  left: 0;
+  width:200px  ;
+  background-color: #fff; /* Màu nền của dropdown menu */
+  border: 1px solid #ccc;
+  color: black;
+  font-weight: bold;
+  padding: 20px;
+  z-index: 999; /* Đảm bảo dropdown menu hiển thị trên tất cả các phần tử khác */
+}
+.create-class-component{
+  position: absolute; /* Đặt vị trí tuyệt đối */
+  top: 100%; /* Hiển thị ở phía dưới của .logo */
+  width:180px  ;
+  background-color: #eb6060; /* Màu nền của dropdown menu */
+  border: 2px solid #ccc;
+  color: black;
+  font-weight: bold;
+  padding: 20px;
+  margin-top: 10px;
+  border-radius: 50px;
+
+}
+
+.menu_1{
+  padding: 20px;
+}
+.additional-components img{
+  height: 30px;
+  padding-right: 20px;
+}
+
+.logo {
+  position: relative; /* Đặt vị trí của .logo là tương đối để xác định vị trí của dropdown menu */
+  z-index: 1000; /* Đảm bảo .logo hiển thị trên tất cả các phần tử khác */
+  cursor: pointer;
+  font-weight: bold;
+
+}
+.logo img{
+  height: 30px;
+  padding-right: 30px;
+}
+
+
+.nav {
+  margin-left: auto; /* Di chuyển phần danh sách nav sang bên phải */
+  font-weight: bold;
+  padding-left: 10px;
+}
+.nav :hover{
+  color: #f2e9ec;
+}
+.nav-list {
+  list-style-type: none; /* Loại bỏ dấu đầu dòng của danh sách */
+  padding: 0;
+  margin: 0;
+}
+
+.nav-list li {
+  display: inline; /* Hiển thị các mục danh sách liền kề nhau */
+  margin-right: 20px; /* Khoảng cách giữa các mục danh sách */
+}
+
+.add-button {
+  padding: 10px 10px;
+  background-color: #007bff; /* Màu nền của nút */
+  color: #fff; /* Màu chữ của nút */
+  border: none; /* Loại bỏ viền */
+  border-radius: 50px; /* Bo tròn góc */
+  color: black;
+  font-weight: bold;
+  cursor: pointer; /* Biến con trỏ thành pointer khi di chuột qua nút */
+}
+.nav a {
+  padding-left: 40px;
+  color: black;
+}
+.link{
+  text-decoration: none;
+  color: black;
+}
+
+

@@ -18,9 +18,10 @@ const Register = () => {
       setError('Vui lòng điền đủ thông tin');
       return;
     }
-  
+    //http://localhost:3000/
+    //http://localhost:8080/api/account
     try {
-      const response = await axios.post('http://localhost:8080/api/account', {
+      const response = await axios.post('http://localhost:3000/register', {
         user_email: user_email,
         user_password: user_password,
         user_type: user_type,

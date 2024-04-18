@@ -1,37 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './Login'; // Import file CSS cho Header
 import { Link } from 'react-router-dom';
-import './Login.css'
-const Navbar = () => {
-  return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-      <div className="container">
+import menu from './img/menu.png'; // Import the image
+import home from './img/home.png'; 
+import setting from './img/setting.png'; 
+import teach from './img/teach.png'; 
+import add from './img/add.png'
+function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul className="navbar-nav">
-          <li className="nav-item">
-              <Link className="nav-link" to="/">Logo</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/">Home</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/register">Đăng ký</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/login">Đăng nhập</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/contact">Contact</Link>
-            </li>
-          </ul>
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+  const [isCreate ,setIsCreate] =useState(false);
+  const toggleCreate =()=>{
+    setIsCreate(!isCreate);
+  }
+
+  return (
+    <header className="header">
+     <Link to='/' className='link'> <div className="logo" > {/* Toggle menu on click */}
+        <img src={menu} alt="Menu" onClick={toggleMenu}/> Project
+      </div></Link>
+   
+   {isMenuOpen && (
+        <div className="additional-components">
+          {/* Your additional components go here */}
+         <Link to='/' className='link'> <div className='menu_1'><img src={home} /> Home</div></Link>
+         <Link to='/teach' className='link'><div className='menu_1'> <img src={teach}/>Teaching</div></Link>
+         <Link to='/setting' className='link'> <div className='menu_1'> <img src={setting}/>Setting</div></Link>
         </div>
-      </div>
-    </nav>
-  
+      )}
+      <nav className="nav">
+        <img src={add} height='40px' onClick={toggleCreate}/>
+        {isCreate && (
+        <div className="create-class-component">
+          {/* Your additional components go here */}
+         <p> <Link to='/join' style={{ textDecoration: 'none' }}>Join class</Link><br></br></p>
+          <p><Link to='/create'style={{ textDecoration: 'none' }}>Create class</Link></p>
+        </div>
+      )}
+        <ul className="nav-list">
+          <li><Link to='/register' style={{ textDecoration: 'none' }}>Đăng ký</Link></li>
+          <li><Link to='/login' style={{ textDecoration: 'none' }}>Đăng nhập</Link></li>
+        </ul>
+      </nav>   
+      
+    </header>
   );
-};
+}
 
 export default Navbar;

@@ -1,0 +1,15 @@
+.container-join {
+    background: #e65a5a;
+    width: 500px;
+    height: 150px;
+    font-size: 25px;
+    padding: 20px;
+    border-radius: 40px;
+}
+.input{
+    margin-right: 20px;
+    border-radius: 5px;
+}
+.container-join button{
+    border-radius: 5px;
+}
