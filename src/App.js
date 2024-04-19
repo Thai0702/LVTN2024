@@ -5,7 +5,8 @@ import RegisterPage from "./components/auth/RegisterAccount.js";
 import Homepage from "./Page/Homepage.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Join from './components/auth/Join.js'
-
+import Create from "./components/auth/Create.js";
+import Class from "./components/auth/Class.js";
 
 
 const App = () => {
@@ -17,6 +18,8 @@ const App = () => {
           <Route path="/" element={<Homepage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/join" element={<Join/>}/>
+          <Route path="/create" element={<Create/>}/>
+          <Route path="/class" element={<Class/>}/>
         </Routes>        
       </div>
     </Router>

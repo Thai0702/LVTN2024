@@ -1,15 +1,190 @@
 .container-join {
-    background: #e65a5a;
-    width: 500px;
+    background: #b0c1cc;
+    width: 450px;
     height: 150px;
     font-size: 25px;
     padding: 20px;
-    border-radius: 40px;
+    border-radius: 20px;
+    border: 2px solid black;
+}
+.container-join img{
+    cursor: pointer;
 }
 .input{
-    margin-right: 20px;
+    margin: 5px 20px 10px 40px;
     border-radius: 5px;
+    font-size: 20px;
 }
 .container-join button{
-    border-radius: 5px;
+    border-radius: 20px;
+    font-size: 20px;
 }
+.container-create {
+    display: flex;
+    flex-direction: column;
+    background: #b0c1cc;
+    height: auto;
+    width: 500px;
+    padding: 20px;
+    border-radius: 20px;
+    color:black;
+    font-weight: bold;
+    border: 2px solid black;
+}
+.input{
+    font-size: 15px;
+    margin-top: 10px;
+}
+.container-create button {
+    margin-top: 10px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 190px;
+    border-radius: 20px;
+}
+.button-create:active {
+    background-color: #4c44ee;
+}
+.button-join:active{
+    background-color: #4c44ee;
+}
+/*phan body*/
+.container-header{
+    display: flex;
+    font-size: 15px;
+    height: 40px;
+    padding: 7px;
+    border-radius: 10px;
+    font-weight: bold;
+    border: 1px solid black;
+    width: 100%;
+    background-color: antiquewhite;
+
+}
+.container-main{
+    position: absolute; /* Đặt vị trí tuyệt đối */
+    top: 9%; /* Hiển thị ở phía dưới của .logo */
+    width:auto  ;
+    height: auto;
+    color: black;
+    font-weight: bold;
+    left: 260px;
+   
+}
+.header-1{
+    padding-left:50px ;
+    justify-content: center;
+    align-items: center;
+    padding-right: 50px;
+    cursor: pointer;
+}
+.header-1:hover{
+    background-color: rgb(215, 215, 204);
+    border-radius: 2px;
+}
+/*body*/
+.container-body img{
+    margin-left: 230px;
+    margin-top: 10px;
+    height: 40px;
+    padding-bottom: 7px;
+    padding-right: 15px;
+}
+.container-body p{
+    margin-top: 10px;
+}
+.works{
+    background-color: aqua;
+    width: 100%;
+    height: 300px;
+    border-radius: 20px;
+    margin-top: 10px;
+    border: 1px solid black;
+}
+.create-work{
+    display: flex;
+    background-color: aquamarine;
+    margin-top: 10px; 
+    border-radius: 10px;
+    border: 1px solid black;
+}
+.body-1{
+    background-color: aqua;
+    width: 100%;
+    height: 150px;
+    border-radius: 20px;
+    margin-top: 10px;
+    border: 1px solid black;
+}
+.body-2{
+    display: flex;
+    margin-top: 10px;
+}
+.body-code{
+    background-color: antiquewhite;
+    width: 150px;
+    height: 100px;
+    border-radius: 20px;
+    border: 1px solid black;
+    margin-right: 10px;
+}
+.body-homework{
+    background-color: antiquewhite;
+    width: 1000px;
+    height: 100px;
+    border-radius: 20px;
+    border: 1px solid black; 
+}
+/*people*/
+.import-people{
+    margin-top: 10px;
+    background-color: #b0c1cc;
+    border-radius: 10px;
+    border: 1px solid black;
+    height: 40px;
+}
+.import-people input{
+    margin-top: 4px;
+    margin-left: 200px;
+    margin-right: 2px;
+}
+.import-people button{
+    border-radius: 10px;
+    margin-left: 1px;
+}
+.import-people button:active{
+    background: #4c44ee;
+}
+/*home show class*/
+.home-main {
+    position: absolute;
+    top: 9%;
+    left: 240px;
+
+    margin-left: 10px;
+    height: auto;
+    background-color: rgba(179, 234, 252, 0.9); /* Màu nền với độ trong suốt 0.9 */
+    border: 2px solid #ccc;
+    color: black;
+    font-weight: bold;
+    padding: 20px;
+    z-index: 999;
+    display: flex;
+}
+.show-class{
+    display: flex;
+    flex-wrap: wrap; /* Cho phép tự động xuống hàng khi không đủ không gian */
+}
+
+.class{
+    display: flex;
+    height: 200px;
+    margin: 20px;
+    width: 200px;
+    border: 1px solid black;
+    background-color: antiquewhite;
+}
+
+

@@ -1,6 +1,6 @@
 import React from 'react'
-import main from './main.css'
 import Navbar from './Navbar'
+import './main.css'
 const join = () => {
   return (
     <div>
@@ -8,7 +8,7 @@ const join = () => {
     <div className='container-join'>
         <p>Enter code class to Join !</p>
         <input type='text' placeholder='code class' className='input'></input>
-        <button>Join</button>
+        <button className='button-join'>Join</button>
     </div>
     </div>
   )

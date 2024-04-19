@@ -130,13 +130,17 @@ a.navbar-brand {
   height: 60px;
 }
 
+/* menu*/
 .additional-components {
   position: absolute; /* Đặt vị trí tuyệt đối */
   top: 100%; /* Hiển thị ở phía dưới của .logo */
   left: 0;
-  width:200px  ;
+  width:230px  ;
+  height: 630px;
+  margin-top: 3px;
+  margin-bottom: 4px;
   background-color: #fff; /* Màu nền của dropdown menu */
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   color: black;
   font-weight: bold;
   padding: 20px;
@@ -146,16 +150,18 @@ a.navbar-brand {
   position: absolute; /* Đặt vị trí tuyệt đối */
   top: 100%; /* Hiển thị ở phía dưới của .logo */
   width:180px  ;
-  background-color: #eb6060; /* Màu nền của dropdown menu */
-  border: 2px solid #ccc;
+  background-color: #eee9e9; /* Màu nền của dropdown menu */
+  border: 2px solid #080707;
   color: black;
   font-weight: bold;
-  padding: 20px;
+  padding: 10px;
   margin-top: 10px;
   border-radius: 50px;
 
 }
-
+.create-class-component p :hover{
+  color: rgb(72, 0, 255);
+}
 .menu_1{
   padding: 20px;
 }
@@ -210,8 +216,32 @@ a.navbar-brand {
   padding-left: 40px;
   color: black;
 }
+.nav img{
+  cursor: pointer;
+}
 .link{
   text-decoration: none;
   color: black;
+}
+.class {
+  display: inline-block;
+  padding-right: 100px ;
+  padding-left: 20px;
+  margin-top: 10px;
+}
+.components-class{
+  position: absolute; /* Đặt vị trí tuyệt đối */
+  top: 100%; /* Hiển thị ở phía dưới của .logo */
+  width:100% ;
+  left: 230px;
+  height: 50px;/* Màu nền của dropdown menu */
+  border: 2px solid #271818;
+  color: black;
+  font-weight: bold;
+  z-index: 999; 
+  cursor: pointer;/* Đảm bảo dropdown menu hiển thị trên tất cả các phần tử khác */
+}
+.additional-components img{
+  height: 25px;
 }
 
