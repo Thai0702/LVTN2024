@@ -1,26 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/auth/Navbar';
+import ShowClass from '../components/auth/ShowClass';
 
 const Home = () => {
+  const [classList, setClassList] = useState([]);
+
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/class');
+        const classData = await response.json();
+        setClassList(classData);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchClasses();
+  }, []);
+
   return (
     <div>
-     <Navbar/> 
-     <div className='home-main'>
+      <Navbar />
+      <div className='home-main'>
         <div className='show-class'>
-          <div className='class'>class1</div>
-          <div className='class'>class2</div>
-          <div className='class'>class3</div>
-          <div className='class'>class4</div>
-          <div className='class'>class5</div>
-          <div className='class'>class6</div>
-          <div className='class'>class7</div>
-          <div className='class'>class8</div>
-          <div className='class'>class9</div>
-          <div className='class'>class10</div>
-          <div className='class'>class11</div>
+          <ShowClass classList={classList} />
         </div>
-      </div>   
-    </div> 
+      </div>
+    </div>
   );
 };
 

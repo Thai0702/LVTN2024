@@ -50,6 +50,12 @@
 .button-join:active{
     background-color: #4c44ee;
 }
+.button-create{
+    width: 100px;
+    margin-left: 200px;
+    border-radius: 10px;
+
+}
 /*phan body*/
 .container-header{
     display: flex;
@@ -63,6 +69,7 @@
     background-color: antiquewhite;
 
 }
+
 .container-main{
     position: absolute; /* Đặt vị trí tuyệt đối */
     top: 9%; /* Hiển thị ở phía dưới của .logo */
@@ -94,6 +101,9 @@
 }
 .container-body p{
     margin-top: 10px;
+}
+.create-work{
+    cursor: pointer;
 }
 .works{
     background-color: aqua;
@@ -162,11 +172,10 @@
     position: absolute;
     top: 9%;
     left: 240px;
-
     margin-left: 10px;
     height: auto;
-    background-color: rgba(179, 234, 252, 0.9); /* Màu nền với độ trong suốt 0.9 */
-    border: 2px solid #ccc;
+    
+ 
     color: black;
     font-weight: bold;
     padding: 20px;
@@ -185,6 +194,74 @@
     width: 200px;
     border: 1px solid black;
     background-color: antiquewhite;
+    cursor: pointer;
 }
+.class-link
+{
+    text-decoration: none;
+}
+.menu_1{
+    cursor: pointer;
+}
+.class-item{
+    padding-left: 90px;
+    cursor: pointer;
+}
+/* Container chứa tất cả các lớp học */
+.class-list-show {
+    display: flex;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Số lớp học trên mỗi hàng, mỗi ô có chiều rộng tối thiểu 300px */
+    gap: 20px; /* Khoảng cách giữa các ô */
+    
+  }
+  .class-list {
+    height: 150px; /* Set the maximum height */
+    overflow-y: auto; /* Add vertical scrollbar when content exceeds the height */
+}
+  /* Style cho mỗi lớp học */
+  .class-item-show {
+    background-color: #b3b7cd;
+    padding: 20px;
+    width: 250px;
+    height: 100px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 
-
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Title của lớp học */
+  .class-item-show h3 {
+    margin-top: 0;
+  }
+  /* Mô tả của lớp học */
+  .class-item-show p {
+    margin-bottom: 0;
+  }
+  .container-show{
+    height: 300px;
+    background-color:white;
+    border-radius: 10px;
+    border: 1px solid black;
+  }
+  .container-create-project{
+    display: flex;
+    flex-direction: column;
+    background: #b0c1cc;
+    height: auto;
+    margin-left: 250px;
+    width: 500px;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    color:black;
+    font-weight: bold;
+    border: 2px solid black;
+  }
+/* xuong dong*/
+  .class-list-show {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    justify-content: flex-start; /* Align items to the start of the flex container */
+    gap: 20px; /* Add spacing between items */
+}

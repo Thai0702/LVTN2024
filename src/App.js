@@ -1,14 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route,usHuseHistory } from "react-router-dom";
 import Login from "./components/auth/Login.js";
-import RegisterPage from "./components/auth/RegisterAccount.js";
+import RegisterPage from "./components/auth/PageMain/RegisterAccount.js";
 import Homepage from "./Page/Homepage.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Join from './components/auth/Join.js'
 import Create from "./components/auth/Create.js";
 import Class from "./components/auth/Class.js";
-
-
+import ShowClass from "./components/auth/ShowClass.js";
 const App = () => {
   return (
     <Router>
@@ -20,6 +19,7 @@ const App = () => {
           <Route path="/join" element={<Join/>}/>
           <Route path="/create" element={<Create/>}/>
           <Route path="/class" element={<Class/>}/>
+          <Route path="/showclass" element={<ShowClass/>}/>
         </Routes>        
       </div>
     </Router>

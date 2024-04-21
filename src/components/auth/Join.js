@@ -1,6 +1,6 @@
 import React from 'react'
-import Navbar from './Navbar'
 import './main.css'
+import Navbar from './Navbar'
 const join = () => {
   return (
     <div>
