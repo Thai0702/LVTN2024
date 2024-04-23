@@ -5,7 +5,7 @@ import './main.css';
 const Create = () => {
   const [classData, setClassData] = useState({
     subject_name: '',
-    create_by: '',
+    created_by: '',
     create_at: '',
     school_year: '',
     number_of_group: '',
@@ -40,7 +40,7 @@ const Create = () => {
 
       setClassData({
         subject_name: '',
-        create_by: '',
+        created_by: '',
         create_at: '',
         school_year: '',
         number_of_group: '',
@@ -86,13 +86,12 @@ const Create = () => {
       <div className='container-create'>
         <p>Create class!</p>
         <input type='text' placeholder='Class name' className='input' name='subject_name' value={classData.subject_name} onChange={handleChange}></input>
-        <select className='input' name='create_by' value={classData.create_by} onChange={handleChange}>
+        <select className='input' name='created_by' value={classData.created_by} onChange={handleChange}>
           <option value=''>Select creator</option>
           {users.map((user) => (
-            <option key={user.user_id} value={user.user_id}>{user.user_type} - {user.user_name}</option>
+            <option key={user.user_id} value={user.user_id}>{user.user_email}</option>
           ))}
         </select>
-        <input type='date' placeholder='Create date' className='input' name='create_at' value={classData.create_at} onChange={handleChange}></input>
         <input type='text' placeholder='Year' className='input' name='school_year' value={classData.school_year} onChange={handleChange}></input>
         <input type='text' placeholder='Number group' className='input' name='number_of_group' value={classData.number_of_group} onChange={handleChange}></input>
         <input type='text' placeholder='Number person of group' className='input' name='member_per_group' value={classData.member_per_group} onChange={handleChange}></input>
@@ -103,15 +102,6 @@ const Create = () => {
         </select>
         <button className='button-create' onClick={handleCreate}>Create</button>
       </div>
-
-      {/* <div className='class-list'>
-        <h2>Class List</h2>
-        {classList.map((classItem) => (
-          <div key={classItem.class_id} className='class-item'>
-            <p><strong>Class Name:</strong> {classItem.subject_name}</p>
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 };

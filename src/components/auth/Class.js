@@ -2,7 +2,6 @@ import React, { useState ,useEffect,useRef } from 'react';
 import Navbar from './Navbar';
 import './main.css';
 import add from './img/add.png';
-import WorkClass from './WorkClass';
 
 const Class = () => {
     const [isClassworkopen, setIsClasswork] = useState(false);

@@ -7,7 +7,6 @@ import setting from './img/setting.png';
 import teach from './img/teach.png';
 import add from './img/add.png';
 import student from './img/student.png'
-import ShowClass from './ShowClass';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
@@ -149,15 +148,14 @@ function Navbar() {
           <div>
           
           <div className='class-list'>
-            {classList.map((classItem) => (
-              <div key={classItem.class_id} className='class-item'>
-               <Link to='/class'><p>{classItem.subject_name}</p></Link> 
-              </div>
+          {classList.map((classItem) => (
+              <li key={classItem.id}>
+                <Link to={`/class/${classItem.subject_class_id}`}>{classItem.subject_name}</Link> {/* Sử dụng id của lớp */}
+              </li>
             ))}
           </div>
         </div>
         )}
-
           <div className='menu_1'> <img src={student} /> Student</div>
           <div className='menu_1'> <img src={setting} /> Setting</div>
         </div>

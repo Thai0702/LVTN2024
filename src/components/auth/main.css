@@ -128,6 +128,12 @@
     margin-top: 10px;
     border: 1px solid black;
 }
+.body-1 p{
+    padding-left: 500px;
+    font-size: 20px;
+    padding-top: 40px;
+    
+}
 .body-2{
     display: flex;
     margin-top: 10px;
@@ -139,6 +145,9 @@
     border-radius: 20px;
     border: 1px solid black;
     margin-right: 10px;
+}
+.body-code p{
+    text-align: center;
 }
 .body-homework{
     background-color: antiquewhite;
@@ -173,17 +182,14 @@
     top: 9%;
     left: 240px;
     margin-left: 10px;
-    height: auto;
-    
- 
     color: black;
     font-weight: bold;
     padding: 20px;
     z-index: 999;
-    display: flex;
+   
 }
 .show-class{
-    display: flex;
+    
     flex-wrap: wrap; /* Cho phép tự động xuống hàng khi không đủ không gian */
 }
 
@@ -215,9 +221,10 @@
     
   }
   .class-list {
-    height: 150px; /* Set the maximum height */
-    overflow-y: auto; /* Add vertical scrollbar when content exceeds the height */
+ /* Set the maximum height */
+    /*overflow-y: auto;*/ /* Add vertical scrollbar when content exceeds the height */
 }
+
   /* Style cho mỗi lớp học */
   .class-item-show {
     background-color: #b3b7cd;
@@ -261,7 +268,47 @@
 /* xuong dong*/
   .class-list-show {
     display: flex;
+    
     flex-wrap: wrap; /* Allow items to wrap to the next line */
     justify-content: flex-start; /* Align items to the start of the flex container */
     gap: 20px; /* Add spacing between items */
+}
+.show-class ul {
+    display: flex;
+    
+    list-style: none; /* Loại bỏ dấu đầu dòng của danh sách */
+    padding: 0; /* Xóa padding mặc định của danh sách */
+}
+
+.showclass-1 {
+    margin-right: 25px;
+    background-color: #b0c1cc;
+    width: 200px;
+    
+    text-align: center;
+    height: 200px;
+    border: 1px solid black; /* Đường viền xung quanh mỗi mục lớp */
+    margin-bottom: 10px; /* Khoảng cách giữa các mục lớp */
+    padding: 10px; /* Padding bên trong mỗi mục lớp */
+}
+
+.show-class li a {
+    
+    text-decoration: none; /* Loại bỏ gạch chân từ danh sách lớp */
+    color: #333; /* Màu văn bản cho các liên kết */
+    font-weight: bold; /* Đậm cho văn bản các liên kết */
+}
+.class-list p{
+    margin-top: 130px;
+    margin-right: 10px;
+}
+.button-del
+{
+    display: flex;
+    margin-left: 90px;
+   
+}
+.sua{
+    height: 29px;
+    margin-top: 130px;
 }

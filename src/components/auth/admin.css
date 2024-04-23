@@ -1,0 +1,78 @@
+.container-admin {
+    background-color: aqua;
+    height: 100%;
+    width: calc(100% - 230px);
+    border: 2px solid gray;
+    margin-top: 10px;
+    position: absolute;
+    top: 6%;
+    left: 230px;
+}
+
+.admin-1 {
+    font-size: 20px;
+    font-weight: bold;
+    border: 1px solid black;
+    text-align: center;
+    color: black; /* Set text color to black */
+}
+
+.admin-2 {
+    font-size: 20px;
+    font-weight: 200;
+    background-color: antiquewhite;
+    width: auto;
+    height: 750px;
+    overflow-y: auto;
+    border: 2px solid black;
+    color: black; /* Set text color to black */
+}
+
+.show-account {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 30%;
+    padding-right: 20px;
+    background-color: rgb(158, 167, 158);
+    margin-top: 10px;
+    width: 600px;
+    height: 40px;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.show-admin {
+    padding: 5px 10px;
+    font-size: 14px;
+    color: black; /* Set text color to black */
+}
+
+.update-form {
+    background-color: rgb(126, 105, 76);
+    position: absolute;
+    top: 50%;
+    width: 300px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.update-form button {
+    margin-top: 10px;
+    margin-left: 80px;
+}
+
+.update-form input {
+    margin-top: 10px;
+    width: auto;
+    color: black; /* Set text color to black */
+}
+.show-admin{
+    margin-right: 10px;
+}
