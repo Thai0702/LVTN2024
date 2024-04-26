@@ -147,10 +147,10 @@ function Navbar() {
           {isTeachingOpen && (
           <div>
           
-          <div className='class-list'>
+          <div className='class-list-teach'>
           {classList.map((classItem) => (
               <li key={classItem.id}>
-                <Link to={`/class/${classItem.subject_class_id}`}>{classItem.subject_name}</Link> {/* Sử dụng id của lớp */}
+                <Link to={`/class/${classItem.subject_class_id}`}style={{ textDecoration: 'none', color:'black' }}>{classItem.subject_name}</Link> {/* Sử dụng id của lớp */}
               </li>
             ))}
           </div>

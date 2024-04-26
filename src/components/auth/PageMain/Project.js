@@ -1,106 +1,130 @@
 import React, { useState, useEffect } from 'react';
-
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 const Project = () => {
-    const [projectData, setProjectData] = useState({
+    const [classData, setClassData] = useState({
         project_name: '',
+        project_of_group: '',
         description: '',
-        project_of_group:'',
-        expired_day:'',
-        expired_time: ''
+        created_by: '',
+        created_at: '',
+        expired_day: '',
+        expired_time: '',
     });
-    const [users, setUsers] = useState([]);
-    const [createSuccess, setCreateSuccess] = useState(false);
-    const [error, setError] = useState(null);
-
-    const handleChange = (e) => {
-        setProjectData({ ...projectData, [e.target.name]: e.target.value });
-    };
-
-    const validateInput = () => {
-        const { project_name, description, project_of_group, expired_day, expired_time } = projectData;
-        if (!project_name || !description || !project_of_group || !expired_day || !expired_time) {
-            setError('Please fill in all fields.');
-            return false;
-        }
-        setError(null);
-        return true;
-    };
-
-    const handleCreate = async () => {
+    const [project_name, setProjectName] = useState('');
+    const [project_of_group, setGrsetProjectofgroup] = useState('');
+    const [description, setdescription] = useState('');
+    const [created_by, setcreated_by] = useState('');
+    const [created_at, setcreated_at] = useState('');
+    const [expired_day, setexpired_day] = useState('');
+    const [expired_time, setexpired_time] = useState('');
+    const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const { classId } = useParams();
+    const [grouptList, setGroupList] = useState([]);
+    useEffect(() => {
+        // Fetch the list of students
+        fetch(`http://localhost:8080/api/class/${classId}/group-list`)
+            .then(response => response.json())
+            .then(data => {
+                setGroupList(data);
+            })
+            .catch(error => console.error('Error fetching student list:', error));
+    }, [classId]);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         try {
-            if (!validateInput()) return;
-
-            const response = await fetch('http://localhost:8080/api/project/create-project', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(projectData)
+            const response = await axios.post(`http://localhost:8080/api/project/create-project`, {
+                projectName: project_name,
+                projectOfGroup: project_of_group,
+                projectDescription: description,
+                createdBy: created_by,
+                createdAt: created_at,
+                expiredDay: expired_day,
+                expiredTime: expired_time
             });
-
-            if (response.ok) {
-                setCreateSuccess(true);
-            } else {
-                const errorData = await response.json();
-                setError(errorData.message || 'Failed to create project');
+            if (response.status != 200) {
+                // Đặt lại các trường nhập
+                setProjectName('');
+                setGrsetProjectofgroup('');
+                setdescription('');
+                setcreated_by('');
+                setcreated_at('');
+                setexpired_day('');
+                setexpired_time('');
+                // Đặt thông báo thành công
+                setSuccessMessage('Project created successfully.');
+                setTimeout(() => {
+                    setSuccessMessage('');
+                }, 3000);
             }
-
-            setProjectData({
-                project_name: '',
-                description: '',
-                project_of_group:'',
-                expired_day:'',
-                expired_time: ''
-            });
         } catch (error) {
-            console.error('Error:', error);
-            setError('Something went wrong. Please try again later.');
+            setError('Lỗi đăng ký');
         }
     };
-
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await fetch('http://localhost:8080/api/class/{classId}/group-list');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch user data');
-                }
-                const userData = await response.json();
-                setUsers(userData); // Assuming userData is an array
-            } catch (error) {
-                console.error('Error fetching users:', error);
-                setError('Failed to fetch user data.');
-            }
-        };
-        fetchUsers();
-    }, []);
-
-    useEffect(() => {
-        if (createSuccess) {
-            window.alert('Project created successfully.');
-            setCreateSuccess(false);
-        }
-    }, [createSuccess]);
 
     return (
-        <div>
-            {error && <div className="error">{error}</div>}
-            <div className='container-create'>
-                <p>Create Project!</p>
-                <input type='text' placeholder='Project Name' className='input' name='project_name' value={projectData.project_name} onChange={handleChange}></input>
-                <input type='text' placeholder='Description' className='input' name='description' value={projectData.description} onChange={handleChange}></input>
-                <select className='input' name='project_of_group' value={projectData.project_of_group} onChange={handleChange}>
-                    <option value=''>Select creator</option>
-                    {users.map((user) => (
-                        <option key={user.group_id} value={user.group_id}>{user.group_name}</option>
+        <div className='container-create-project'>
+            <form onSubmit={handleSubmit}>
+                {error && <div className="error">{error}</div>}
+                {successMessage && <div className="success">{successMessage}</div>}
+                <input
+                    type='text'
+                    placeholder='Project Name'
+                    className='input'
+                    value={project_name}
+                    onChange={(e) => setProjectName(e.target.value)}
+                />
+                <select onChange={(e) => setGrsetProjectofgroup(e.target.value)} value={classData.project_of_group}>
+                    <option value=''>Select Class</option>
+                    {Array.isArray(grouptList) && grouptList.map((group) => (
+                        <option key={group.group_id} value={group.group_id}>
+                            {group.groupName}
+                        </option>
                     ))}
                 </select>
-                <input type='text' placeholder='Expired Day' className='input' name='expired_day' value={projectData.expired_day} onChange={handleChange}></input>
-                <input type='text' placeholder='Expired Time' className='input' name='expired_time' value={projectData.expired_time} onChange={handleChange}></input>
-                <button className='button-create' onClick={handleCreate}>Create</button>
-            </div>
+
+                <input
+                    type='text'
+                    placeholder='Description'
+                    className='input'
+                    value={description}
+                    onChange={(e) => setdescription(e.target.value)}
+                />
+                <input
+                    type='text'
+                    placeholder='CreatedBy'
+                    className='input'
+                    value={created_by}
+                    onChange={(e) => setcreated_by(e.target.value)}
+                />
+                <input
+                    type='text'
+                    placeholder='Project Name'
+                    className='input'
+                    value={created_at}
+                    onChange={(e) => setcreated_at(e.target.value)}
+                />
+                <input
+                    type='text'
+                    placeholder='Project Name'
+                    className='input'
+                    value={expired_day}
+                    onChange={(e) => setexpired_day(e.target.value)}
+                />
+                <input
+                    type='text'
+                    placeholder='Project Name'
+                    className='input'
+                    value={expired_time}
+                    onChange={(e) => setexpired_time(e.target.value)}
+                />
+                <button className='btn btn-primary' type='submit'>
+                    Add project
+                </button>
+            </form>
         </div>
-    )
+    );
 }
 
 export default Project;

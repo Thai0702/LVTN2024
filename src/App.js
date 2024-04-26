@@ -13,7 +13,8 @@ import Admin from "./components/auth/Admin.js";
 import People from "./components/auth/PageMain/People.js";
 import Project from "./components/auth/PageMain/Project.js";
 import Group from "./components/auth/PageMain/Group.js";
-
+import ListStudent from "./components/auth/PageMain/ListStudent.js";
+import Random from "./components/auth/PageMain/Random.js";
 const App = () => {
   return (
     <Router>
@@ -30,8 +31,9 @@ const App = () => {
           <Route path="/people" element={<People/>}/>
           <Route path="/group" element={<Group/>}/>
           <Route path="/project" element={<Project/>}/>
+          <Route path="/listsv" element={<ListStudent/>}/> 
+          <Route path="/random" element={<Random/>}/> 
           <Route path="/class/:classId" element={<DetailClass/>} />
-
         </Routes>        
       </div>
     </Router>
