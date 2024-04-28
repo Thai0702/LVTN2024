@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 const Register = () => {
   const [user_email, setUserEmail] = useState('');
   const [user_password, setUserPassword] = useState('');
-  const [user_type, setUserType] = useState('');
   const [phone_number, setPhoneNumber] = useState('');
   const [full_name, setFullName] = useState('');
   const [error, setError] = useState('');
@@ -14,7 +13,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    if (!user_email || !user_password || !user_type || !phone_number || !full_name) {
+    if (!user_email || !user_password || !phone_number || !full_name) {
       setError('Vui lòng điền đủ thông tin');
       return;
     }
@@ -22,11 +21,11 @@ const Register = () => {
     //http://localhost:8080/api/account
     try {
       const response = await axios.post('http://localhost:8080/api/account', {
-        user_email: user_email,
-        user_password: user_password,
-        user_type: user_type,
-        phone_number: phone_number,
-        full_name: full_name
+        email: user_email,
+        password: user_password,
+        type: "GV",
+        phoneNumber: phone_number,
+        fullName: full_name
       });
   
       if (response.status === 200) {
@@ -53,11 +52,7 @@ const Register = () => {
                 <div className="form-group">
                   <label>Mật khẩu:</label>
                   <input type="password" className="form-control" value={user_password} onChange={(e) => setUserPassword(e.target.value)} />
-                </div>
-                <div className="form-group">
-                  <label>Người dùng:</label>
-                  <input type="text" className="form-control" value={user_type} onChange={(e) => setUserType(e.target.value)} />
-                </div>
+                </div>              
                 <div className="form-group">
                   <label>Số điện thoại:</label>
                   <input type="text" className="form-control" value={phone_number} onChange={(e) => setPhoneNumber(e.target.value)} />

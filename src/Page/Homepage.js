@@ -58,8 +58,6 @@ const Home = () => {
   }, []);
 
   const handleDelete = async (classId) => {
-   
-   
       try {
         // Kiểm tra xem lớp đã thêm nhóm hay chưa
         const response = await fetch(`http://localhost:8080/api/class/${classId}/group-list`);
@@ -111,12 +109,13 @@ const Home = () => {
             {classList.map((classItem) => (
               <li key={classItem.subject_class_id} className='showclass-1'>
                 <div>
-                  <Link to={`/class/${classItem.subject_class_id}`}>{classItem.subject_name}</Link>
+                  <div className='name_class'><Link to={`/class/${classItem.subject_class_id}`}>{classItem.subject_name}</Link></div>
                   <div className='button-del'>
-                    <p>
+                    <p className='btnxoasua'>
                       <button onClick={() => handleDelete(classItem.subject_class_id)}>Xóa</button>
+                      <button onClick={() => handleUpdate(classItem)}>Sửa</button>
                     </p>
-                    <button className='sua' onClick={() => handleUpdate(classItem)}>Sửa</button>
+                    
                   </div>
                 </div>
                 {showUpdateForm && updateData.subject_class_id === classItem.subject_class_id && (

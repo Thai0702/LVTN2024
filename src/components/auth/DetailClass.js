@@ -17,6 +17,8 @@ const ClassDetailPage = () => {
   const [isCreateProject, setIsCreateProject] = useState(false);
   const [isRandom, setIsRandom] = useState(false);
   const createClassRef = useRef();
+
+
   /*random group */
   const [groupSize, setGroupSize] = useState('');
   const [randomGroup, setRandomGroup] = useState(null);
@@ -47,19 +49,17 @@ const ClassDetailPage = () => {
       setError('Không đủ sinh viên để tạo nhóm.');
       return;
     }
-
     const randomGroupMembers = [];
     const shuffledStudents = students.sort(() => 0.5 - Math.random());
     let selectedStudents = shuffledStudents.slice(0, groupSize);
     selectedStudents.forEach(student => {
-      randomGroupMembers.push(student.name);
+      randomGroupMembers.push(student.student_id);
     });
-
+    console.log('hello');
     const randomGroup = {
-      groupName: `Group ${Math.floor(Math.random() * 1000)}`,
+      groupName: `Group ${Math.floor(Math.random() * 6)+1}`,
       members: randomGroupMembers
     };
-
     setRandomGroup(randomGroup);
     setError1('');
   };
@@ -74,7 +74,48 @@ const saveRandomGroup = async () => {
     console.error('Lỗi khi lưu nhóm ngẫu nhiên:', error);
   }
 };
-  /*show list student of class*/
+  /* upload file on list student */
+  const fileInputRef = useRef(null);
+  const [selectedClassId, setSelectedClassId] = useState(null); 
+  const [errorMessageUpload, setErrorMessageUpload] = useState(null);
+  const [classList, setClassList] = useState([]);
+  const handleFileUpload = async () => {
+    const file = fileInputRef.current.files[0];
+    if (file && selectedClassId) {
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+            await axios.post(`http://localhost:8080/api/account/class/${selectedClassId}/excel`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            window.alert('File uploaded successfully!');
+            setTimeout(() => {
+            }, 3000);
+        } catch (error) {
+          window.alert('File uploaded fail!');
+        }
+    } else {
+        console.error('No file selected or class not selected');
+        window.alert('No file selected or class not selected!');
+    }
+};
+
+   // show class on selected
+   const fetchClasses = async () => {
+    try {
+        const response = await fetch('http://localhost:8080/api/class');
+        const classData = await response.json();
+        setClassList(classData);
+    } catch (error) {
+        setErrorMessageUpload('Error fetching classes!');
+    }
+};
+useEffect(() => {
+    fetchClasses();
+}, []);
+  // /*show list student of class*/
   const [studentList, setStudentList] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -87,6 +128,30 @@ const saveRandomGroup = async () => {
       })
       .catch(error => console.error('Error fetching student list:', error));
   }, [classId]);
+/*delete student */
+const handleDeleteSV = async (id) => {
+  const confirmed = window.confirm("Bạn có chắc muốn xóa sinh viên này không?");
+  if (!confirmed) {
+      // Không xóa nếu người dùng không xác nhận
+      return;
+  }
+  try {
+      const url = `http://localhost:8080/api/class/student-list/${classId}/${id}`;
+      const responseDelete = await fetch(url, {
+          method: 'DELETE'
+      });
+
+      if (responseDelete.ok) {
+          // Xóa sinh viên khỏi danh sách nếu xóa thành công
+          setStudentList(studentList.filter(student => student.studentId !== id));
+      } else {
+          console.error('Failed to delete student');
+      }
+  } catch (error) {
+      console.error('Error deleting student:', error);
+  }
+};
+
 
   /*show list group of class */
   const [grouptList, setGroupList] = useState([]);
@@ -95,8 +160,7 @@ const saveRandomGroup = async () => {
     fetch(`http://localhost:8080/api/class/${classId}/group-list`)
       .then(response => response.json())
       .then(data => {
-        setGroupList(data);
-        setLoading(false); // Set loading to false after data is fetched
+        setGroupList(data);      
       })
       .catch(error => console.error('Error fetching student list:', error));
   }, [classId]);
@@ -182,51 +246,8 @@ const saveRandomGroup = async () => {
       setError('Lỗi đăng ký');
     }
   };
-  /* upload file on list student */
-  const fileInputRef = useRef(null);
-  const [selectedClassId, setSelectedClassId] = useState(null); 
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [classList, setClassList] = useState([]);
-  const handleFileUpload = async () => {
-    const file = fileInputRef.current.files[0];
-    if (file && selectedClassId) {
-        const formData = new FormData();
-        formData.append('file', file);
-        try {
-            await axios.post(`http://localhost:8080/api/account/${selectedClassId}/excel`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            setSuccessMessage('File uploaded successfully!');
-            setTimeout(() => {
-                setSuccessMessage(null);
-            }, 3000);
-            setErrorMessage(null);
-        } catch (error) {
-            console.error('Error uploading file:', error);
-            setErrorMessage('Error uploading file!');
-        }
-    } else {
-        console.error('No file selected or class not selected');
-        setErrorMessage('No file selected or class not selected!');
-    }
-};
-   // show class on selected
-   const fetchClasses = async () => {
-    try {
-        const response = await fetch('http://localhost:8080/api/class');
-        const classData = await response.json();
-        setClassList(classData);
-    } catch (error) {
-        console.error('Error fetching classes:', error);
-        // Set error message
-        setErrorMessage('Error fetching classes!');
-    }
-};
-useEffect(() => {
-    fetchClasses();
-}, []);
+  
+
   /*click hide of element*/
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -367,7 +388,7 @@ useEffect(() => {
           <ul>
                {randomGroup.members.map((memberId, index) => {
                     // Tìm sinh viên trong danh sách sinh viên dựa trên ID
-                    const student = students.find(student => student.id === memberId);
+                    const student = students.find(student => student.student_id === memberId);
                     // Kiểm tra xem sinh viên có tồn tại không
                     if (student) {
                       return (
@@ -385,7 +406,6 @@ useEffect(() => {
                       return <li key={index}>Sinh viên không tồn tại</li>;
                     }
                   })}
-
           </ul>
           <button onClick={saveRandomGroup}>Lưu Nhóm Ngẫu Nhiên</button>
         </div>
@@ -403,7 +423,6 @@ useEffect(() => {
             <div className='works'>
               show all homeworks
             </div>
-
           </div>
         )}
         {isCreateClassworkopen && (
@@ -445,16 +464,19 @@ useEffect(() => {
                         ))}
                     </select> 
                     <button onClick={handleFileUpload}>Add</button>
-                    {successMessage && <div className="success-message">{successMessage}</div>}
-                    {errorMessage && <div className="error-message">{errorMessage}</div>}
+                  
             </div>
             <div className='works'>
-              {studentList.map((student) => (
-                <li key={student.student_id}>
-                  {student.classId}-{student.studentId}
-                </li>
-              ))}
-            </div>
+  <ul>
+    {studentList.map((student) => (
+      <li key={student.studentId}>
+        <span>{student.classId}-{student.studentId}</span>
+        <button className='btnDeleteSV' onClick={() => handleDeleteSV(student.studentId)}>Delete</button>
+      </li>
+    ))}
+  </ul>
+</div>
+
           </div>
         )}
         {isGroup && (
@@ -467,6 +489,7 @@ useEffect(() => {
               {grouptList.map((group) => (
                 <li key={group.group_id}>
                   {group.groupName}
+                  <button className='btnDeleteSV' >Delete</button>
                 </li>
               ))}
             </div>

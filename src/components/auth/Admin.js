@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './admin.css';
 import Navbar from './Navbar';
+import { useParams } from 'react-router-dom';
 
 const Admin = () => {
     const [accounts, setAccounts] = useState([]);
+    const { classId } = useParams(); // Lấy classId từ URL
     const [updateData, setUpdateData] = useState({
         user_id: '',
         user_email: '',
@@ -39,7 +41,7 @@ const Admin = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        fetch(`http://localhost:8080/api/account/${updateData.user_id}`, {
+        fetch(`http://localhost:8080/api/account/${updateData.userId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -64,20 +66,22 @@ const Admin = () => {
         .catch(error => console.error('Error updating account:', error));
     };
 
-    const handleDelete = (id) => {
-        fetch(`http://localhost:8080/api/account/${id}`, {
-            method: 'DELETE'
-        })
-        .then(response => {
-            if(response.ok) {
-                setAccounts(accounts.filter(account => account.user_id !== id));
+    const handleDelete = async (id) => {
+        try {
+            const responseDelete = await fetch(`http://localhost:8080/api/account/${id}`, {
+                method: 'DELETE'
+            });
+    
+            if (responseDelete.ok) {
+                setAccounts(accounts.filter(account => account.userId !== id));
             } else {
                 console.error('Failed to delete account');
             }
-        })
-        .catch(error => console.error('Error deleting account:', error));
+        } catch (error) {
+            console.error('Error deleting account:', error);
+        }
     };
-
+    
     return (
         <div>
             <Navbar />
@@ -87,41 +91,41 @@ const Admin = () => {
                 </div>
                 <div className='admin-2'>
                     {accounts.map(account => (
-                        <div key={account.user_id} className='show-account'>
-                            <span style={{ color: 'black' }}>{account.user_email}</span>
+                        <div key={account.userId} className='show-account'>
+                            <span style={{ color: 'black' }}>{account.email}</span>
                             <div>
-                                <button className='show-admin' onClick={() => handleDelete(account.user_id)}>Delete</button>
+                                <button className='show-admin' onClick={() => handleDelete(account.userId)}>Delete</button>
                                 <button className='show-admin' onClick={() => handleUpdate(account)}>Update</button>
-                                {showUpdateForm && updateData.user_id === account.user_id && (
+                                {showUpdateForm && updateData.userId === account.userId && (
                                     <div className="update-form">
                                         <form onSubmit={handleSubmit}>
                                             <input
                                                 type="text"
-                                                name="user_email"
-                                                value={updateData.user_email}
+                                                name="email"
+                                                value={updateData.email}
                                                 onChange={handleInputChange}
                                                 placeholder="Email"
                                             />
                                             <input
                                                 type="text"
-                                                name="user_password"
-                                                value={updateData.user_password}
+                                                name="password"
+                                                value={updateData.password}
                                                 onChange={handleInputChange}
                                                 placeholder="Password"
                                             />
                                             <input
                                                 type="text"
-                                                name="user_type"
-                                                value={updateData.user_type}
+                                                name="type"
+                                                value={updateData.type}
                                                 onChange={handleInputChange}
                                                 placeholder="User Type"
                                             />
                                             <input
                                                 type="text"
-                                                name="full_name"
-                                                value={updateData.full_name}
+                                                name="fullName"
+                                                value={updateData.fullName}
                                                 onChange={handleInputChange}
-                                                placeholder="Full Name"
+                                                placeholder="fullName"
                                             />
                                             <button type="submit">Save</button>
                                         </form>
