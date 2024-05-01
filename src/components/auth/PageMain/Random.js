@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const ClassDetailPage = () => {
   const [groupSize, setGroupSize] = useState('');
+  const [groupName, setGroupName] = useState('');
   const [randomGroup, setRandomGroup] = useState(null);
   const [students, setStudents] = useState([]);
   const [error, setError] = useState('');
@@ -11,7 +13,7 @@ const ClassDetailPage = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/class/2/student-list`);
+        const response = await axios.get(`http://localhost:8080/api/class/3/student-list`);
         const studentList = response.data;
         setStudents(studentList);
       } catch (error) {
@@ -19,52 +21,39 @@ const ClassDetailPage = () => {
       }
     };
     fetchStudents();
-  }, []); // Thêm classId vào dependency array để fetch lại danh sách sinh viên khi classId thay đổi
+  }, [3]);
 
   const generateRandomGroup = () => {
     if (!groupSize || isNaN(groupSize) || groupSize <= 0) {
       setError('Vui lòng nhập một số nguyên dương.');
       return;
     }
-  
+
     if (groupSize > students.length) {
       setError('Không đủ sinh viên để tạo nhóm.');
       return;
     }
-  
+
     const randomGroupMembers = [];
-    const shuffledStudents = [...students].sort(() => 0.5 - Math.random());
-  
-    // Dùng Set để lưu các ID sinh viên đã được chọn
-    const selectedStudentIds = new Set();
-  
-    // Chọn ngẫu nhiên các sinh viên cho nhóm
+    const shuffledStudents = students.sort(() => 0.5 - Math.random());
+
     for (let i = 0; i < groupSize; i++) {
-      let randomIndex = Math.floor(Math.random() * shuffledStudents.length);
-      let student = shuffledStudents[randomIndex];
-  
-      // Kiểm tra xem sinh viên đã được chọn trước đó chưa
-      while (selectedStudentIds.has(student.id)) {
-        randomIndex = Math.floor(Math.random() * shuffledStudents.length);
-        student = shuffledStudents[randomIndex];
+      const student = shuffledStudents[i];
+      if (!randomGroupMembers.includes(student.accountId)) {
+        randomGroupMembers.push(student.accountId);
       }
-  
-      // Thêm sinh viên vào danh sách thành viên của nhóm
-      randomGroupMembers.push(student.id);
-  
-      // Đánh dấu sinh viên đã được chọn
-      selectedStudentIds.add(student.id);
     }
-  
+
+    const finalGroupName = groupName.trim() || `Group ${Math.floor(Math.random() * 6) + 1}`;
+
     const randomGroup = {
-      groupName: `Group ${Math.floor(Math.random() * 1000)}`,
+      groupName: finalGroupName,
       members: randomGroupMembers
     };
-  
+
     setRandomGroup(randomGroup);
     setError('');
   };
-  
 
   const saveRandomGroup = async () => {
     try {
@@ -88,8 +77,18 @@ const ClassDetailPage = () => {
           value={groupSize}
           onChange={(e) => setGroupSize(e.target.value)}
         />
-        <button onClick={generateRandomGroup}>Tạo Nhóm Ngẫu Nhiên</button>
       </div>
+      <div>
+        <label htmlFor="groupName">Nhập tên nhóm:</label>
+        <input
+          type="text"
+          id="groupName"
+          value={groupName}
+          onChange={(e) => setGroupName(e.target.value)}
+        />
+      </div>
+      <button onClick={generateRandomGroup}>Tạo Nhóm Ngẫu Nhiên</button>
+      {groupSize && <p>Số lượng thành viên trong nhóm sẽ được tạo: {groupSize}</p>}
       {randomGroup && (
         <div>
           <h3>Nhóm Ngẫu Nhiên:</h3>
@@ -97,7 +96,7 @@ const ClassDetailPage = () => {
           <p>Thành Viên:</p>
           <ul>
             {randomGroup.members.map((memberId, index) => {
-              const student = students.find(student => student.id === memberId);
+              const student = students.find(student => student.student_id === memberId); // Sử dụng student_id thay vì id
               if (student) {
                 return (
                   <li key={index}>
@@ -106,7 +105,7 @@ const ClassDetailPage = () => {
                     </div>
                     <div>
                       <strong>class id:</strong> {student.classId}
-                    </div>                         
+                    </div>
                   </li>
                 );
               } else {

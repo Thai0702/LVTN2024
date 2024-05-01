@@ -203,7 +203,7 @@
 }
 .import-people button{
     border-radius: 10px;
-    margin-left: 1px;
+    margin-left: 50px;
 }
 .import-people button:active{
     background: #4c44ee;
@@ -371,4 +371,10 @@
 }
 .show_sinhvien{
     display: flex;
+}
+.dsshow{
+    text-align: center;
+}
+.error{
+    text-align:center ;
 }

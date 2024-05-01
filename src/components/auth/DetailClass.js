@@ -5,7 +5,6 @@ import axios from 'axios';
 import add from './img/add.png';
 const ClassDetailPage = () => {
   const [classDetail, setClassDetail] = useState(null);
-  const [classDetailPeople, setClassDetailPeople] = useState(null);
   const { classId } = useParams(); // Lấy classId từ URL
   const [isClassworkopen, setIsClasswork] = useState(false);
   const [isCreateClassworkopen, setIsCreateClasswork] = useState(false);
@@ -38,83 +37,84 @@ const ClassDetailPage = () => {
     };
     fetchStudents();
   }, [classId]);
-  // Hàm tạo đối tượng nhóm ngẫu nhiên với số lượng thành viên cụ thể từ danh sách sinh viên
   const generateRandomGroup = () => {
     if (!groupSize || isNaN(groupSize) || groupSize <= 0) {
-      setError('Vui lòng nhập một số nguyên dương.');
+      setError1('Vui lòng nhập một số nguyên dương.');
       return;
     }
-
+  
     if (groupSize > students.length) {
-      setError('Không đủ sinh viên để tạo nhóm.');
+      setError1('Không đủ sinh viên để tạo nhóm.');
       return;
     }
+  
     const randomGroupMembers = [];
     const shuffledStudents = students.sort(() => 0.5 - Math.random());
-    let selectedStudents = shuffledStudents.slice(0, groupSize);
-    selectedStudents.forEach(student => {
-      randomGroupMembers.push(student.student_id);
-    });
-    console.log('hello');
+  
+    for (let i = 0; i < groupSize; i++) {
+      randomGroupMembers.push(shuffledStudents[i].student_id);
+    }
+  
     const randomGroup = {
-      groupName: `Group ${Math.floor(Math.random() * 6)+1}`,
+      groupName: `Group ${Math.floor(Math.random() * 6) + 1}`,
       members: randomGroupMembers
     };
+  
     setRandomGroup(randomGroup);
     setError1('');
   };
-// Gửi đối tượng nhóm về phía backend để lưu lại trong danh sách nhóm
-const saveRandomGroup = async () => {
-  try {
-    const response = await axios.post('http://localhost:8080/api/class/random-group', randomGroup);
-    if (response.status === 200) {
-      setSuccessMessage('Đã lưu nhóm ngẫu nhiên thành công.');
+  
+  // Gửi đối tượng nhóm về phía backend để lưu lại trong danh sách nhóm
+  const saveRandomGroup = async () => {
+    try {
+      const response = await axios.post('http://localhost:8080/api/class/random-group', randomGroup);
+      if (response.status === 200) {
+        setSuccessMessage('Đã lưu nhóm ngẫu nhiên thành công.');
+      }
+    } catch (error) {
+      console.error('Lỗi khi lưu nhóm ngẫu nhiên:', error);
     }
-  } catch (error) {
-    console.error('Lỗi khi lưu nhóm ngẫu nhiên:', error);
-  }
-};
+  };
   /* upload file on list student */
   const fileInputRef = useRef(null);
-  const [selectedClassId, setSelectedClassId] = useState(null); 
+  const [selectedClassId, setSelectedClassId] = useState(null);
   const [errorMessageUpload, setErrorMessageUpload] = useState(null);
   const [classList, setClassList] = useState([]);
   const handleFileUpload = async () => {
     const file = fileInputRef.current.files[0];
     if (file && selectedClassId) {
-        const formData = new FormData();
-        formData.append('file', file);
-        try {
-            await axios.post(`http://localhost:8080/api/account/class/${selectedClassId}/excel`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            window.alert('File uploaded successfully!');
-            setTimeout(() => {
-            }, 3000);
-        } catch (error) {
-          window.alert('File uploaded fail!');
-        }
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        await axios.post(`http://localhost:8080/api/account/class/${selectedClassId}/excel`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        window.alert('File uploaded successfully!');
+        // Load lại trang sau khi thêm thành công
+        window.location.reload(false);
+      } catch (error) {
+        window.alert('File uploaded fail!');
+      }
     } else {
-        console.error('No file selected or class not selected');
-        window.alert('No file selected or class not selected!');
+      console.error('No file selected or class not selected');
+      window.alert('No file selected or class not selected!');
     }
-};
-
-   // show class on selected
-   const fetchClasses = async () => {
+  };
+  // show class on selected
+  const fetchClasses = async () => {
     try {
-        const response = await fetch('http://localhost:8080/api/class');
-        const classData = await response.json();
-        setClassList(classData);
+      const response = await fetch('http://localhost:8080/api/class');
+      const classData = await response.json();
+      setClassList(classData);
     } catch (error) {
-        setErrorMessageUpload('Error fetching classes!');
+      setErrorMessageUpload('Error fetching classes!');
     }
-};
-useEffect(() => {
+  };
+  useEffect(() => {
     fetchClasses();
-}, []);
+  }, []);
   // /*show list student of class*/
   const [studentList, setStudentList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -128,29 +128,34 @@ useEffect(() => {
       })
       .catch(error => console.error('Error fetching student list:', error));
   }, [classId]);
-/*delete student */
-const handleDeleteSV = async (id) => {
-  const confirmed = window.confirm("Bạn có chắc muốn xóa sinh viên này không?");
-  if (!confirmed) {
+  const handleDeleteSV = async (id) => {
+    const confirmed = window.confirm("Bạn có chắc muốn xóa sinh viên này không?");
+    if (!confirmed) {
       // Không xóa nếu người dùng không xác nhận
       return;
-  }
-  try {
+    }
+    try {
       const url = `http://localhost:8080/api/class/student-list/${classId}/${id}`;
       const responseDelete = await fetch(url, {
-          method: 'DELETE'
+        method: 'DELETE'
       });
 
       if (responseDelete.ok) {
-          // Xóa sinh viên khỏi danh sách nếu xóa thành công
-          setStudentList(studentList.filter(student => student.studentId !== id));
+        // Xóa sinh viên khỏi danh sách nếu xóa thành công
+        setStudentList(studentList.filter(student => student.studentId !== id));
+        alert("Xóa sinh viên thành công!");
+        // Load lại trang sau khi xóa thành công
+        window.location.reload(true);
       } else {
-          console.error('Failed to delete student');
+        console.error('Failed to delete student');
+        alert("Xóa sinh viên không thành công!");
       }
-  } catch (error) {
+    } catch (error) {
       console.error('Error deleting student:', error);
-  }
-};
+      alert("Đã xảy ra lỗi khi xóa sinh viên!");
+    }
+  };
+
 
 
   /*show list group of class */
@@ -160,7 +165,7 @@ const handleDeleteSV = async (id) => {
     fetch(`http://localhost:8080/api/class/${classId}/group-list`)
       .then(response => response.json())
       .then(data => {
-        setGroupList(data);      
+        setGroupList(data);
       })
       .catch(error => console.error('Error fetching student list:', error));
   }, [classId]);
@@ -207,13 +212,18 @@ const handleDeleteSV = async (id) => {
         setexpired_day('');
         setexpired_time('');
         // Đặt thông báo thành công
-        setSuccessMessage('Project created successfully.');
-        setTimeout(() => {
-          setSuccessMessage('');
-        }, 3000);
+        // setSuccessMessage('Project created successfully.');
+        // setTimeout(() => {
+        //   setSuccessMessage('');
+        // }, 3000);
+        window.alert("Project created successfully !")
       }
     } catch (error) {
-      setError('Lỗi đăng ký');
+      // setError('Lỗi đăng ký');
+      // setTimeout(() => {
+      // setError('');
+      // }, 3000);
+      window.alert("Add fail !")
     }
   };
   /*Add group*/
@@ -246,7 +256,7 @@ const handleDeleteSV = async (id) => {
       setError('Lỗi đăng ký');
     }
   };
-  
+
 
   /*click hide of element*/
   useEffect(() => {
@@ -371,24 +381,25 @@ const handleDeleteSV = async (id) => {
         {isRandom && (
           <div ref={createClassRef} className='container-create-project'>
             <div>
-        <label htmlFor="groupSize">Nhập số lượng thành viên cho nhóm:</label>
-        <input
-          type="number"
-          id="groupSize"
-          value={groupSize}
-          onChange={(e) => setGroupSize(e.target.value)}
-        />
-        <button onClick={generateRandomGroup}>Tạo Nhóm Ngẫu Nhiên</button>
-      </div>
-      {randomGroup && (
-        <div>
-          <h3>Nhóm Ngẫu Nhiên:</h3>
-          <p>Tên Nhóm: {randomGroup.groupName}</p>
-          <p>Thành Viên:</p>
-          <ul>
-               {randomGroup.members.map((memberId, index) => {
-                    // Tìm sinh viên trong danh sách sinh viên dựa trên ID
-                    const student = students.find(student => student.student_id === memberId);
+              <label htmlFor="groupSize">Nhập số lượng thành viên cho nhóm:</label>
+              <input
+                type="number"
+                id="groupSize"
+                value={groupSize}
+                onChange={(e) => setGroupSize(e.target.value)}
+              />
+              <button onClick={generateRandomGroup}>Tạo Nhóm Ngẫu Nhiên</button>
+            </div>
+            {randomGroup && (
+              <div>
+                <h3>Nhóm Ngẫu Nhiên:</h3>
+                <p>Tên Nhóm: {randomGroup.groupName}</p>
+                <p>Thành Viên:</p>
+                <ul>
+                  {randomGroup.members.map((memberId, index) => {
+                    const studentIndex = students.findIndex(student => student.student_id === memberId);
+                    const student = students[studentIndex];
+
                     // Kiểm tra xem sinh viên có tồn tại không
                     if (student) {
                       return (
@@ -398,7 +409,7 @@ const handleDeleteSV = async (id) => {
                           </div>
                           <div>
                             <strong>class id:</strong> {student.classId}
-                          </div>                         
+                          </div>
                         </li>
                       );
                     } else {
@@ -406,12 +417,13 @@ const handleDeleteSV = async (id) => {
                       return <li key={index}>Sinh viên không tồn tại</li>;
                     }
                   })}
-          </ul>
-          <button onClick={saveRandomGroup}>Lưu Nhóm Ngẫu Nhiên</button>
-        </div>
-      )}
-      {error1 && <div className="error">{error1}</div>}
-      {successMessage1 && <div className="success">{successMessage1}</div>}
+
+                </ul>
+                <button onClick={saveRandomGroup}>Lưu Nhóm Ngẫu Nhiên</button>
+              </div>
+            )}
+            {error1 && <div className="error">{error1}</div>}
+            {successMessage1 && <div className="success">{successMessage1}</div>}
           </div>
         )}
         {isClassworkopen && (
@@ -455,27 +467,28 @@ const handleDeleteSV = async (id) => {
         )}
         {isPeople && (
           <div className='container-body'>
-                <div className='import-people'>
-                    <input type='file' ref={fileInputRef} /> {/* File input */}
-                    <select onChange={(e) => setSelectedClassId(e.target.value)} value={selectedClassId}>
-                        <option value=''>Select Class</option>
-                        {classList.map((classItem) => (
-                            <option key={classItem.subject_class_id} value={classItem.subject_class_id}>{classItem.subject_class_id}</option>
-                        ))}
-                    </select> 
-                    <button onClick={handleFileUpload}>Add</button>
-                  
+            <div className='import-people'>
+              <input type='file' ref={fileInputRef} /> {/* File input */}
+              <select onChange={(e) => setSelectedClassId(e.target.value)} value={selectedClassId}>
+                <option value=''>Select Class</option>
+                {classList.map((classItem) => (
+                  <option key={classItem.subject_class_id} value={classItem.subject_class_id}>{classItem.subject_class_id}</option>
+                ))}
+              </select>
+              <button onClick={handleFileUpload}>Add</button>
+
             </div>
             <div className='works'>
-  <ul>
-    {studentList.map((student) => (
-      <li key={student.studentId}>
-        <span>{student.classId}-{student.studentId}</span>
-        <button className='btnDeleteSV' onClick={() => handleDeleteSV(student.studentId)}>Delete</button>
-      </li>
-    ))}
-  </ul>
-</div>
+              <p className='dsshow'>List Students</p>
+              <ul>
+                {studentList.map((student) => (
+                  <li key={student.classId}>
+                    <span>{student.classId}-{student.studentId}-{student.studentClass}</span>
+                    <button className='btnDeleteSV' onClick={() => handleDeleteSV(student.accountId)}>Delete</button>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
           </div>
         )}
@@ -486,9 +499,11 @@ const handleDeleteSV = async (id) => {
               <p>Add group</p>
             </div>
             <div className='works'>
+              <p className='dsshow'>List Group</p>
               {grouptList.map((group) => (
                 <li key={group.group_id}>
                   {group.groupName}
+                  {/* {'Leader:'} {group.leaderId} */}
                   <button className='btnDeleteSV' >Delete</button>
                 </li>
               ))}
@@ -524,8 +539,8 @@ const handleDeleteSV = async (id) => {
                 Create
               </button>
             </form>
-            {error && <div className="error">{error}</div>}
-            {successMessage && <div className="success">{successMessage}</div>}
+            {/* {error && <div className="error">{error}</div>}
+            {successMessage && <div className="success">{successMessage}</div>} */}
           </div>
         )}
         {isProject && (
@@ -543,7 +558,7 @@ const handleDeleteSV = async (id) => {
           <div ref={createClassRef} className='container-create-project'>
 
             <form onSubmit={handleAddProject}>
-            
+
               <input
                 type='text'
                 placeholder='Project Name'
@@ -551,15 +566,15 @@ const handleDeleteSV = async (id) => {
                 value={project_name}
                 onChange={(e) => setProjectName(e.target.value)}
               />
-                <select onChange={(e) => setGrsetProjectofgroup(e.target.value)} value={project_of_group}>
-                <option value=''>Select Project</option>
+              <select onChange={(e) => setGrsetProjectofgroup(e.target.value)} value={project_of_group}>
+                <option value=''>Select Group</option>
                 {grouptList.map((group) => (
                   <option key={group.group_id} value={group.group_id}>
                     {group.groupId}
                   </option>
                 ))}
               </select>
-               {/* <input
+              {/* <input
                 type='text'
                 placeholder='Project of group'
                 className='input'
@@ -588,15 +603,15 @@ const handleDeleteSV = async (id) => {
                 onChange={(e) => setexpired_day(e.target.value)}
               />
               <input
-                type='time'
+                type='text'
                 placeholder='CreateTime'
                 className='input'
                 value={expired_time}
                 onChange={(e) => setexpired_time(e.target.value)}
               />
-                {error && <div className="error">{error}</div>}
+              {error && <div className="error">{error}</div>}
               {successMessage && <div className="success">{successMessage}</div>}
-              <button className='btn btn-primary' type='submit'onClick={handleAddProject}>
+              <button className='btn btn-primary' type='submit' onClick={handleAddProject}>
                 Add project
               </button>
             </form>
