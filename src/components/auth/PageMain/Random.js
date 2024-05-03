@@ -22,39 +22,39 @@ const ClassDetailPage = () => {
     };
     fetchStudents();
   }, [3]);
-
-  const generateRandomGroup = () => {
-    if (!groupSize || isNaN(groupSize) || groupSize <= 0) {
-      setError('Vui lòng nhập một số nguyên dương.');
-      return;
-    }
-
-    if (groupSize > students.length) {
-      setError('Không đủ sinh viên để tạo nhóm.');
-      return;
-    }
-
-    const randomGroupMembers = [];
-    const shuffledStudents = students.sort(() => 0.5 - Math.random());
-
-    for (let i = 0; i < groupSize; i++) {
-      const student = shuffledStudents[i];
-      if (!randomGroupMembers.includes(student.accountId)) {
-        randomGroupMembers.push(student.accountId);
+    const generateRandomGroup = () => {
+      if (!groupSize || isNaN(groupSize) || groupSize <= 0) {
+        setError('Vui lòng nhập một số nguyên dương.');
+        return;
       }
-    }
-
-    const finalGroupName = groupName.trim() || `Group ${Math.floor(Math.random() * 6) + 1}`;
-
-    const randomGroup = {
-      groupName: finalGroupName,
-      members: randomGroupMembers
+    
+      if (groupSize > students.length) {
+        setError('Không đủ sinh viên để tạo nhóm.');
+        return;
+      }
+    
+      const tempStudents = [...students]; // Tạo một bản sao của danh sách sinh viên
+      const randomGroupMembers = [];
+      
+      for (let i = 0; i < groupSize; i++) {
+        const randomIndex = Math.floor(Math.random() * tempStudents.length);
+        const selectedStudent = tempStudents.splice(randomIndex, 1)[0]; // Loại bỏ sinh viên đã chọn khỏi danh sách tạm thời
+        randomGroupMembers.push(selectedStudent.studentId);
+      }
+    
+      console.log(randomGroupMembers)
+      const finalGroupName = groupName.trim() || `Group ${Math.floor(Math.random() * 6) + 1}`;
+    
+      const randomGroup = {
+        groupName: finalGroupName,
+        members: randomGroupMembers
+      };
+    
+      setRandomGroup(randomGroup);
+      setError('');
     };
-
-    setRandomGroup(randomGroup);
-    setError('');
-  };
-
+    
+  
   const saveRandomGroup = async () => {
     try {
       const response = await axios.post('http://localhost:8080/api/class/random-group', randomGroup);
@@ -95,23 +95,9 @@ const ClassDetailPage = () => {
           <p>Tên Nhóm: {randomGroup.groupName}</p>
           <p>Thành Viên:</p>
           <ul>
-            {randomGroup.members.map((memberId, index) => {
-              const student = students.find(student => student.student_id === memberId); // Sử dụng student_id thay vì id
-              if (student) {
-                return (
-                  <li key={index}>
-                    <div>
-                      <strong>student id:</strong> {student.studentId}
-                    </div>
-                    <div>
-                      <strong>class id:</strong> {student.classId}
-                    </div>
-                  </li>
-                );
-              } else {
-                return <li key={index}>Sinh viên không tồn tại</li>;
-              }
-            })}
+            {randomGroup.members.map((studentId, index) => (
+              <li key={index}>{studentId}</li>
+            ))}
           </ul>
           <button onClick={saveRandomGroup}>Lưu Nhóm Ngẫu Nhiên</button>
         </div>

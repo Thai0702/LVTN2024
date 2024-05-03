@@ -3,40 +3,36 @@ import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const [user_email, setUserEmail] = useState('');
-  const [user_password, setUserPassword] = useState('');
-  const [phone_number, setPhoneNumber] = useState('');
-  const [full_name, setFullName] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [fullname, setFullName] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    if (!user_email || !user_password || !phone_number || !full_name) {
-      setError('Vui lòng điền đủ thông tin');
-      return;
-    }
-    //http://localhost:3000/
-    //http://localhost:8080/api/account
+
     try {
-      const response = await axios.post('http://localhost:8080/api/account', {
-        email: user_email,
-        password: user_password,
-        type: "GV",
-        phoneNumber: phone_number,
-        fullName: full_name
+      const response = await axios.post('http://localhost:8080/api/authenticate/register', {
+        username: username,
+        password: password,
+        fullname: fullname,
+        phone: phone
       });
-  
-      if (response.status === 200) {
-        navigate("/login", { replace: true }); // Chuyển hướng đến trang đăng nhập sau khi đăng ký thành công
-      } else {
-        setError('Lỗi đăng ký ');
-      }
+
+      const { token } = response.data; // Lấy token từ phản hồi của server
+
+      // Lưu token vào localStorage
+      localStorage.setItem('token', token);
+
+      // Chuyển hướng đến trang đăng nhập
+      navigate("/");
     } catch (error) {
-      setError('Lỗi đăng ký');
+      setError('Đã có lỗi xảy ra');
     }
   };
+
   return (
     <div className="container">
       <div className="row justify-content-center">
@@ -47,19 +43,19 @@ const Register = () => {
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label>Email:</label>
-                  <input type="email" className="form-control" value={user_email} onChange={(e) => setUserEmail(e.target.value)} />
+                  <input type="email" className="form-control" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </div>
                 <div className="form-group">
                   <label>Mật khẩu:</label>
-                  <input type="password" className="form-control" value={user_password} onChange={(e) => setUserPassword(e.target.value)} />
+                  <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>              
                 <div className="form-group">
                   <label>Số điện thoại:</label>
-                  <input type="text" className="form-control" value={phone_number} onChange={(e) => setPhoneNumber(e.target.value)} />
+                  <input type="text" className="form-control" value={phone} onChange={(e) => setPhone(e.target.value)} />
                 </div>
                 <div className="form-group">
                   <label>Họ tên:</label>
-                  <input type="text" className="form-control" value={full_name} onChange={(e) => setFullName(e.target.value)} />
+                  <input type="text" className="form-control" value={fullname} onChange={(e) => setFullName(e.target.value)} />
                 </div>
                 <button className="btn btn-primary" type="submit">Đăng ký</button>
                 {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}

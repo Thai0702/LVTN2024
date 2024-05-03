@@ -20,6 +20,7 @@ const ClassDetailPage = () => {
 
   /*random group */
   const [groupSize, setGroupSize] = useState('');
+  const [groupName, setGroupName1] = useState('');
   const [randomGroup, setRandomGroup] = useState(null);
   const [students, setStudents] = useState([]);
   const [error1, setError1] = useState('');
@@ -32,7 +33,7 @@ const ClassDetailPage = () => {
         const studentList = response.data;
         setStudents(studentList);
       } catch (error) {
-        console.error('Lỗi khi lấy danh sách sinh viên:', error);
+        console.error1('Lỗi khi lấy danh sách sinh viên:', error);
       }
     };
     fetchStudents();
@@ -42,37 +43,41 @@ const ClassDetailPage = () => {
       setError1('Vui lòng nhập một số nguyên dương.');
       return;
     }
-  
+
     if (groupSize > students.length) {
       setError1('Không đủ sinh viên để tạo nhóm.');
       return;
     }
-  
+
+    const tempStudents = [...students]; // Tạo một bản sao của danh sách sinh viên
     const randomGroupMembers = [];
-    const shuffledStudents = students.sort(() => 0.5 - Math.random());
-  
+
     for (let i = 0; i < groupSize; i++) {
-      randomGroupMembers.push(shuffledStudents[i].student_id);
+      const randomIndex = Math.floor(Math.random() * tempStudents.length);
+      const selectedStudent = tempStudents.splice(randomIndex, 1)[0]; // Loại bỏ sinh viên đã chọn khỏi danh sách tạm thời
+      randomGroupMembers.push(selectedStudent.studentId);
     }
-  
+
+    console.log(randomGroupMembers)
+    const finalGroupName = groupName.trim() || `Group ${Math.floor(Math.random() * 6) + 1}`;
+
     const randomGroup = {
-      groupName: `Group ${Math.floor(Math.random() * 6) + 1}`,
+      groupName: finalGroupName,
       members: randomGroupMembers
     };
-  
+
     setRandomGroup(randomGroup);
     setError1('');
   };
-  
   // Gửi đối tượng nhóm về phía backend để lưu lại trong danh sách nhóm
   const saveRandomGroup = async () => {
     try {
       const response = await axios.post('http://localhost:8080/api/class/random-group', randomGroup);
       if (response.status === 200) {
-        setSuccessMessage('Đã lưu nhóm ngẫu nhiên thành công.');
+        setSuccessMessage1('Đã lưu nhóm ngẫu nhiên thành công.');
       }
     } catch (error) {
-      console.error('Lỗi khi lưu nhóm ngẫu nhiên:', error);
+      console.error1('Lỗi khi lưu nhóm ngẫu nhiên:', error);
     }
   };
   /* upload file on list student */
@@ -388,6 +393,16 @@ const ClassDetailPage = () => {
                 value={groupSize}
                 onChange={(e) => setGroupSize(e.target.value)}
               />
+              <div>
+                <label htmlFor="groupName">Nhập tên nhóm:</label>
+                <input
+                  type="text"
+                  id="groupName"
+                  value={groupName}
+                  onChange={(e) => setGroupName1(e.target.value)}
+                />
+              </div>
+
               <button onClick={generateRandomGroup}>Tạo Nhóm Ngẫu Nhiên</button>
             </div>
             {randomGroup && (
@@ -396,28 +411,9 @@ const ClassDetailPage = () => {
                 <p>Tên Nhóm: {randomGroup.groupName}</p>
                 <p>Thành Viên:</p>
                 <ul>
-                  {randomGroup.members.map((memberId, index) => {
-                    const studentIndex = students.findIndex(student => student.student_id === memberId);
-                    const student = students[studentIndex];
-
-                    // Kiểm tra xem sinh viên có tồn tại không
-                    if (student) {
-                      return (
-                        <li key={index}>
-                          <div>
-                            <strong>student id:</strong> {student.studentId}
-                          </div>
-                          <div>
-                            <strong>class id:</strong> {student.classId}
-                          </div>
-                        </li>
-                      );
-                    } else {
-                      // Trường hợp không tìm thấy sinh viên
-                      return <li key={index}>Sinh viên không tồn tại</li>;
-                    }
-                  })}
-
+                  {randomGroup.members.map((studentId, index) => (
+                    <li key={index}>{studentId}</li>
+                  ))}
                 </ul>
                 <button onClick={saveRandomGroup}>Lưu Nhóm Ngẫu Nhiên</button>
               </div>

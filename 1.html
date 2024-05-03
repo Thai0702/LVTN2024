@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="index.js"></script>
+</head>
+<body>
+    <form>
+        <input type="text" id="txtName">
+        <input type="button" id="btnCreate" value="Tạo">
+        <input type="button" id="btnSend" value="SEND">
+    </form>
+    <script>
+        const soNhom = 2;
+        const soThanhVien = 2;
+const DSHS = [
+    {
+        "classId": 2,
+        "accountId": 6,
+        "studentId": "DH52000006",
+        "fullName": "dasasd asdsa",
+        "studentClass": "D20_tH06"
+    },
+    {
+        "classId": 2,
+        "accountId": 7,
+        "studentId": "DH520044444",
+        "fullName": "studetn nUMBER TWO",
+        "studentClass": "D20_"
+    },
+    {
+        "classId": 2,
+        "accountId": 8,
+        "studentId": "DH520044444",
+        "fullName": "studetn nUMBER TWO",
+        "studentClass": "D20_"
+    },
+    {
+        "classId": 2,
+        "accountId": 9,
+        "studentId": "DH520044444",
+        "fullName": "studetn nUMBER TWO",
+        "studentClass": "D20_"
+    }
+];
+
+function getRandomNumber(arrayLength) {
+    return Math.floor(Math.random() * arrayLength);
+}
+
+const groupData = [];
+const memberData = [];
+
+for (let y = 0; y < soNhom; y++) {
+    let groupName = "Nhóm " + (y + 1); // Fixed the groupName calculation
+    let group = { "classId": 2, "groupName": groupName, "leader": 0 }; // Fixed classId value
+    groupData.push(group); // Push the group object into groupData array
+    for (let x = 0; x < soThanhVien; x++) {
+        let l = DSHS.length;
+        let pos = getRandomNumber(l);
+        let mem = DSHS.splice(pos, 1)[0]; // Fixed pop to splice and accessing the first element
+        let gMem ={"classId":2,"groupName":groupName,"accountId":mem.accountId}
+        memberData.push(gMem); // Push the member object into memberData array
+    }
+}
+
+console.log("Group Data:");
+console.log(JSON.stringify(groupData, null, 2)); // Logging groupData array in JSON format
+console.log("\nMember Data:");
+console.log(JSON.stringify(memberData, null, 2)); // Logging memberData array in JSON format
+
+    </script>
+</body>
+
+</html>
