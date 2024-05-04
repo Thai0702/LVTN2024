@@ -40,8 +40,7 @@ const ClassDetailPage = () => {
         const randomIndex = Math.floor(Math.random() * tempStudents.length);
         const selectedStudent = tempStudents.splice(randomIndex, 1)[0]; // Loại bỏ sinh viên đã chọn khỏi danh sách tạm thời
         randomGroupMembers.push(selectedStudent.studentId);
-      }
-    
+      }   
       console.log(randomGroupMembers)
       const finalGroupName = groupName.trim() || `Group ${Math.floor(Math.random() * 6) + 1}`;
     

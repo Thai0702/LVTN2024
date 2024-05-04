@@ -393,7 +393,7 @@ const ClassDetailPage = () => {
                 value={groupSize}
                 onChange={(e) => setGroupSize(e.target.value)}
               />
-              <div>
+              {/* <div>
                 <label htmlFor="groupName">Nhập tên nhóm:</label>
                 <input
                   type="text"
@@ -401,7 +401,7 @@ const ClassDetailPage = () => {
                   value={groupName}
                   onChange={(e) => setGroupName1(e.target.value)}
                 />
-              </div>
+              </div> */}
 
               <button onClick={generateRandomGroup}>Tạo Nhóm Ngẫu Nhiên</button>
             </div>
@@ -415,7 +415,7 @@ const ClassDetailPage = () => {
                     <li key={index}>{studentId}</li>
                   ))}
                 </ul>
-                <button onClick={saveRandomGroup}>Lưu Nhóm Ngẫu Nhiên</button>
+                <button onClick={saveRandomGroup}>Lưu Nhóm</button>
               </div>
             )}
             {error1 && <div className="error">{error1}</div>}
@@ -468,7 +468,7 @@ const ClassDetailPage = () => {
               <select onChange={(e) => setSelectedClassId(e.target.value)} value={selectedClassId}>
                 <option value=''>Select Class</option>
                 {classList.map((classItem) => (
-                  <option key={classItem.subject_class_id} value={classItem.subject_class_id}>{classItem.subject_class_id}</option>
+                  <option key={classItem.subject_class_id} value={classItem.subject_class_id}>{classItem.subject_name}</option>
                 ))}
               </select>
               <button onClick={handleFileUpload}>Add</button>

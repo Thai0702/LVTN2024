@@ -16,13 +16,12 @@ const Register = () => {
     try {
       const response = await axios.post('http://localhost:8080/api/authenticate/register', {
         username: username,
-        password: password,
+        password: password,     
         fullname: fullname,
         phone: phone
       });
 
       const { token } = response.data; // Lấy token từ phản hồi của server
-
       // Lưu token vào localStorage
       localStorage.setItem('token', token);
 

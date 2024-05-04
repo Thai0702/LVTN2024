@@ -4,28 +4,29 @@ import './Login.css'
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [user_email, setEmail] = useState('');
-  const [user_password, setPassword] = useState('');
+  const [username, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    if (!user_email || !user_password) {
+    if (!username || !password) {
       setError('Vui lòng nhập đủ thông tin !');
       return;
     }
     try {
-      const response = await axios.post('http://localhost:8080/api/account', {
-        user_email: user_email,
-        user_password: user_password
+      const response = await axios.post('http://localhost:8080/api/authenticate/login', {
+        username: username,
+        password: password
       });
       
       if (response.status === 200) {
-        
+        const { token } = response.data; // Lấy token từ phản hồi của server
+      // Lưu token vào localStorage
+      localStorage.setItem('token', token);
         navigate("/", { replace: true });
-        const { user_email } = response.data; // Assuming the response data contains user_email
-        handleLogin(user_email);
-        
+        const { username } = response.data; 
+        handleLogin(username);       
       } else {
         setError('Không hợp lê.');
       }
@@ -43,11 +44,11 @@ const Login = () => {
               <h2 className="card-title">Đăng nhập</h2>
               <div className="form-group">
                 <label>Email:</label>
-                <input type="email" className="form-control" value={user_email} onChange={(e) => setEmail(e.target.value)} />
+                <input type="email" className="form-control" value={username} onChange={(e) => setEmail(e.target.value)} />
               </div>
               <div className="form-group">
                 <label>Mật khẩu:</label>
-                <input type="password" className="form-control" value={user_password} onChange={(e) => setPassword(e.target.value)} />
+                <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
               <button className="btn btn-primary" onClick={handleLogin}>Đăng nhập</button>
               {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
