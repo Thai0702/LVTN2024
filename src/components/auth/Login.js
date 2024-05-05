@@ -1,13 +1,15 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Login.css'
-import { Link, useNavigate } from "react-router-dom";
+import './Login.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [username, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [userId, setUserId] = useState(null); 
   const navigate = useNavigate();
+
 
   const handleLogin = async () => {
     if (!username || !password) {
@@ -19,22 +21,31 @@ const Login = () => {
         username: username,
         password: password
       });
-      
       if (response.status === 200) {
-        const { token } = response.data; // Lấy token từ phản hồi của server
-      // Lưu token vào localStorage
-      localStorage.setItem('token', token);
-        navigate("/", { replace: true });
-        const { username } = response.data; 
-        handleLogin(username);       
+        const { token } = response.data;
+        localStorage.setItem('token', token);
+        console.log(token);
+        const userIdResponse = await axios.get('http://localhost:8080/api/authenticate/userId', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log("hello",userIdResponse);
+  
+        const userIdString = userIdResponse.data;
+        const userId = userIdString.split(':')[1];   
+        setUserId(userId);
+        localStorage.setItem('userId', userId);  
+        console.log("chao", userId);   
+        navigate('/');
       } else {
-        setError('Không hợp lê.');
+        setError('Đăng nhập không thành công.');
       }
     } catch (error) {
-      setError('Không hợp lệ');
+      setError('Đăng nhập không thành công.');
     }
   };
-
+  
   return (
     <div className="container">
       <div className="row justify-content-center">
@@ -55,9 +66,8 @@ const Login = () => {
             </div>
             <p className="mt-3">Không có tài khoản? <Link to="/register">Đăng ký ngay!</Link></p>
           </div>
-         
         </div>
-      </div>
+      </div>    
     </div>
   );
 };

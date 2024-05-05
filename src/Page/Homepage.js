@@ -1,19 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/auth/Navbar';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [updateData, setUpdateData] = useState({
-    subject_class_id: '',
-    subject_name: '',
-    school_year: '',
+    subjectClassId: '',
+    subjectName: '',
+    schoolYear: '',
   });
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // Nếu không có token, chuyển hướng đến trang đăng nhập
+      navigate('/login');
+    }
+    console.log("hello",token)
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:8080/api/class/${updateData.subject_class_id}`, {
+      const response = await fetch(`http://localhost:8080/api/class/${updateData.subjectClassId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -24,13 +34,13 @@ const Home = () => {
         // Cập nhật trực tiếp danh sách lớp sau khi cập nhật thành công
         setClassList(prevList =>
           prevList.map(item =>
-            item.subject_class_id === updateData.subject_class_id ? updateData : item
+            item.subjectClassId === updateData.subjectClassId ? updateData : item
           )
         );
         setUpdateData({
-          subject_class_id: '',
-          subject_name: '',
-          school_year: '',
+          subjectClassId: '',
+          subjectName: '',
+          schoolYear: '',
         });
         setShowUpdateForm(false); // Ẩn form cập nhật sau khi cập nhật thành công
       } else {
@@ -46,14 +56,20 @@ const Home = () => {
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/class');
+        const userId = localStorage.getItem('userId'); // Lấy userId từ localStorage
+        if (!userId) {
+          console.error('userId not found in localStorage');
+          return;
+        }
+        
+        const response = await fetch(`http://localhost:8080/api/class/createdBy/${userId}`);
         const classData = await response.json();
         setClassList(classData);
       } catch (error) {
         console.error('Error fetching classes:', error);
       }
     };
-
+  
     fetchClasses();
   }, []);
 
@@ -80,7 +96,7 @@ const Home = () => {
             method: 'DELETE',
           });
           // Cập nhật lại danh sách lớp sau khi xóa thành công
-          setClassList(prevList => prevList.filter(item => item.subject_class_id !== classId));
+          setClassList(prevList => prevList.filter(item => item.subjectClassId !== classId));
         }
       } catch (error) {
         console.error('Error deleting class:', error);
@@ -107,31 +123,30 @@ const Home = () => {
         <div className='show-class'>
           <ul className="class-list">
             {classList.map((classItem) => (
-              <li key={classItem.subject_class_id} className='showclass-1'>
+              <li key={classItem.subjectClassId} className='showclass-1'>
                 <div>
-                  <div className='name_class'><Link to={`/class/${classItem.subject_class_id}`}>{classItem.subject_name}</Link></div>
+                  <div className='name_class'><Link to={`/class/${classItem.subjectClassId}`}>{classItem.subjectName}</Link></div>
                   <div className='button-del'>
                     <p className='btnxoasua'>
-                      <button onClick={() => handleDelete(classItem.subject_class_id)}>Xóa</button>
+                      <button onClick={() => handleDelete(classItem.subjectClassId)}>Xóa</button>
                       <button onClick={() => handleUpdate(classItem)}>Sửa</button>
                     </p>
-                    
                   </div>
                 </div>
-                {showUpdateForm && updateData.subject_class_id === classItem.subject_class_id && (
+                {showUpdateForm && updateData.subjectClassId === classItem.subjectClassId && (
                     <div className="update-form">
                       <form onSubmit={handleSubmit}>
                         <input
                           type="text"
-                          name="subject_name"
-                          value={updateData.subject_name}
+                          name="subjectName"
+                          value={updateData.subjectName}
                           onChange={handleInputChange}
                           placeholder="Tên môn học"
                         />
                         <input
                           type="text"
-                          name="school_year"
-                          value={updateData.school_year}
+                          name="schoolYear"
+                          value={updateData.schoolYear}
                           onChange={handleInputChange}
                           placeholder="Năm học"
                         />

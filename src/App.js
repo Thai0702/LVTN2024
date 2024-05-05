@@ -15,6 +15,7 @@ import Project from "./components/auth/PageMain/Project.js";
 import Group from "./components/auth/PageMain/Group.js";
 import ListStudent from "./components/auth/PageMain/ListStudent.js";
 import Random from "./components/auth/PageMain/Random.js";
+import ShowProject from "./components/auth/PageMain/ShowProject.js";
 const App = () => {
   return (
     <Router>
@@ -25,8 +26,9 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/join" element={<Join/>}/>
           <Route path="/create" element={<Create/>}/>
+          <Route path="/showproject" element={<ShowProject/>}/>
           <Route path="/class" element={<Class/>}/>
-          <Route path="/showclass" element={<ShowClass/>}/>
+          <Route path="/showclass/:groupId" element={<ShowClass/>}/>
           <Route path="/admin" element={<Admin/>}/>
           <Route path="/people" element={<People/>}/>
           <Route path="/group" element={<Group/>}/>

@@ -378,3 +378,10 @@
 .error{
     text-align:center ;
 }
+.nav img{
+    margin-right: 20px;
+}
+.nav-list
+{
+    padding-top: 8px;
+}

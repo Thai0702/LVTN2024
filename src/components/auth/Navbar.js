@@ -3,16 +3,37 @@ import './Login.css'; // Import file CSS cho Header
 import { Link } from 'react-router-dom';
 import menu from './img/menu.png'; // Import the image
 import home from './img/home.png';
+import axios from 'axios';
 import setting from './img/setting.png';
 import teach from './img/teach.png';
+import { useParams } from 'react-router-dom';
 import add from './img/add.png';
 import student from './img/student.png'
+import { useNavigate } from 'react-router-dom';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const [projectText, setProjectText] = useState('Project'); // State variable for project text
   const [isCreate, setIsCreate] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Trạng thái đăng nhập
+  const [username, setUsername] = useState(''); // Tên người dùng
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const userLoggedIn = localStorage.getItem('isLoggedIn');
+    const savedUsername = localStorage.getItem('username');
 
+    if (userLoggedIn === 'true' && savedUsername) {
+      setIsLoggedIn(true);
+      setUsername(savedUsername);
+    }
+  }, []);
+  const handleLogout = () => {
+    // Xóa token và tên người dùng từ localStorage
+    localStorage.clear();
+    setIsLoggedIn(false);
+    setUsername('');
+  };
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -25,46 +46,12 @@ function Navbar() {
     member_per_group: '',
     group_register_method: ''
   });
-
   const [users, setUsers] = useState([]);
   const [classList, setClassList] = useState([]);
 
   const handleChange = (e) => {
     setClassData({ ...classData, [e.target.name]: e.target.value });
   };
-
-  const handleCreate = async () => {
-    try {
-      const groupSelection = classData.group_register_method === 'student' || classData.group_register_method === 'teacher' ? classData.group_register_method : 'random';
-      const formattedDate = classData.create_at ? new Date(classData.create_at).toISOString().split('T')[0] : '';
-
-      const response = await fetch('http://localhost:8080/api/class', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ ...classData, create_at: formattedDate, group_register_method: groupSelection })
-      });
-
-      const data = await response.json();
-      console.log(data);
-
-      setClassList([...classList, data]);
-
-      setClassData({
-        subject_name: '',
-        create_by: '',
-        create_at: '',
-        school_year: '',
-        number_of_group: '',
-        member_per_group: '',
-        group_register_method: ''
-      });
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -78,23 +65,29 @@ function Navbar() {
 
     fetchUsers();
   }, []);
-
+  // lay userId by account 
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/class');
+        const userId = localStorage.getItem('userId'); 
+        if (!userId) {
+          console.error('userId not found in localStorage');
+          return;
+        }
+        const response = await fetch(`http://localhost:8080/api/class/createdBy/${userId}`);
         const classData = await response.json();
         setClassList(classData);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching classes:', error);
       }
     };
-
     fetchClasses();
-  }, [classList]); // Chạy lại effect khi classList thay đổi
+  }, []);
+  const userId = localStorage.getItem('userId');
+  // Chạy lại effect khi classList thay đổi
   const handleLinkClick = (text) => {
-    setProjectText(text); // Update project text when clicking on links
-    setIsMenuOpen(true); // Close the menu when a link is clicked
+    setProjectText(text); 
+    setIsMenuOpen(true); 
   };
 
   const toggleCreate = () => {
@@ -142,22 +135,27 @@ function Navbar() {
           <Link to='/' className='link' onClick={() => handleLinkClick('Home')}>
             <div className='menu_1'><img src={home} /> Home</div>
           </Link>
-          <div className='menu_1'onClick={toggleTeaching}> <img src={teach} /> Teaching
-          </div>
+          <Link className='link' onClick={() => handleLinkClick('Teaching')}>
+          <div className='menu_1' onClick={toggleTeaching}> <img src={teach} /> Teaching </div>
+          </Link>
           {isTeachingOpen && (
-          <div>
-          
-          <div className='class-list-teach'>
-          {classList.map((classItem) => (
-              <li key={classItem.id}>
-                <Link to={`/class/${classItem.subject_class_id}`}style={{ textDecoration: 'none', color:'black' }}>{classItem.subject_name}</Link> {/* Sử dụng id của lớp */}
-              </li>
-            ))}
-          </div>
-        </div>
-        )}
-          <div className='menu_1'> <img src={student} /> Student</div>
+            <div>
+
+              <div className='class-list-teach'>
+                {classList.map((classItem) => (
+                  <li key={classItem.id}>
+                    <Link to={`/class/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
+                  </li>
+                ))}
+              </div>
+            </div>
+          )}
+           <Link className='link' onClick={() => handleLinkClick('Student')}>
+           <div className='menu_1'> <img src={student} /> Student</div>
+          </Link>
+          <Link className='link' onClick={() => handleLinkClick('Setting')}>
           <div className='menu_1'> <img src={setting} /> Setting</div>
+          </Link>  
         </div>
       )}
       <nav className="nav">
@@ -169,8 +167,24 @@ function Navbar() {
           </div>
         )}
         <ul className="nav-list">
-          <li><Link to='/register' style={{ textDecoration: 'none' }}>Đăng ký</Link></li>
-          <li><Link to='/login' style={{ textDecoration: 'none' }}>Đăng nhập</Link></li>
+          {isLoggedIn ? (
+            <>
+              <li>
+                <span>Hi ! {userId}</span>
+              </li>
+              <li>
+                <Link to='/login' onClick={handleLogout} style={{ textDecoration: 'none' }}>
+                  Logout
+                </Link>
+              </li>
+            </>
+          ) : (
+            <li>
+              <Link to='/login' style={{ textDecoration: 'none' }}>
+                Logout
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
     </header>

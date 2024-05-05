@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Navbar from './Navbar';
 import axios from 'axios';
 import add from './img/add.png';
@@ -16,7 +16,6 @@ const ClassDetailPage = () => {
   const [isCreateProject, setIsCreateProject] = useState(false);
   const [isRandom, setIsRandom] = useState(false);
   const createClassRef = useRef();
-
 
   /*random group */
   const [groupSize, setGroupSize] = useState('');
@@ -83,7 +82,6 @@ const ClassDetailPage = () => {
   /* upload file on list student */
   const fileInputRef = useRef(null);
   const [selectedClassId, setSelectedClassId] = useState(null);
-  const [errorMessageUpload, setErrorMessageUpload] = useState(null);
   const [classList, setClassList] = useState([]);
   const handleFileUpload = async () => {
     const file = fileInputRef.current.files[0];
@@ -108,16 +106,34 @@ const ClassDetailPage = () => {
     }
   };
   // show class on selected
-  const fetchClasses = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/api/class');
-      const classData = await response.json();
-      setClassList(classData);
-    } catch (error) {
-      setErrorMessageUpload('Error fetching classes!');
-    }
-  };
+  // const fetchClasses = async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:8080/api/class');
+  //     const classData = await response.json();
+  //     setClassList(classData);
+  //   } catch (error) {
+  //     setErrorMessageUpload('Error fetching classes!');
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchClasses();
+  // }, []);
+  // lay userId by account 
   useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const userId = localStorage.getItem('userId'); // Lấy userId từ localStorage
+        if (!userId) {
+          console.error('userId not found in localStorage');
+          return;
+        }
+        const response = await fetch(`http://localhost:8080/api/class/createdBy/${userId}`);
+        const classData = await response.json();
+        setClassList(classData);
+      } catch (error) {
+        console.error('Error fetching classes:', error);
+      }
+    };
     fetchClasses();
   }, []);
   // /*show list student of class*/
@@ -160,9 +176,6 @@ const ClassDetailPage = () => {
       alert("Đã xảy ra lỗi khi xóa sinh viên!");
     }
   };
-
-
-
   /*show list group of class */
   const [grouptList, setGroupList] = useState([]);
   useEffect(() => {
@@ -175,62 +188,55 @@ const ClassDetailPage = () => {
       .catch(error => console.error('Error fetching student list:', error));
   }, [classId]);
 
-  // const [classData, setClassData] = useState({
-  //   class_id: '',
-  //   group_name: '',
-  //   leader_id: ''
-  // });
   /*add project */
-  const [classData, setClassData] = useState({
-    project_name: '',
-    project_of_group: '',
-    description: '',
-    created_by: '',
-    created_at: '',
-    expired_day: '',
-    expired_time: '',
-  });
   const [project_name, setProjectName] = useState('');
-  const [project_of_group, setGrsetProjectofgroup] = useState('');
-  const [description, setdescription] = useState('');
-  const [created_by, setcreated_by] = useState('');
-  const [expired_day, setexpired_day] = useState('');
-  const [expired_time, setexpired_time] = useState('');
-  const handleAddProject = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(`http://localhost:8080/api/project/create-project`, {
+const [project_of_group, setProjectOfGroup] = useState('');
+const [description, setDescription] = useState('');
+const [expired_day, setExpiredDay] = useState('');
+const [expired_time, setExpiredTime] = useState('');
+
+// const formatTime = (time) => {
+//   const date = new Date(time);
+//   const hours = date.getHours().toString().padStart(2, '0');
+//   const minutes = date.getMinutes().toString().padStart(2, '0');
+//   const seconds = date.getSeconds().toString().padStart(2, '0');
+//   return `${hours}:${minutes}:${seconds}`;
+// };
+const handleAddProject = async (e) => {
+  e.preventDefault();
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.post(
+      `http://localhost:8080/api/project/create-project`,
+      {
         projectName: project_name,
         projectOfGroup: project_of_group,
         projectDescription: description,
-        createdBy: created_by,
         expiredDay: expired_day,
+        // expiredTime: formatTime(expired_time)
         expiredTime: expired_time
-      });
-      console.log("hhh");
-      if (response.status === 200) {
-        // Đặt lại các trường nhập
-        setProjectName('');
-        setGrsetProjectofgroup('');
-        setdescription('');
-        setcreated_by('');
-        setexpired_day('');
-        setexpired_time('');
-        // Đặt thông báo thành công
-        // setSuccessMessage('Project created successfully.');
-        // setTimeout(() => {
-        //   setSuccessMessage('');
-        // }, 3000);
-        window.alert("Project created successfully !")
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token // Thêm token vào header
+        }
       }
-    } catch (error) {
-      // setError('Lỗi đăng ký');
-      // setTimeout(() => {
-      // setError('');
-      // }, 3000);
-      window.alert("Add fail !")
+    );
+    if (response.status === 200) {
+      // Đặt lại các trường nhập
+      setProjectName('');
+      setProjectOfGroup('');
+      setDescription('');
+      setExpiredDay('');
+      setExpiredTime('');
+      window.alert("Project created successfully !");
     }
-  };
+  } catch (error) {
+    window.alert("Add fail !");
+  }
+};
+
   /*Add group*/
   const [class_id, setClassId] = useState('');
   const [group_name, setGroupName] = useState('');
@@ -240,28 +246,39 @@ const ClassDetailPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Kiểm tra xem các trường đã được nhập đầy đủ chưa
+    if (!leader_id || !class_id || !group_name) {
+      setError('Vui lòng điền đầy đủ thông tin.');
+      return;
+    }
+  
     try {
       const response = await axios.post(`http://localhost:8080/api/class/create-a-group`, {
         leaderId: leader_id,
         classId: class_id,
         groupName: group_name,
       });
-      if (response.status != 200) {
+      // Kiểm tra xem yêu cầu đã thành công hay không
+      if (response.status !== 200) {
         // Đặt lại các trường nhập
         setLeaderid('');
         setClassId('');
         setGroupName('');
         // Đặt thông báo thành công
-        setSuccessMessage('Group created successfully.');
-        setTimeout(() => {
-          setSuccessMessage('');
-        }, 3000);
+        window.alert("Add group success")
+        window.location.reload(false)
+        // setTimeout(() => {
+        //   setSuccessMessage('');
+        // }, 3000);
+      } else {
+        // Xử lý thông báo lỗi nếu có
+        setError('Có lỗi xảy ra khi tạo nhóm. Vui lòng thử lại sau.');
       }
     } catch (error) {
-      setError('Lỗi đăng ký');
+      // Xử lý thông báo lỗi trả về từ máy chủ
+      setError('Có lỗi xảy ra khi tạo nhóm. Vui lòng thử lại sau.');
     }
-  };
-
+  };  
 
   /*click hide of element*/
   useEffect(() => {
@@ -447,12 +464,12 @@ const ClassDetailPage = () => {
         {isStream && (
           <div className='container-body'>
             <div className='body-1'>
-              <p>{classDetail.subject_name}</p>
+              <p>{classDetail.subjectName}</p>
             </div>
             <div className='body-2'>
               <div className='body-code'>
                 <p>Code class</p>
-                <p>{classDetail.subject_class_id}</p>
+                <p>{classDetail.subjectClassId}</p>
               </div>
               <div className='body-homework'>
                 <div>documents </div>
@@ -464,11 +481,11 @@ const ClassDetailPage = () => {
         {isPeople && (
           <div className='container-body'>
             <div className='import-people'>
-              <input type='file' ref={fileInputRef} /> {/* File input */}
+              <input type='file' ref={fileInputRef} /> 
               <select onChange={(e) => setSelectedClassId(e.target.value)} value={selectedClassId}>
                 <option value=''>Select Class</option>
                 {classList.map((classItem) => (
-                  <option key={classItem.subject_class_id} value={classItem.subject_class_id}>{classItem.subject_name}</option>
+                  <option key={classItem.subjectClassId} value={classItem.subjectClassId}>{classItem.subjectName}</option>
                 ))}
               </select>
               <button onClick={handleFileUpload}>Add</button>
@@ -497,8 +514,8 @@ const ClassDetailPage = () => {
             <div className='works'>
               <p className='dsshow'>List Group</p>
               {grouptList.map((group) => (
-                <li key={group.group_id}>
-                  {group.groupName}
+                <li key={group.groupId}>
+                  <Link to={`/showclass/${group.groupId}`}>{group.groupName}</Link>
                   {/* {'Leader:'} {group.leaderId} */}
                   <button className='btnDeleteSV' >Delete</button>
                 </li>
@@ -562,7 +579,7 @@ const ClassDetailPage = () => {
                 value={project_name}
                 onChange={(e) => setProjectName(e.target.value)}
               />
-              <select onChange={(e) => setGrsetProjectofgroup(e.target.value)} value={project_of_group}>
+              <select onChange={(e) => setProjectOfGroup(e.target.value)} value={project_of_group}>
                 <option value=''>Select Group</option>
                 {grouptList.map((group) => (
                   <option key={group.group_id} value={group.group_id}>
@@ -570,40 +587,26 @@ const ClassDetailPage = () => {
                   </option>
                 ))}
               </select>
-              {/* <input
-                type='text'
-                placeholder='Project of group'
-                className='input'
-                value={project_of_group}
-                onChange={(e) => setGrsetProjectofgroup(e.target.value)}
-              /> */}
               <input
                 type='text'
                 placeholder='Description'
                 className='input'
                 value={description}
-                onChange={(e) => setdescription(e.target.value)}
-              />
-              <input
-                type='text'
-                placeholder='CreatedBy'
-                className='input'
-                value={created_by}
-                onChange={(e) => setcreated_by(e.target.value)}
+                onChange={(e) => setDescription(e.target.value)}
               />
               <input
                 type='date'
                 placeholder='CreateDay'
                 className='input'
                 value={expired_day}
-                onChange={(e) => setexpired_day(e.target.value)}
+                onChange={(e) => setExpiredDay(e.target.value)}
               />
               <input
                 type='text'
                 placeholder='CreateTime'
                 className='input'
                 value={expired_time}
-                onChange={(e) => setexpired_time(e.target.value)}
+                onChange={(e) => setExpiredTime(e.target.value)}
               />
               {error && <div className="error">{error}</div>}
               {successMessage && <div className="success">{successMessage}</div>}

@@ -8,27 +8,45 @@ const Register = () => {
   const [phone, setPhone] = useState('');
   const [fullname, setFullName] = useState('');
   const [error, setError] = useState('');
+  const [userId, setUserId] = useState(null); 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    // Kiểm tra các trường rỗng trước khi gửi yêu cầu đăng ký
+    if (!username || !password || !phone || !fullname) {
+      setError('Vui lòng điền đầy đủ thông tin.');
+      return;
+    }
     try {
       const response = await axios.post('http://localhost:8080/api/authenticate/register', {
         username: username,
-        password: password,     
+        password: password,
         fullname: fullname,
         phone: phone
       });
-
-      const { token } = response.data; // Lấy token từ phản hồi của server
-      // Lưu token vào localStorage
-      localStorage.setItem('token', token);
-
-      // Chuyển hướng đến trang đăng nhập
-      navigate("/");
+      if (response.status === 200) {
+        const { token } = response.data;
+        localStorage.setItem('token', token);
+        console.log(token);
+        const userIdResponse = await axios.get('http://localhost:8080/api/authenticate/userId', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log("hello",userIdResponse);
+  
+        const userIdString = userIdResponse.data;
+        const userId = userIdString.split(':')[1];   
+        setUserId(userId);
+        localStorage.setItem('userId', userId);  
+        console.log("chao", userId);   
+        navigate('/');
+      } else {
+        setError('Đăng ký không thành công.');
+      }
     } catch (error) {
-      setError('Đã có lỗi xảy ra');
+      setError('Đăng ký không thành công.');
     }
   };
 
@@ -47,7 +65,7 @@ const Register = () => {
                 <div className="form-group">
                   <label>Mật khẩu:</label>
                   <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
-                </div>              
+                </div>
                 <div className="form-group">
                   <label>Số điện thoại:</label>
                   <input type="text" className="form-control" value={phone} onChange={(e) => setPhone(e.target.value)} />
@@ -62,7 +80,7 @@ const Register = () => {
             </div>
             <p className="mt-3">Đã có tài khoản? <Link to="/login">Đăng nhập</Link></p>
           </div>
-          
+
         </div>
       </div>
     </div>

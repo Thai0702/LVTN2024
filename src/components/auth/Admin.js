@@ -3,13 +3,12 @@ import './admin.css';
 import NavbarAdmin from './NavbarAdmin.js'
 import { useParams } from 'react-router-dom';
 import Account from '../Admin/Account.js';
-
 const Admin = () => {
     
     return (
         <div>
-            <NavbarAdmin />
-           <Account/>          
+            <NavbarAdmin />  
+            <Account/>        
         </div>
     );
 };

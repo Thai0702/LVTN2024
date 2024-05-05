@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import './main.css';
-
+import { Link, useNavigate } from 'react-router-dom';
 const Create = () => {
+  const navigate = useNavigate();
   const [classData, setClassData] = useState({
-    subject_name: '',
-    school_year: '',
-    number_of_group: '',
-    member_per_group: '',
-    group_register_method: ''
+    subjectName: '',
+    schoolYear: '',
+    numberOfGroup: '',
+    memberPerGroup: '',
+    groupRegisterMethod: ''
   });
 
   const [users, setUsers] = useState([]);
@@ -20,8 +21,8 @@ const Create = () => {
 
   const handleCreate = async () => {
     try {
-      const groupSelection = classData.group_register_method === 'student' || classData.group_register_method === 'teacher' ? classData.group_register_method : 'random';
-      const formattedDate = classData.create_at ? new Date(classData.create_at).toISOString().split('T')[0] : '';
+      const groupSelection = classData.groupRegisterMethod === 'student' || classData.groupRegisterMethod === 'teacher' ? classData.groupRegisterMethod : 'random';
+
 
       // Lấy token từ localStorage
       const token = localStorage.getItem('token');
@@ -32,7 +33,7 @@ const Create = () => {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token // Thêm token vào header
         },
-        body: JSON.stringify({ ...classData, create_at: formattedDate, group_register_method: groupSelection })
+        body: JSON.stringify({ ...classData, group_register_method: groupSelection })
       });
 
       const data = await response.json();
@@ -40,14 +41,16 @@ const Create = () => {
 
       setClassList([...classList, data]);
       window.alert("Add class success!")
-
-      setClassData({
-        subject_name: '',
-        school_year: '',
-        number_of_group: '',
-        member_per_group: '',
-        group_register_method: ''
-      });
+      navigate('/');
+      window.location.reload(false);
+      // setClassData({
+      //   subjectName: '',
+      //   schoolYear: '',
+      //   numberOfGroup: '',
+      //   memberPerGroup: '',
+      //   groupRegisterMethod: ''
+      // });
+  
     } catch (error) {
       console.error('Error:', error);
     }
@@ -86,11 +89,11 @@ const Create = () => {
       <Navbar />
       <div className='container-create'>
         <p>Create class!</p>
-        <input type='text' placeholder='Class name' className='input' name='subject_name' value={classData.subject_name} onChange={handleChange}></input>
-        <input type='text' placeholder='Year' className='input' name='school_year' value={classData.school_year} onChange={handleChange}></input>
-        <input type='text' placeholder='Number group' className='input' name='number_of_group' value={classData.number_of_group} onChange={handleChange}></input>
-        <input type='text' placeholder='Number person of group' className='input' name='member_per_group' value={classData.member_per_group} onChange={handleChange}></input>
-        <select className='input' name='group_register_method' value={classData.group_register_method} onChange={handleChange}>
+        <input type='text' placeholder='Class name' className='input' name='subjectName' value={classData.subjectName} onChange={handleChange}></input>
+        <input type='text' placeholder='Year' className='input' name='schoolYear' value={classData.schoolYear  } onChange={handleChange}></input>
+        <input type='text' placeholder='Number group' className='input' name='numberOfGroup' value={classData.numberOfGroup} onChange={handleChange}></input>
+        <input type='text' placeholder='Number person of group' className='input' name='memberPerGroup' value={classData.memberPerGroup} onChange={handleChange}></input>
+        <select className='input' name='groupRegisterMethod' value={classData.groupRegisterMethod} onChange={handleChange}>
           <option value='student'>Sinh viên tự chọn nhóm</option>
           <option value='teacher'>Giảng viên chọn nhóm</option>
           <option value='random'>Random nhóm</option>
