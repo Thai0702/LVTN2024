@@ -31,9 +31,7 @@ const Login = () => {
           }
         });
         console.log("hello",userIdResponse);
-  
-        const userIdString = userIdResponse.data;
-        const userId = userIdString.split(':')[1];   
+        const userId = userIdResponse.data;  
         setUserId(userId);
         localStorage.setItem('userId', userId);  
         console.log("chao", userId);   

@@ -13,11 +13,18 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Kiểm tra các trường rỗng trước khi gửi yêu cầu đăng ký
     if (!username || !password || !phone || !fullname) {
       setError('Vui lòng điền đầy đủ thông tin.');
       return;
     }
+    // if (password.length < 8) {
+    //   setError('Mật khẩu ít nhât 8 ký tự.');
+    //   return;
+    // }
+    // if (phone.length !== 10) {
+    //   setError('Số điện thoại phải có 10 số.');
+    //   return;
+    // }
     try {
       const response = await axios.post('http://localhost:8080/api/authenticate/register', {
         username: username,
@@ -25,31 +32,28 @@ const Register = () => {
         fullname: fullname,
         phone: phone
       });
+     
       if (response.status === 200) {
         const { token } = response.data;
         localStorage.setItem('token', token);
-        console.log(token);
+  
+        // Kiểm tra nếu có thông báo từ server rằng tài khoản đã tồn tại
         const userIdResponse = await axios.get('http://localhost:8080/api/authenticate/userId', {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-        console.log("hello",userIdResponse);
-  
-        const userIdString = userIdResponse.data;
-        const userId = userIdString.split(':')[1];   
+        const userId = userIdResponse.data; 
         setUserId(userId);
         localStorage.setItem('userId', userId);  
-        console.log("chao", userId);   
         navigate('/');
       } else {
-        setError('Đăng ký không thành công.');
+        setError('Đăng ký thất bại.');
       }
     } catch (error) {
-      setError('Đăng ký không thành công.');
+      setError('Tài khoản đã tồn tại.');
     }
   };
-
   return (
     <div className="container">
       <div className="row justify-content-center">

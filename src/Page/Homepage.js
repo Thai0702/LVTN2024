@@ -53,25 +53,24 @@ const Home = () => {
 
   const [classList, setClassList] = useState([]);
 
-  useEffect(() => {
-    const fetchClasses = async () => {
-      try {
-        const userId = localStorage.getItem('userId'); // Lấy userId từ localStorage
-        if (!userId) {
-          console.error('userId not found in localStorage');
-          return;
-        }
-        
-        const response = await fetch(`http://localhost:8080/api/class/createdBy/${userId}`);
-        const classData = await response.json();
-        setClassList(classData);
-      } catch (error) {
-        console.error('Error fetching classes:', error);
+ // lay userId by account 
+ useEffect(() => {
+  const fetchClasses = async () => {
+    try {
+      const userId = localStorage.getItem('userId'); 
+      if (!userId) {
+        console.error('userId not found in localStorage');
+        return;
       }
-    };
-  
-    fetchClasses();
-  }, []);
+      const response = await fetch(`http://localhost:8080/api/class/createdBy/${userId}`);
+      const classData = await response.json();
+      setClassList(classData);
+    } catch (error) {
+      console.error('Error fetching classes:', error);
+    }
+  };
+  fetchClasses();
+}, []);
 
   const handleDelete = async (classId) => {
       try {
@@ -123,7 +122,7 @@ const Home = () => {
         <div className='show-class'>
           <ul className="class-list">
             {classList.map((classItem) => (
-              <li key={classItem.subjectClassId} className='showclass-1'>
+              <li key={classItem.id} className='showclass-1'>
                 <div>
                   <div className='name_class'><Link to={`/class/${classItem.subjectClassId}`}>{classItem.subjectName}</Link></div>
                   <div className='button-del'>
