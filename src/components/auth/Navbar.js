@@ -18,7 +18,7 @@ function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Trạng thái đăng nhập
   const [username, setUsername] = useState(''); // Tên người dùng
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const userLoggedIn = localStorage.getItem('isLoggedIn');
     const savedUsername = localStorage.getItem('username');
@@ -36,6 +36,7 @@ function Navbar() {
   };
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+
   };
   const [classData, setClassData] = useState({
     subject_name: '',
@@ -48,6 +49,7 @@ function Navbar() {
   });
   const [users, setUsers] = useState([]);
   const [classList, setClassList] = useState([]);
+  const [classListStudent, setClassListStudent] = useState([]);
 
   const handleChange = (e) => {
     setClassData({ ...classData, [e.target.name]: e.target.value });
@@ -69,7 +71,7 @@ function Navbar() {
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const userId = localStorage.getItem('userId'); 
+        const userId = localStorage.getItem('userId');
         if (!userId) {
           console.error('userId not found in localStorage');
           return;
@@ -84,10 +86,29 @@ function Navbar() {
     fetchClasses();
   }, []);
   const userId = localStorage.getItem('userId');
+  //get all class of 
+  // lay userId by account 
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+          console.error('userId not found in localStorage');
+          return;
+        }
+        const response = await fetch(`http://localhost:8080/api/user/${userId}/joined-class`);
+        const classData = await response.json();
+        setClassListStudent(classData);
+      } catch (error) {
+        console.error('Error fetching classes:', error);
+      }
+    };
+    fetchClasses();
+  }, []);
   // Chạy lại effect khi classList thay đổi
   const handleLinkClick = (text) => {
-    setProjectText(text); 
-    setIsMenuOpen(true); 
+    setProjectText(text);
+    setIsMenuOpen(true);
   };
 
   const toggleCreate = () => {
@@ -96,16 +117,16 @@ function Navbar() {
 
   // Ref for the create class component
   const createClassRef = useRef();
-
+  /*click hide of element*/
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (createClassRef.current && !createClassRef.current.contains(event.target)) {
         setIsCreate(false);
+        setClassListStudent(false);
+        setIsTeachingOpen(false)
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -114,6 +135,10 @@ function Navbar() {
 
   const toggleTeaching = () => {
     setIsTeachingOpen(!isTeachingOpen);
+  };
+  const [isStudentOpen, setIsStudentOpen] = useState(false);
+  const toggleStedent = () => {
+    setIsStudentOpen(!isStudentOpen);
   };
   //chọn đối tượng class
   const [selectedClass, setSelectedClass] = useState(null);
@@ -131,31 +156,36 @@ function Navbar() {
 
 
       {isMenuOpen && (
-        <div className="additional-components">
+        <div  className="additional-components">
           <Link to='/' className='link' onClick={() => handleLinkClick('Home')}>
             <div className='menu_1'><img src={home} /> Home</div>
           </Link>
           <Link className='link' onClick={() => handleLinkClick('Teaching')}>
-          <div className='menu_1' onClick={toggleTeaching}> <img src={teach} /> Teaching </div>
+            <div className='menu_1' onClick={toggleTeaching}> <img src={teach} /> Teaching </div>
           </Link>
           {isTeachingOpen && (
-            <div>
-
-              <div className='class-list-teach'>
-                {classList.map((classItem) => (
-                  <li key={classItem.id}>
-                    <Link to={`/class/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
-                  </li>
-                ))}
-              </div>
+            <div className='class-list-teach'>
+              {classList.map((classItem) => (
+                <li key={classItem.id}>
+                  <Link to={`/class/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
+                </li>
+              ))}
             </div>
           )}
-           <Link className='link' onClick={() => handleLinkClick('Student')}>
-           <div className='menu_1'> <img src={student} /> Student</div>
+          <Link className='link' onClick={() => handleLinkClick('Student')}>
+            <div className='menu_1' onClick={toggleStedent}> <img src={student} /> Student</div>
           </Link>
+          {isStudentOpen && (
+            <div  className='class-list-teach'>
+              {classListStudent.map((classItem) => (
+                <li key={classItem.id}>
+                  <Link to={`/class/${classItem.classId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.classId}</Link> {/* Sử dụng id của lớp */}
+                </li>
+              ))}
+            </div>)}
           <Link className='link' onClick={() => handleLinkClick('Setting')}>
-          <div className='menu_1'> <img src={setting} /> Setting</div>
-          </Link>  
+            <div className='menu_1'> <img src={setting} /> Setting</div>
+          </Link>
         </div>
       )}
       <nav className="nav">

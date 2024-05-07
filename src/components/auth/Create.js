@@ -11,7 +11,6 @@ const Create = () => {
     memberPerGroup: '',
     groupRegisterMethod: ''
   });
-
   const [users, setUsers] = useState([]);
   const [classList, setClassList] = useState([]);
 
@@ -21,7 +20,7 @@ const Create = () => {
 
   const handleCreate = async () => {
     try {
-      const groupSelection = classData.groupRegisterMethod === 'student' || classData.groupRegisterMethod === 'teacher' ? classData.groupRegisterMethod : 'random';
+      const groupSelection = classData.groupRegisterMethod === 'STUDENT' || classData.groupRegisterMethod === 'TEARCH' ? classData.groupRegisterMethod : 'RANDOM11';
 
 
       // Lấy token từ localStorage
@@ -43,13 +42,6 @@ const Create = () => {
       window.alert("Add class success!")
       navigate('/');
       window.location.reload(false);
-      // setClassData({
-      //   subjectName: '',
-      //   schoolYear: '',
-      //   numberOfGroup: '',
-      //   memberPerGroup: '',
-      //   groupRegisterMethod: ''
-      // });
   
     } catch (error) {
       console.error('Error:', error);
@@ -94,9 +86,9 @@ const Create = () => {
         <input type='text' placeholder='Number group' className='input' name='numberOfGroup' value={classData.numberOfGroup} onChange={handleChange}></input>
         <input type='text' placeholder='Number person of group' className='input' name='memberPerGroup' value={classData.memberPerGroup} onChange={handleChange}></input>
         <select className='input' name='groupRegisterMethod' value={classData.groupRegisterMethod} onChange={handleChange}>
-          <option value='student'>Sinh viên tự chọn nhóm</option>
-          <option value='teacher'>Giảng viên chọn nhóm</option>
-          <option value='random'>Random nhóm</option>
+          <option value='STUDENT'>Sinh viên chọn nhóm</option>
+          <option value='TEARCH'>Giảng viên chọn nhóm</option>
+          <option value='RANDOM'>Random</option>
         </select>
         <button className='button-create' onClick={handleCreate}>Create</button>
       </div>

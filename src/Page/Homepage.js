@@ -52,7 +52,7 @@ const Home = () => {
   };
 
   const [classList, setClassList] = useState([]);
-
+  const [classListStudent, setClassListStudent] = useState([]);
  // lay userId by account 
  useEffect(() => {
   const fetchClasses = async () => {
@@ -65,6 +65,24 @@ const Home = () => {
       const response = await fetch(`http://localhost:8080/api/class/createdBy/${userId}`);
       const classData = await response.json();
       setClassList(classData);
+    } catch (error) {
+      console.error('Error fetching classes:', error);
+    }
+  };
+  fetchClasses();
+}, []);
+// get list class of student 
+useEffect(() => {
+  const fetchClasses = async () => {
+    try {
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        console.error('userId not found in localStorage');
+        return;
+      }
+      const response = await fetch(`http://localhost:8080/api/user/${userId}/joined-class`);
+      const classData = await response.json();
+      setClassListStudent(classData);
     } catch (error) {
       console.error('Error fetching classes:', error);
     }
@@ -153,8 +171,18 @@ const Home = () => {
                       </form>
                     </div>
                   )}
+                  
               </li>
               
+            ))}
+          </ul>
+          <ul className="class-list">
+            {classListStudent.map((classItem) => (
+              <li key={classItem.id} className='showclass-1'>
+                <div>
+                  <div className='name_class'><Link to={`/class/${classItem.classId}`}>{classItem.classId}</Link></div>
+                </div>    
+              </li>  
             ))}
           </ul>
         </div>

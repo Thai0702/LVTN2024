@@ -14,71 +14,68 @@ const ClassDetailPage = () => {
   const [isCreateGroup, setIsCreateGroup] = useState(false);
   const [isProject, setIsProject] = useState(false);
   const [isCreateProject, setIsCreateProject] = useState(false);
+  const [isProjectGroup, setIsProjectGroup] = useState(false);
   const [isRandom, setIsRandom] = useState(false);
+  const [isAdd, setIsAdd] = useState(false);
   const createClassRef = useRef();
-
-  /*random group */
-  const [groupSize, setGroupSize] = useState('');
-  const [groupName, setGroupName1] = useState('');
-  const [randomGroup, setRandomGroup] = useState(null);
-  const [students, setStudents] = useState([]);
-  const [error1, setError1] = useState('');
-  const [successMessage1, setSuccessMessage1] = useState('');
-
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/api/class/${classId}/student-list`);
-        const studentList = response.data;
-        setStudents(studentList);
-      } catch (error) {
-        console.error1('Lỗi khi lấy danh sách sinh viên:', error);
-      }
-    };
-    fetchStudents();
-  }, [classId]);
-  const generateRandomGroup = () => {
-    if (!groupSize || isNaN(groupSize) || groupSize <= 0) {
-      setError1('Vui lòng nhập một số nguyên dương.');
-      return;
-    }
-
-    if (groupSize > students.length) {
-      setError1('Không đủ sinh viên để tạo nhóm.');
-      return;
-    }
-
-    const tempStudents = [...students]; // Tạo một bản sao của danh sách sinh viên
-    const randomGroupMembers = [];
-
-    for (let i = 0; i < groupSize; i++) {
-      const randomIndex = Math.floor(Math.random() * tempStudents.length);
-      const selectedStudent = tempStudents.splice(randomIndex, 1)[0]; // Loại bỏ sinh viên đã chọn khỏi danh sách tạm thời
-      randomGroupMembers.push(selectedStudent.studentId);
-    }
-
-    console.log(randomGroupMembers)
-    const finalGroupName = groupName.trim() || `Group ${Math.floor(Math.random() * 6) + 1}`;
-
-    const randomGroup = {
-      groupName: finalGroupName,
-      members: randomGroupMembers
-    };
-
-    setRandomGroup(randomGroup);
-    setError1('');
-  };
-  // Gửi đối tượng nhóm về phía backend để lưu lại trong danh sách nhóm
-  const saveRandomGroup = async () => {
+  const [accountId, setAccount] = useState([]);
+  // add report request
+  /*add project */
+  const [subjectClass, setsubjectClass] = useState('');
+  const [requestOfProject, setrequestOfProject] = useState('');
+  const [expiredTime, setexpiredTime] = useState('');
+  const [expiredDate, setexpiredDate] = useState('');
+  const [expiredAction, setexpiredAction] = useState('');
+  const [requestTile, setrequestTile] = useState('');
+  const [requestDescription, setrequestDescription] = useState('');
+  const handleAddReportRequest = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/api/class/random-group', randomGroup);
-      if (response.status === 200) {
-        setSuccessMessage1('Đã lưu nhóm ngẫu nhiên thành công.');
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        `http://localhost:8080/api/report-request`,
+        {
+          subjectClass: subjectClass,
+          requestOfProject: requestOfProject,
+          expiredTime: expiredTime,
+          expiredDate: expiredDate,
+          expiredAction: expiredAction,
+          requestTile: requestTile,
+          requestDescription: requestDescription
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token // Thêm token vào header
+          }
+        }
+      );
+      if (response.status !== 200) {
+        setsubjectClass('');
+        setrequestOfProject('');
+        setexpiredTime('');
+        setexpiredDate('');
+        setexpiredAction('');
+        setrequestTile('');
+        setrequestDescription('');
+        window.alert("Report created successfully !");
       }
     } catch (error) {
-      console.error1('Lỗi khi lưu nhóm ngẫu nhiên:', error);
+      window.alert("Add fail !");
     }
   };
+  //lấy danh sách report of class id
+  const [reportList, setreportList] = useState([]);
+  useEffect(() => {
+    // Fetch the list of report request
+    fetch(`http://localhost:8080/api/report-request/${classId}`)
+      .then(response => response.json())
+      .then(data => {
+        setreportList(data);
+        setLoading(false); // Set loading to false after data is fetched
+      })
+      .catch(error => console.error('Error fetching report list:', error));
+  }, [classId]);
   /* upload file on list student */
   const fileInputRef = useRef(null);
   const [selectedClassId, setSelectedClassId] = useState(null);
@@ -105,19 +102,7 @@ const ClassDetailPage = () => {
       window.alert('No file selected or class not selected!');
     }
   };
-  // show class on selected
-  // const fetchClasses = async () => {
-  //   try {
-  //     const response = await fetch('http://localhost:8080/api/class');
-  //     const classData = await response.json();
-  //     setClassList(classData);
-  //   } catch (error) {
-  //     setErrorMessageUpload('Error fetching classes!');
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchClasses();
-  // }, []);
+
   // lay userId by account 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -187,62 +172,70 @@ const ClassDetailPage = () => {
       })
       .catch(error => console.error('Error fetching student list:', error));
   }, [classId]);
-
+  // Hiển thị danh sách dự án của một nhóm khi nhấp vào tên nhóm
+  const toggleProjectOfGroup = async (groupId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/group/${groupId}/projects`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch projects for this group');
+      }
+      const classDetailData = await response.json();
+      // In classDetailData ra console để kiểm tra dữ liệu nhận được
+      console.log(classDetailData);
+      console.log("chai che" + groupId);
+      // Bạn có thể sử dụng classDetailData để hiển thị danh sách dự án của nhóm
+    } catch (error) {
+      console.error('Error fetching projects for group:', error);
+    }
+  };
   /*add project */
   const [project_name, setProjectName] = useState('');
-const [project_of_group, setProjectOfGroup] = useState('');
-const [description, setDescription] = useState('');
-const [expired_day, setExpiredDay] = useState('');
-const [expired_time, setExpiredTime] = useState('');
-
-// const formatTime = (time) => {
-//   const date = new Date(time);
-//   const hours = date.getHours().toString().padStart(2, '0');
-//   const minutes = date.getMinutes().toString().padStart(2, '0');
-//   const seconds = date.getSeconds().toString().padStart(2, '0');
-//   return `${hours}:${minutes}:${seconds}`;
-// };
-const handleAddProject = async (e) => {
-  e.preventDefault();
-  try {
-    const token = localStorage.getItem('token');
-    const response = await axios.post(
-      `http://localhost:8080/api/project/create-project`,
-      {
-        projectName: project_name,
-        projectOfGroup: project_of_group,
-        projectDescription: description,
-        expiredDay: expired_day,
-        // expiredTime: formatTime(expired_time)
-        expiredTime: expired_time
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token // Thêm token vào header
+  const [project_of_group, setProjectOfGroup] = useState('');
+  const [description, setDescription] = useState('');
+  const [expired_day, setExpiredDay] = useState('');
+  const [expired_time, setExpiredTime] = useState('');
+  const handleAddProject = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        `http://localhost:8080/api/project/create-project`,
+        {
+          projectName: project_name,
+          projectOfGroup: project_of_group,
+          projectDescription: description,
+          expiredDay: expired_day,
+          // expiredTime: formatTime(expired_time)
+          expiredTime: expired_time
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token // Thêm token vào header
+          }
         }
+      );
+      if (response.status === 200) {
+        // Đặt lại các trường nhập
+        setProjectName('');
+        setProjectOfGroup('');
+        setDescription('');
+        setExpiredDay('');
+        setExpiredTime('');
+        window.alert("Project created successfully !");
       }
-    );
-    if (response.status === 200) {
-      // Đặt lại các trường nhập
-      setProjectName('');
-      setProjectOfGroup('');
-      setDescription('');
-      setExpiredDay('');
-      setExpiredTime('');
-      window.alert("Project created successfully !");
+    } catch (error) {
+      window.alert("Add fail !");
     }
-  } catch (error) {
-    window.alert("Add fail !");
-  }
-};
-
+  };
   /*Add group*/
+  const [groupName, setgroupName] = useState('');
   const [class_id, setClassId] = useState('');
   const [group_name, setGroupName] = useState('');
   const [leader_id, setLeaderid] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [groupId, setGroupId] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -251,7 +244,6 @@ const handleAddProject = async (e) => {
       setError('Vui lòng điền đầy đủ thông tin.');
       return;
     }
-  
     try {
       const response = await axios.post(`http://localhost:8080/api/class/create-a-group`, {
         leaderId: leader_id,
@@ -267,9 +259,6 @@ const handleAddProject = async (e) => {
         // Đặt thông báo thành công
         window.alert("Add group success")
         window.location.reload(false)
-        // setTimeout(() => {
-        //   setSuccessMessage('');
-        // }, 3000);
       } else {
         // Xử lý thông báo lỗi nếu có
         setError('Có lỗi xảy ra khi tạo nhóm. Vui lòng thử lại sau.');
@@ -278,8 +267,31 @@ const handleAddProject = async (e) => {
       // Xử lý thông báo lỗi trả về từ máy chủ
       setError('Có lỗi xảy ra khi tạo nhóm. Vui lòng thử lại sau.');
     }
-  };  
+  };
+  // delete group of class
+  const handleDeleteGroup = async (id) => {
+    const confirmed = window.confirm("Bạn có chắc muốn xóa nhóm này không?");
+    if (!confirmed) {
+      return;
+    }
+    try {
+      const url = `http://localhost:8080/api/group/${id}`;
+      const responseDelete = await fetch(url, {
+        method: 'DELETE'
+      });
 
+      if (responseDelete.ok) {
+        window.alert("Xóa nhóm thành công!");
+        window.location.reload(true);
+      } else {
+        console.error('Failed to delete group');
+        alert("Đã xảy ra lỗi khi xóa nhóm!");
+      }
+    } catch (error) {
+      console.error('Error deleting group:', error);
+      alert("Đã xảy ra lỗi khi xóa nhóm!");
+    }
+  };
   /*click hide of element*/
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -287,6 +299,8 @@ const handleAddProject = async (e) => {
         setIsCreateProject(false);
         setIsCreateGroup(false);
         setIsCreateClasswork(false);
+        setIsAdd(false);
+        setIsProjectGroup(false)
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -310,14 +324,6 @@ const handleAddProject = async (e) => {
   if (!classDetail) {
     return <p>Loading...</p>;
   }
-  const toggleRandom = () => {
-    setIsRandom(!isRandom)
-    setIsClasswork(false);
-    setIsStream(false);
-    setIspeople(false);
-    setIsGroup(false);
-    setIsProject(false);
-  };
   const toggleClasswork = () => {
     setIsClasswork(!isClassworkopen);
     setIsStream(false);
@@ -387,6 +393,58 @@ const handleAddProject = async (e) => {
     setIspeople(false);
     setIsRandom(false)
   };
+  const toggleAddmember = () => {
+    setIsAdd(!isAdd);
+    setIsCreateProject(false);
+    setIsProject(false);
+    setIsGroup(false);
+    setIsClasswork(false);
+    setIsStream(false);
+    setIspeople(false);
+    setIsRandom(false)
+  };
+  const toggleProjectOfGroup1 = () => {
+    setIsProjectGroup(!isProjectGroup);
+    setIsAdd(false);
+    setIsCreateProject(false);
+    setIsProject(false);
+    setIsGroup(false);
+    setIsClasswork(false);
+    setIsStream(false);
+    setIspeople(false);
+    setIsRandom(false)
+  };
+
+  const handleCheckboxChange = (studentId) => {
+    // Clone the selectedStudents array
+    let updatedSelectedStudents = [...accountId];
+
+    // If the studentId is already in the selectedStudents array, remove it. Otherwise, add it.
+    if (updatedSelectedStudents.includes(studentId)) {
+      updatedSelectedStudents = updatedSelectedStudents.filter(id => id !== studentId);
+    } else {
+      updatedSelectedStudents.push(studentId);
+    }
+
+    // Update the state
+    setAccount(updatedSelectedStudents);
+  };
+
+  const handleSave = async () => {
+    try {
+      const response = await axios.post('http://localhost:8080/api/class/add-member', {
+        classId: classId,
+        groupName: groupName,
+        accountId: accountId
+      });
+      const { token } = response.data;
+      localStorage.setItem('token', token);
+      console.log('Data saved successfully:', response.data);
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
+  };
+  // show project âll grouid 
 
   return (
     <div>
@@ -394,51 +452,13 @@ const handleAddProject = async (e) => {
       <div className='container-main'>
         <div className='container-header'>
           <div className={`header-1 ${isStream ? 'open' : ''}`} onClick={toggleStream}>Stream</div>
-          <div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}>Classworks</div>
+          <div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}>Report</div>
           <div className={`header-1 ${isPeople ? 'open' : ''}`} onClick={togglePeople}>People</div>
           <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}>Group</div>
           <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleProject}>Project</div>
-          <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleRandom}>Random</div>
+          <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleAddmember}>Add Member Group</div>
         </div>
-        {isRandom && (
-          <div ref={createClassRef} className='container-create-project'>
-            <div>
-              <label htmlFor="groupSize">Nhập số lượng thành viên cho nhóm:</label>
-              <input
-                type="number"
-                id="groupSize"
-                value={groupSize}
-                onChange={(e) => setGroupSize(e.target.value)}
-              />
-              {/* <div>
-                <label htmlFor="groupName">Nhập tên nhóm:</label>
-                <input
-                  type="text"
-                  id="groupName"
-                  value={groupName}
-                  onChange={(e) => setGroupName1(e.target.value)}
-                />
-              </div> */}
 
-              <button onClick={generateRandomGroup}>Tạo Nhóm Ngẫu Nhiên</button>
-            </div>
-            {randomGroup && (
-              <div>
-                <h3>Nhóm Ngẫu Nhiên:</h3>
-                <p>Tên Nhóm: {randomGroup.groupName}</p>
-                <p>Thành Viên:</p>
-                <ul>
-                  {randomGroup.members.map((studentId, index) => (
-                    <li key={index}>{studentId}</li>
-                  ))}
-                </ul>
-                <button onClick={saveRandomGroup}>Lưu Nhóm</button>
-              </div>
-            )}
-            {error1 && <div className="error">{error1}</div>}
-            {successMessage1 && <div className="success">{successMessage1}</div>}
-          </div>
-        )}
         {isClassworkopen && (
           <div className='container-body'>
             <div className='create-work' onClick={toggleCreateClasswork}>
@@ -452,13 +472,61 @@ const handleAddProject = async (e) => {
         )}
         {isCreateClassworkopen && (
           <div ref={createClassRef} className='container-create-project'>
-            <input type='text' placeholder='submit_by' className='input'></input>
-            <input type='text' placeholder='report_of_request' className='input'></input>
-            <input type='text' placeholder='report_title' className='input'></input>
-            <input type='text' placeholder='report_description' className='input'></input>
-            <input type='text' placeholder='created_time' className='input'></input>
-            <input type='file' placeholder='attachment' className='input'></input>
-            <button className='button-create' >Submit</button>
+            <form onSubmit={handleAddReportRequest}>
+              <input
+                type='text'
+                placeholder='Report of project'
+                className='input'
+                value={requestOfProject}
+                onChange={(e) => setrequestOfProject(e.target.value)}
+              />
+              <select onChange={(e) => setsubjectClass(e.target.value)} value={subjectClass}>
+                <option value=''>Select Class</option>
+                {classList.map((classItem) => (
+                  <option key={classItem.subjectClassId} value={classItem.subjectClassId}>{classItem.subjectName}</option>
+                ))}
+              </select>
+              <input
+                type='text'
+                placeholder='Thời gian hết hạng'
+                className='input'
+                value={expiredTime}
+                onChange={(e) => setexpiredTime(e.target.value)}
+              />
+              <input
+                type='date'
+                placeholder='Ngày hết hạn'
+                className='input'
+                value={expiredDate}
+                onChange={(e) => setexpiredDate(e.target.value)}
+              />
+              <input
+                type='text'
+                placeholder='Kết thúc'
+                className='input'
+                value={expiredAction}
+                onChange={(e) => setexpiredAction(e.target.value)}
+              />
+              <input
+                type='text'
+                placeholder='Chủ đề report'
+                className='input'
+                value={requestTile}
+                onChange={(e) => setrequestTile(e.target.value)}
+              />
+              <input
+                type='text'
+                placeholder='Mô tả'
+                className='input'
+                value={requestDescription}
+                onChange={(e) => setrequestDescription(e.target.value)}
+              />
+              {error && <div className="error">{error}</div>}
+              {successMessage && <div className="success">{successMessage}</div>}
+              <button className='btn btn-primary' type='submit' onClick={handleAddReportRequest}>
+                Add Report
+              </button>
+            </form>
           </div>
         )}
         {isStream && (
@@ -471,9 +539,17 @@ const handleAddProject = async (e) => {
                 <p>Code class</p>
                 <p>{classDetail.subjectClassId}</p>
               </div>
-              <div className='body-homework'>
-                <div>documents </div>
+              <div className='works'>
+                <ul>
+                  {reportList.map((report) => (
+                    <li key={report.requestId}>
+                      <span>{report.requestTile}</span>
+                      <button className='btnDeleteSV' >Delete</button>
+                    </li>
+                  ))}
+                </ul>
               </div>
+
             </div>
 
           </div>
@@ -481,7 +557,7 @@ const handleAddProject = async (e) => {
         {isPeople && (
           <div className='container-body'>
             <div className='import-people'>
-              <input type='file' ref={fileInputRef} /> 
+              <input type='file' ref={fileInputRef} />
               <select onChange={(e) => setSelectedClassId(e.target.value)} value={selectedClassId}>
                 <option value=''>Select Class</option>
                 {classList.map((classItem) => (
@@ -514,10 +590,22 @@ const handleAddProject = async (e) => {
             <div className='works'>
               <p className='dsshow'>List Group</p>
               {grouptList.map((group) => (
-                <li key={group.groupId}>
-                  <Link to={`/showclass/${group.groupId}`}>{group.groupName}</Link>
-                  {/* {'Leader:'} {group.leaderId} */}
-                  <button className='btnDeleteSV' >Delete</button>
+                <li key={group.groupId} onClick={() => toggleProjectOfGroup(group.groupId)}>
+                  <span onClick={toggleProjectOfGroup1}>{group.groupName}</span>
+                  <button className='btnDeleteSV' onClick={() => handleDeleteGroup(group.groupId)}>Delete</button>
+                </li>
+              ))}
+            </div>
+          </div>
+        )}
+        {isProjectGroup && (
+          <div>
+            <div className='class-list-teach'>
+              {classList.map((classItem) => (
+                <li key={classItem.id} className='showclass-1'>
+                  <div>
+                    <div className='name_class'><Link to={`/class/${classItem.projectId}`}>{classItem.projectName}</Link></div>
+                  </div>
                 </li>
               ))}
             </div>
@@ -552,8 +640,6 @@ const handleAddProject = async (e) => {
                 Create
               </button>
             </form>
-            {/* {error && <div className="error">{error}</div>}
-            {successMessage && <div className="success">{successMessage}</div>} */}
           </div>
         )}
         {isProject && (
@@ -569,9 +655,7 @@ const handleAddProject = async (e) => {
         )}
         {isCreateProject && (
           <div ref={createClassRef} className='container-create-project'>
-
             <form onSubmit={handleAddProject}>
-
               <input
                 type='text'
                 placeholder='Project Name'
@@ -616,9 +700,43 @@ const handleAddProject = async (e) => {
             </form>
           </div>
         )}
+        {isAdd && (
+          <div className='container-body'>
+            <div className='works'>
+              <p className='dsshow'>List Students</p>
+              <select onChange={(e) => setgroupName(e.target.value)} value={groupName}>
+                <option value=''>Select Group</option>
+                {grouptList.map((group) => (
+                  <option key={group.group_id} value={group.group_id}>
+                    {group.groupName}
+                  </option>
+                ))}
+              </select>
+              <select onChange={(e) => setClassId(e.target.value)} value={classId}>
+                <option value=''>Select Class</option>
+                {classList.map((classItem) => (
+                  <option key={classItem.subjectClassId} value={classItem.subjectClassId}>{classItem.subjectName}</option>
+                ))}
+              </select>
+              <button onClick={handleSave}>Save</button>
+              <ul>
+                {studentList.map((student) => (
+                  <li key={student.classId}>
+                    <span>{student.classId}-{student.studentId}-{student.studentClass}</span>
+                    <input
+                      type='checkbox'
+                      onClick={() => handleCheckboxChange(student.accountId)}
+                      checked={accountId.includes(student.accountId)}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
 };
-
 export default ClassDetailPage;

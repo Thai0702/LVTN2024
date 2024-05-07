@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link,useParams } from 'react-router-dom';
 
 const ShowClass = () => {
   const { groupId } = useParams();
   const [classList, setClassList] = useState([]);
-
   useEffect(() => {
     const fetchClassDetail = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/group/${groupId}/projects`);
+        const response = await fetch(`http://localhost:8080/api/group/22/projects`);
         if (!response.ok) {
           throw new Error('Failed to fetch projects for this group');
         }
@@ -20,7 +19,7 @@ const ShowClass = () => {
       }
     };
     fetchClassDetail();
-  }, [groupId]);
+  }, []);
 
   // Check if classList is undefined or null
   if (!classList) {
@@ -31,14 +30,17 @@ const ShowClass = () => {
   if (!Array.isArray(classList) || classList.length === 0) {
     return <p>No projects found for this group.</p>;
   }
-
   return (
     <div>
       <h2>Projects for Group {groupId}</h2>
       <ul>
-        {classList.map(project => (
-          <li key={project.projectId}>{project.projectName}</li>
-        ))}
+      {classList.map((classItem) => (
+              <li key={classItem.id} className='showclass-1'>
+                <div>
+                  <div className='name_class'><Link to={`/class/${classItem.projectId}`}>{classItem.projectName}</Link></div>                 
+                </div>  
+              </li>             
+            ))}
       </ul>
     </div>
   );
