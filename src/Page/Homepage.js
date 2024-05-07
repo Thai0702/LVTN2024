@@ -180,7 +180,7 @@ useEffect(() => {
             {classListStudent.map((classItem) => (
               <li key={classItem.id} className='showclass-1'>
                 <div>
-                  <div className='name_class'><Link to={`/class/${classItem.classId}`}>{classItem.classId}</Link></div>
+                  <div className='name_class'><Link to={`/classstudent/${classItem.classId}`}>{classItem.classId}</Link></div>
                 </div>    
               </li>  
             ))}

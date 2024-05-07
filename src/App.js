@@ -17,6 +17,7 @@ import ListStudent from "./components/auth/PageMain/ListStudent.js";
 import Random from "./components/auth/PageMain/Random.js";
 import ShowProject from "./components/auth/PageMain/ShowProject.js";
 import Add from "./components/auth/PageMain/Add.js";
+import DetailClassStudent from "./components/auth/DetailClassStudent.js";
 const App = () => {
   return (
     <Router>
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/random" element={<Random/>}/> 
           <Route path="/add" element={<Add/>}/> 
           <Route path="/class/:classId" element={<DetailClass/>} />
+          <Route path="/classstudent/:classId" element={<DetailClassStudent/>} />
         </Routes>        
       </div>
     </Router>

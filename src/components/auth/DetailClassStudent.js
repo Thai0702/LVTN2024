@@ -3,8 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import Navbar from './Navbar';
 import axios from 'axios';
 import add from './img/add.png';
-const ClassDetailPage = () => {
-  const [classDetail, setClassDetail] = useState(null);
+const DetailClassStudent = () => {
+    const [classDetail, setClassDetail] = useState(null);
   const { classId } = useParams(); // Lấy classId từ URL
   const [isClassworkopen, setIsClasswork] = useState(false);
   const [isCreateClassworkopen, setIsCreateClasswork] = useState(false);
@@ -14,12 +14,12 @@ const ClassDetailPage = () => {
   const [isCreateGroup, setIsCreateGroup] = useState(false);
   const [isProject, setIsProject] = useState(false);
   const [isCreateProject, setIsCreateProject] = useState(false);
-  const [isProjectGroup, setIsProjectGroup] = useState(false);
-  const [isRandom, setIsRandom] = useState(false);
+  const [isProjectGroup, setIsProjectGroup] = useState(false)
   const [isAdd, setIsAdd] = useState(false);
   const createClassRef = useRef();
   const [accountId, setAccount] = useState([]);
   // add report request
+  /*add project */
   const [subjectClass, setsubjectClass] = useState('');
   const [requestOfProject, setrequestOfProject] = useState('');
   const [expiredTime, setexpiredTime] = useState('');
@@ -58,7 +58,6 @@ const ClassDetailPage = () => {
         setrequestTile('');
         setrequestDescription('');
         window.alert("Report created successfully !");
-        window.location.reload(false);
       }
     } catch (error) {
       window.alert("Add fail !");
@@ -76,29 +75,6 @@ const ClassDetailPage = () => {
       })
       .catch(error => console.error('Error fetching report list:', error));
   }, [classId]);
-  // delete report 
-  const handleDeleteRepoet = async (id) => {
-    const confirmed = window.confirm("Bạn có chắc muốn xóa repoort này không?");
-    if (!confirmed) {
-      return;
-    }
-    try {
-      const url = `http://localhost:8080/api/report-request/${id}`;
-      const responseDelete = await fetch(url, {
-        method: 'DELETE'
-      });
-      if (responseDelete.ok) {
-        window.alert("Xóa report thành công!");
-        window.location.reload(true);
-      } else {
-        console.error('Failed to delete report');
-        alert("Đã xảy ra lỗi khi xóa report!");
-      }
-    } catch (error) {
-      console.error('Error deleting report:', error);
-      alert("Đã xảy ra lỗi khi xóa report!");
-    }
-  };
   /* upload file on list student */
   const fileInputRef = useRef(null);
   const [selectedClassId, setSelectedClassId] = useState(null);
@@ -347,14 +323,6 @@ const ClassDetailPage = () => {
   if (!classDetail) {
     return <p>Loading...</p>;
   }
-  const toggleClasswork = () => {
-    setIsClasswork(!isClassworkopen);
-    setIsStream(false);
-    setIspeople(false);
-    setIsGroup(false);
-    setIsProject(false);
-    setIsRandom(false)
-  };
   const toggleCreateClasswork = () => {
     setIsCreateClasswork(!isCreateClassworkopen)
     setIsClasswork(false);
@@ -362,7 +330,7 @@ const ClassDetailPage = () => {
     setIspeople(false);
     setIsGroup(false);
     setIsProject(false);
-    setIsRandom(false)
+
   };
   const toggleStream = () => {
     setIsStream(!isStream);
@@ -370,7 +338,6 @@ const ClassDetailPage = () => {
     setIspeople(false);
     setIsGroup(false);
     setIsProject(false);
-    setIsRandom(false)
   };
 
   const togglePeople = () => {
@@ -379,7 +346,6 @@ const ClassDetailPage = () => {
     setIsStream(false);
     setIsGroup(false);
     setIsProject(false);
-    setIsRandom(false)
   };
 
   const toggleGroup = () => {
@@ -388,7 +354,6 @@ const ClassDetailPage = () => {
     setIsStream(false);
     setIspeople(false);
     setIsProject(false);
-    setIsRandom(false)
   };
   const toggleCreateGroup = () => {
     setIsCreateGroup(!isCreateGroup);
@@ -397,15 +362,6 @@ const ClassDetailPage = () => {
     setIsStream(false);
     setIspeople(false);
     setIsProject(false);
-    setIsRandom(false)
-  };
-  const toggleProject = () => {
-    setIsProject(!isProject);
-    setIsGroup(false);
-    setIsClasswork(false);
-    setIsStream(false);
-    setIspeople(false);
-    setIsRandom(false)
   };
   const toggleCreateProject = () => {
     setIsCreateProject(!isCreateProject);
@@ -414,7 +370,6 @@ const ClassDetailPage = () => {
     setIsClasswork(false);
     setIsStream(false);
     setIspeople(false);
-    setIsRandom(false)
   };
   const toggleAddmember = () => {
     setIsAdd(!isAdd);
@@ -424,7 +379,6 @@ const ClassDetailPage = () => {
     setIsClasswork(false);
     setIsStream(false);
     setIspeople(false);
-    setIsRandom(false)
   };
   const toggleProjectOfGroup1 = () => {
     setIsProjectGroup(!isProjectGroup);
@@ -435,7 +389,6 @@ const ClassDetailPage = () => {
     setIsClasswork(false);
     setIsStream(false);
     setIspeople(false);
-    setIsRandom(false)
   };
 
   const handleCheckboxChange = (studentId) => {
@@ -475,145 +428,40 @@ const ClassDetailPage = () => {
       <div className='container-main'>
         <div className='container-header'>
           <div className={`header-1 ${isStream ? 'open' : ''}`} onClick={toggleStream}>Stream</div>
-          <div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}>Report</div>
           <div className={`header-1 ${isPeople ? 'open' : ''}`} onClick={togglePeople}>People</div>
-          <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleProject}>Project</div>
-          <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={classDetail.groupRegisterMethod === "RANDOM" ? null : toggleGroup}>
-            {classDetail.groupRegisterMethod === "RANDOM" ? null : classDetail.groupRegisterMethod +"  " + "Add group"}
-          </div>
-    
-          <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={classDetail.groupRegisterMethod === "RANDOM" ? null : toggleAddmember}>
-            {classDetail.groupRegisterMethod === "RANDOM" ? null : classDetail.groupRegisterMethod +"  " + "Add Member"}
-            </div>
+          <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}>Group</div>
+          <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleAddmember}>Add Member Group</div>
         </div>
-
-        {isClassworkopen && (
-          <div className='container-body'>
-            <div className='create-work' onClick={toggleCreateClasswork}>
-              <img src={add} alt='Create' />
-              <p>Create</p>
-            </div>
-            <div className='works'>
-              <ul>
-                {reportList.map((report) => (
-                  <li key={report.requestId}>
-                    <span>{report.requestTile}</span>
-                    <button className='btnDeleteSV' onClick={() => handleDeleteRepoet(report.requestId)}>Delete</button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-        {isCreateClassworkopen && (
-          <div ref={createClassRef} className='container-create-project'>
-            <form onSubmit={handleAddReportRequest}>
-              <input
-                type='text'
-                placeholder='Report of project'
-                className='input'
-                value={requestOfProject}
-                onChange={(e) => setrequestOfProject(e.target.value)}
-              />
-              <select onChange={(e) => setsubjectClass(e.target.value)} value={subjectClass}>
-                <option value=''>Select Class</option>
-                {classList.map((classItem) => (
-                  <option key={classItem.subjectClassId} value={classItem.subjectClassId}>{classItem.subjectName}</option>
-                ))}
-              </select>
-              <input
-                type='text'
-                placeholder='Thời gian hết hạng'
-                className='input'
-                value={expiredTime}
-                onChange={(e) => setexpiredTime(e.target.value)}
-              />
-              <input
-                type='date'
-                placeholder='Ngày hết hạn'
-                className='input'
-                value={expiredDate}
-                onChange={(e) => setexpiredDate(e.target.value)}
-              />
-              <input
-                type='text'
-                placeholder='Kết thúc'
-                className='input'
-                value={expiredAction}
-                onChange={(e) => setexpiredAction(e.target.value)}
-              />
-              <input
-                type='text'
-                placeholder='Chủ đề report'
-                className='input'
-                value={requestTile}
-                onChange={(e) => setrequestTile(e.target.value)}
-              />
-              <input
-                type='text'
-                placeholder='Mô tả'
-                className='input'
-                value={requestDescription}
-                onChange={(e) => setrequestDescription(e.target.value)}
-              />
-              {error && <div className="error">{error}</div>}
-              {successMessage && <div className="success">{successMessage}</div>}
-              <button className='btn btn-primary' type='submit' onClick={handleAddReportRequest}>
-                Add Report
-              </button>
-            </form>
-          </div>
-        )}
         {isStream && (
           <div className='container-body'>
             <div className='body-1'>
               <p>{classDetail.subjectName}</p>
             </div>
             <div className='body-2'>
-              <div className='body-code'>
-                <p>Code class</p>
-                <p>{classDetail.subjectClassId}</p>
-              </div>
               <div className='works'>
                 <ul>
                   {reportList.map((report) => (
                     <li key={report.requestId}>
                       <span>{report.requestTile}</span>
-                      <button className='btnDeleteSV' onClick={() => handleDeleteRepoet(report.requestId)}>Delete</button>
                     </li>
                   ))}
                 </ul>
               </div>
-
             </div>
-
           </div>
         )}
         {isPeople && (
           <div className='container-body'>
-            <div className='import-people'>
-              <input type='file' ref={fileInputRef} />
-              <select onChange={(e) => setSelectedClassId(e.target.value)} value={selectedClassId}>
-                <option value=''>Select Class</option>
-                {classList.map((classItem) => (
-                  <option key={classItem.subjectClassId} value={classItem.subjectClassId}>{classItem.subjectName}</option>
-                ))}
-              </select>
-              <button onClick={handleFileUpload}>Add</button>
-
-            </div>
             <div className='works'>
               <p className='dsshow'>List Students</p>
               <ul>
                 {studentList.map((student) => (
                   <li key={student.classId}>
                     <span>{student.classId}-{student.studentId}-{student.studentClass}</span>
-                    <button className='btnDeleteSV' onClick={() => handleDeleteSV(student.accountId)}>Delete</button>
                   </li>
                 ))}
               </ul>
             </div>
-
           </div>
         )}
         {isGroup && (
@@ -627,7 +475,6 @@ const ClassDetailPage = () => {
               {grouptList.map((group) => (
                 <li key={group.groupId} onClick={() => toggleProjectOfGroup(group.groupId)}>
                   <span onClick={toggleProjectOfGroup1}>{group.groupName}</span>
-                  <button className='btnDeleteSV' onClick={() => handleDeleteGroup(group.groupId)}>Delete</button>
                 </li>
               ))}
             </div>
@@ -683,9 +530,9 @@ const ClassDetailPage = () => {
               <img src={add} alt='Create' />
               <p>Add Project</p>
             </div>
-            {/* <div className='works'>
+            <div className='works'>
               show all Project here
-            </div> */}
+            </div>
           </div>
         )}
         {isCreateProject && (
@@ -736,10 +583,10 @@ const ClassDetailPage = () => {
           </div>
         )}
         {isAdd && (
-          <div className='container-body' ref={createClassRef}>
+          <div className='container-body'>
             <div className='works'>
               <p className='dsshow'>List Students</p>
-              <select onChange={(e) => setgroupName(e.target.value)} value={groupName} className='addMember'>
+              <select onChange={(e) => setgroupName(e.target.value)} value={groupName}>
                 <option value=''>Select Group</option>
                 {grouptList.map((group) => (
                   <option key={group.group_id} value={group.group_id}>
@@ -747,14 +594,13 @@ const ClassDetailPage = () => {
                   </option>
                 ))}
               </select>
-              <select onChange={(e) => setClassId(e.target.value)} value={classId} className='addMember'>
+              <select onChange={(e) => setClassId(e.target.value)} value={classId}>
                 <option value=''>Select Class</option>
                 {classList.map((classItem) => (
                   <option key={classItem.subjectClassId} value={classItem.subjectClassId}>{classItem.subjectName}</option>
                 ))}
               </select>
-              <button onClick={handleSave} className='addMember'>Save</button>
-
+              <button onClick={handleSave}>Save</button>
               <ul>
                 {studentList.map((student) => (
                   <li key={student.classId}>
@@ -773,6 +619,7 @@ const ClassDetailPage = () => {
 
       </div>
     </div>
-  );
-};
-export default ClassDetailPage;
+  )
+}
+
+export default DetailClassStudent

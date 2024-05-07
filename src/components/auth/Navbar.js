@@ -179,7 +179,7 @@ function Navbar() {
             <div  className='class-list-teach'>
               {classListStudent.map((classItem) => (
                 <li key={classItem.id}>
-                  <Link to={`/class/${classItem.classId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.classId}</Link> {/* Sử dụng id của lớp */}
+                  <Link to={`/classstudent/${classItem.classId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.classId}</Link> {/* Sử dụng id của lớp */}
                 </li>
               ))}
             </div>)}

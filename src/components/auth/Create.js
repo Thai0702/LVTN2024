@@ -86,8 +86,8 @@ const Create = () => {
         <input type='text' placeholder='Number group' className='input' name='numberOfGroup' value={classData.numberOfGroup} onChange={handleChange}></input>
         <input type='text' placeholder='Number person of group' className='input' name='memberPerGroup' value={classData.memberPerGroup} onChange={handleChange}></input>
         <select className='input' name='groupRegisterMethod' value={classData.groupRegisterMethod} onChange={handleChange}>
-          <option value='STUDENT'>Sinh viên chọn nhóm</option>
-          <option value='TEARCH'>Giảng viên chọn nhóm</option>
+          <option value='Student'>Sinh viên chọn nhóm</option>
+          <option value='Tearch'>Giảng viên chọn nhóm</option>
           <option value='RANDOM'>Random</option>
         </select>
         <button className='button-create' onClick={handleCreate}>Create</button>
