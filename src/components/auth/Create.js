@@ -20,7 +20,7 @@ const Create = () => {
 
   const handleCreate = async () => {
     try {
-      const groupSelection = classData.groupRegisterMethod === 'STUDENT' || classData.groupRegisterMethod === 'TEARCH' ? classData.groupRegisterMethod : 'RANDOM11';
+      const groupSelection = classData.groupRegisterMethod === 'STUDENT' || classData.groupRegisterMethod === 'TEARCH' ? classData.groupRegisterMethod : 'RANDOM';
 
 
       // Lấy token từ localStorage
@@ -86,7 +86,8 @@ const Create = () => {
         <input type='text' placeholder='Number group' className='input' name='numberOfGroup' value={classData.numberOfGroup} onChange={handleChange}></input>
         <input type='text' placeholder='Number person of group' className='input' name='memberPerGroup' value={classData.memberPerGroup} onChange={handleChange}></input>
         <select className='input' name='groupRegisterMethod' value={classData.groupRegisterMethod} onChange={handleChange}>
-          <option value='Student'>Sinh viên chọn nhóm</option>
+        <option value=''>Chọn phương thức tạo nhóm</option>
+         <option value='Student'>Sinh viên chọn nhóm</option>
           <option value='Tearch'>Giảng viên chọn nhóm</option>
           <option value='RANDOM'>Random</option>
         </select>

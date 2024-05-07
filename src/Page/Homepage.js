@@ -57,7 +57,7 @@ const Home = () => {
  useEffect(() => {
   const fetchClasses = async () => {
     try {
-      const userId = localStorage.getItem('userId'); 
+      const userId = localStorage.getItem('accountId'); 
       if (!userId) {
         console.error('userId not found in localStorage');
         return;
@@ -75,7 +75,7 @@ const Home = () => {
 useEffect(() => {
   const fetchClasses = async () => {
     try {
-      const userId = localStorage.getItem('userId');
+      const userId = localStorage.getItem('accountId');
       if (!userId) {
         console.error('userId not found in localStorage');
         return;
@@ -176,15 +176,15 @@ useEffect(() => {
               
             ))}
           </ul>
-          <ul className="class-list">
+          {/* <ul className="class-list">
             {classListStudent.map((classItem) => (
               <li key={classItem.id} className='showclass-1'>
                 <div>
-                  <div className='name_class'><Link to={`/classstudent/${classItem.classId}`}>{classItem.classId}</Link></div>
+                  <div className='name_class'><Link to={`/classstudent/${classItem.subjectClassId}`}>{classItem.subjectName}</Link></div>
                 </div>    
               </li>  
             ))}
-          </ul>
+          </ul> */}
         </div>
       </div>
     </div>

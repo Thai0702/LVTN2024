@@ -25,7 +25,7 @@ const Login = () => {
         const { token } = response.data;
         localStorage.setItem('token', token);
         console.log(token);
-        const userIdResponse = await axios.get('http://localhost:8080/api/authenticate/userId', {
+        const userIdResponse = await axios.get('http://localhost:8080/api/account/token-detail', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -33,8 +33,14 @@ const Login = () => {
         console.log("hello",userIdResponse);
         const userId = userIdResponse.data;  
         setUserId(userId);
-        localStorage.setItem('userId', userId);  
+         
         console.log("chao", userId);   
+        const { fullName } = userId;
+        const {accountId} =userId; // Tách giá trị fullName từ userId
+        console.log("fullName:", fullName); // In giá trị fullName vào console
+        // Sử dụng giá trị fullName ở đây, ví dụ: hiển thị trên giao diện
+        localStorage.setItem('accountId', accountId); 
+        localStorage.setItem('fullName', fullName);
         navigate('/');
       } else {
         setError('Đăng nhập không thành công.');

@@ -71,7 +71,7 @@ function Navbar() {
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const userId = localStorage.getItem('userId');
+        const userId = localStorage.getItem('accountId');
         if (!userId) {
           console.error('userId not found in localStorage');
           return;
@@ -85,13 +85,13 @@ function Navbar() {
     };
     fetchClasses();
   }, []);
-  const userId = localStorage.getItem('userId');
+  const fullName = localStorage.getItem('fullName');
   //get all class of 
   // lay userId by account 
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const userId = localStorage.getItem('userId');
+        const userId = localStorage.getItem('accountId');
         if (!userId) {
           console.error('userId not found in localStorage');
           return;
@@ -161,7 +161,7 @@ function Navbar() {
             <div className='menu_1'><img src={home} /> Home</div>
           </Link>
           <Link className='link' onClick={() => handleLinkClick('Teaching')}>
-            <div className='menu_1' onClick={toggleTeaching}> <img src={teach} /> Teaching </div>
+            <div className='menu_1' onClick={toggleTeaching}> <img src={teach} /> Class Created </div>
           </Link>
           {isTeachingOpen && (
             <div className='class-list-teach'>
@@ -173,13 +173,13 @@ function Navbar() {
             </div>
           )}
           <Link className='link' onClick={() => handleLinkClick('Student')}>
-            <div className='menu_1' onClick={toggleStedent}> <img src={student} /> Student</div>
+            <div className='menu_1' onClick={toggleStedent}> <img src={student} /> Class Joined</div>
           </Link>
           {isStudentOpen && (
             <div  className='class-list-teach'>
               {classListStudent.map((classItem) => (
                 <li key={classItem.id}>
-                  <Link to={`/classstudent/${classItem.classId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.classId}</Link> {/* Sử dụng id của lớp */}
+                  <Link to={`/classstudent/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
                 </li>
               ))}
             </div>)}
@@ -200,7 +200,7 @@ function Navbar() {
           {isLoggedIn ? (
             <>
               <li>
-                <span>Hi ! {userId}</span>
+                <span>Hi ! {fullName}</span>
               </li>
               <li>
                 <Link to='/login' onClick={handleLogout} style={{ textDecoration: 'none' }}>

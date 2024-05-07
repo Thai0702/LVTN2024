@@ -36,16 +36,16 @@ const Register = () => {
       if (response.status === 200) {
         const { token } = response.data;
         localStorage.setItem('token', token);
-  
-        // Kiểm tra nếu có thông báo từ server rằng tài khoản đã tồn tại
-        const userIdResponse = await axios.get('http://localhost:8080/api/authenticate/userId', {
+        const userIdResponse = await axios.get('http://localhost:8080/api/account/token-detail', {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-        const userId = userIdResponse.data; 
+        const userId = userIdResponse.data;  
         setUserId(userId);
-        localStorage.setItem('userId', userId);  
+        localStorage.setItem('userId', userId);    
+        const { fullName } = userId;
+        localStorage.setItem('fullName', fullName);
         navigate('/');
       } else {
         setError('Đăng ký thất bại.');

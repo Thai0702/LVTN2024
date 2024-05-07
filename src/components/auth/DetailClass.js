@@ -130,7 +130,7 @@ const ClassDetailPage = () => {
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const userId = localStorage.getItem('userId'); // Lấy userId từ localStorage
+        const userId = localStorage.getItem('accountId'); // Lấy userId từ localStorage
         if (!userId) {
           console.error('userId not found in localStorage');
           return;
@@ -478,12 +478,12 @@ const ClassDetailPage = () => {
           <div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}>Report</div>
           <div className={`header-1 ${isPeople ? 'open' : ''}`} onClick={togglePeople}>People</div>
           <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleProject}>Project</div>
-          <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={classDetail.groupRegisterMethod === "RANDOM" ? null : toggleGroup}>
-            {classDetail.groupRegisterMethod === "RANDOM" ? null : classDetail.groupRegisterMethod +"  " + "Add group"}
+          <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}>
+           Manager group
           </div>
     
           <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={classDetail.groupRegisterMethod === "RANDOM" ? null : toggleAddmember}>
-            {classDetail.groupRegisterMethod === "RANDOM" ? null : classDetail.groupRegisterMethod +"  " + "Add Member"}
+            {classDetail.groupRegisterMethod === "RANDOM" ? null : classDetail.groupRegisterMethod +"  " + "add Member"}
             </div>
         </div>
 
@@ -693,7 +693,7 @@ const ClassDetailPage = () => {
             <form onSubmit={handleAddProject}>
               <input
                 type='text'
-                placeholder='Project Name'
+                placeholder='Tên đồ án'
                 className='input'
                 value={project_name}
                 onChange={(e) => setProjectName(e.target.value)}
@@ -708,7 +708,7 @@ const ClassDetailPage = () => {
               </select>
               <input
                 type='text'
-                placeholder='Description'
+                placeholder='Mô tả'
                 className='input'
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -722,7 +722,7 @@ const ClassDetailPage = () => {
               />
               <input
                 type='text'
-                placeholder='CreateTime'
+                placeholder='Thời gian hết hạn'
                 className='input'
                 value={expired_time}
                 onChange={(e) => setExpiredTime(e.target.value)}
