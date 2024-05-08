@@ -29,6 +29,11 @@ const ClassDetailPage = () => {
   const [requestDescription, setrequestDescription] = useState('');
   const handleAddReportRequest = async (e) => {
     e.preventDefault();
+    // Kiểm tra không được bỏ trống các trường
+    if (!subjectClass || !requestOfProject || !expiredTime || !expiredDate || !requestTile || !requestDescription) {
+      window.alert('Vui lòng điền đầy đủ thông tin.');
+      return;
+    }
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
@@ -38,7 +43,7 @@ const ClassDetailPage = () => {
           requestOfProject: requestOfProject,
           expiredTime: expiredTime,
           expiredDate: expiredDate,
-          expiredAction: expiredAction,
+          expiredAction: 2,
           requestTile: requestTile,
           requestDescription: requestDescription
         },
@@ -54,7 +59,7 @@ const ClassDetailPage = () => {
         setrequestOfProject('');
         setexpiredTime('');
         setexpiredDate('');
-        setexpiredAction('');
+        // setexpiredAction('');
         setrequestTile('');
         setrequestDescription('');
         window.alert("Report created successfully !");
@@ -219,6 +224,11 @@ const ClassDetailPage = () => {
   const [expired_time, setExpiredTime] = useState('');
   const handleAddProject = async (e) => {
     e.preventDefault();
+    // Kiểm tra không được bỏ trống các trường
+    if (!project_name || !project_of_group || !description || !expired_day || !expired_time) {
+      window.alert('Vui lòng điền đủ thông tin.');
+      return;
+    }
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
@@ -264,7 +274,12 @@ const ClassDetailPage = () => {
     e.preventDefault();
     // Kiểm tra xem các trường đã được nhập đầy đủ chưa
     if (!leader_id || !class_id || !group_name) {
-      setError('Vui lòng điền đầy đủ thông tin.');
+      window.alert('Vui lòng điền đầy đủ thông tin.');
+      return;
+    }
+    // Kiểm tra leader_id và class_id phải là số
+    if (isNaN(leader_id) || isNaN(class_id)) {
+      window.alert('Leader ID và Class ID phải là số.');
       return;
     }
     try {
@@ -284,11 +299,17 @@ const ClassDetailPage = () => {
         window.location.reload(false)
       } else {
         // Xử lý thông báo lỗi nếu có
-        setError('Có lỗi xảy ra khi tạo nhóm. Vui lòng thử lại sau.');
+        window.alert('Có lỗi xảy ra khi tạo nhóm. Vui lòng thử lại sau.');
+        setLeaderid('');
+        setClassId('');
+        setGroupName('');
       }
     } catch (error) {
       // Xử lý thông báo lỗi trả về từ máy chủ
-      setError('Có lỗi xảy ra khi tạo nhóm. Vui lòng thử lại sau.');
+      window.alert('Có lỗi xảy ra khi tạo nhóm. Vui lòng thử lại sau.');
+      setLeaderid('');
+      setClassId('');
+      setGroupName('');
     }
   };
   // delete group of class
@@ -479,12 +500,12 @@ const ClassDetailPage = () => {
           <div className={`header-1 ${isPeople ? 'open' : ''}`} onClick={togglePeople}>People</div>
           <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleProject}>Project</div>
           <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}>
-           Manager group
+            Manager group
           </div>
-    
+
           <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={classDetail.groupRegisterMethod === "RANDOM" ? null : toggleAddmember}>
-            {classDetail.groupRegisterMethod === "RANDOM" ? null : classDetail.groupRegisterMethod +"  " + "add Member"}
-            </div>
+            {classDetail.groupRegisterMethod === "RANDOM" ? null : classDetail.groupRegisterMethod + "  " + "add Member"}
+          </div>
         </div>
 
         {isClassworkopen && (
@@ -510,7 +531,7 @@ const ClassDetailPage = () => {
             <form onSubmit={handleAddReportRequest}>
               <input
                 type='text'
-                placeholder='Report of project'
+                placeholder='Báo cáo cho project nào ?'
                 className='input'
                 value={requestOfProject}
                 onChange={(e) => setrequestOfProject(e.target.value)}
@@ -535,13 +556,13 @@ const ClassDetailPage = () => {
                 value={expiredDate}
                 onChange={(e) => setexpiredDate(e.target.value)}
               />
-              <input
+              {/* <input
                 type='text'
                 placeholder='Kết thúc'
                 className='input'
                 value={expiredAction}
                 onChange={(e) => setexpiredAction(e.target.value)}
-              />
+              /> */}
               <input
                 type='text'
                 placeholder='Chủ đề report'
@@ -649,24 +670,24 @@ const ClassDetailPage = () => {
         {isCreateGroup && (
           <div ref={createClassRef} className='container-create-project'>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className='addGroup'>
               <input
                 type='text'
-                placeholder='leader ID'
+                placeholder='Mã leader'
                 className='input'
                 value={leader_id}
                 onChange={(e) => setLeaderid(e.target.value)}
               />
               <input
                 type='text'
-                placeholder='Class ID'
+                placeholder='Mã lớp'
                 className='input'
                 value={class_id}
                 onChange={(e) => setClassId(e.target.value)}
               />
               <input
                 type='text'
-                placeholder='Group Name'
+                placeholder='Tên nhóm'
                 className='input'
                 value={group_name}
                 onChange={(e) => setGroupName(e.target.value)}

@@ -19,6 +19,27 @@ const Create = () => {
   };
 
   const handleCreate = async () => {
+    for (const key in classData) {
+      if (!classData[key]) {
+        window.alert('Vui lòng điền đầy đủ thông tin.');
+        return;
+      }
+      // Kiểm tra các trường numberOfGroup và memberPerGroup
+      if (isNaN(parseInt(classData.numberOfGroup)) || parseInt(classData.numberOfGroup) <= 0) {
+        window.alert('Số lượng nhóm lớn hơn 0.');
+        return;
+      }
+      if (isNaN(parseInt(classData.memberPerGroup)) || parseInt(classData.memberPerGroup) <= 0) {
+        window.alert('Số thành viên mỗi nhóm lớn hơn 0.');
+        return;
+      }
+      if (key === 'numberOfGroup' || key === 'memberPerGroup') {
+        if (isNaN(classData[key])) {
+          window.alert('Số lượng nhóm và số thành viên mỗi nhóm phải là số.');
+          return;
+        }
+      }
+    }
     try {
       const groupSelection = classData.groupRegisterMethod === 'STUDENT' || classData.groupRegisterMethod === 'TEARCH' ? classData.groupRegisterMethod : 'RANDOM';
 
@@ -42,7 +63,7 @@ const Create = () => {
       window.alert("Add class success!")
       navigate('/');
       window.location.reload(false);
-  
+
     } catch (error) {
       console.error('Error:', error);
     }
@@ -81,13 +102,13 @@ const Create = () => {
       <Navbar />
       <div className='container-create'>
         <p>Create class!</p>
-        <input type='text' placeholder='Class name' className='input' name='subjectName' value={classData.subjectName} onChange={handleChange}></input>
-        <input type='text' placeholder='Year' className='input' name='schoolYear' value={classData.schoolYear  } onChange={handleChange}></input>
-        <input type='text' placeholder='Number group' className='input' name='numberOfGroup' value={classData.numberOfGroup} onChange={handleChange}></input>
-        <input type='text' placeholder='Number person of group' className='input' name='memberPerGroup' value={classData.memberPerGroup} onChange={handleChange}></input>
+        <input type='text' placeholder='Tên lớp môn học' className='input' name='subjectName' value={classData.subjectName} onChange={handleChange}></input>
+        <input type='text' placeholder='Năm học' className='input' name='schoolYear' value={classData.schoolYear} onChange={handleChange}></input>
+        <input type='text' placeholder='Số lượng nhóm trong lớp' className='input' name='numberOfGroup' value={classData.numberOfGroup} onChange={handleChange}></input>
+        <input type='text' placeholder='Số lượng thành viên nhóm' className='input' name='memberPerGroup' value={classData.memberPerGroup} onChange={handleChange}></input>
         <select className='input' name='groupRegisterMethod' value={classData.groupRegisterMethod} onChange={handleChange}>
-        <option value=''>Chọn phương thức tạo nhóm</option>
-         <option value='Student'>Sinh viên chọn nhóm</option>
+          <option value=''>Chọn phương thức tạo nhóm</option>
+          <option value='Student'>Sinh viên chọn nhóm</option>
           <option value='Tearch'>Giảng viên chọn nhóm</option>
           <option value='RANDOM'>Random</option>
         </select>

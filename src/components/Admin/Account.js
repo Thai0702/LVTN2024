@@ -65,20 +65,29 @@ const Account = () => {
 
     const handleDelete = async (id) => {
         try {
-            const responseDelete = await fetch(`http://localhost:8080/api/account/${id}`, {
-                method: 'DELETE'
-            });
-    
-            if (responseDelete.ok) {
-                setAccounts(accounts.filter(account => account.userId !== id));
+          const responseDelete = await fetch(`http://localhost:8080/api/account/${id}`, {
+            method: 'DELETE'
+          });
+      
+          if (responseDelete.ok) {
+            // Xóa tài khoản khỏi danh sách nếu xóa thành công
+            setAccounts(accounts.filter(account => account.userId !== id));
+            window.alert('Xóa tài khoản thành công.');
+          } else {
+            // Xử lý trường hợp tài khoản không thể xóa
+            const errorMessage = await responseDelete.text();
+            if (errorMessage === 'Tài khoản đã có thông tin không được xóa.') {
+              window.alert('Tài khoản đã có thông tin không được xóa.');
             } else {
-                console.error('Failed to delete account');
+                window.alert('Xóa tài khoản không thành công.');
             }
+            console.error('Failed to delete account');
+          }
         } catch (error) {
-            console.error('Error deleting account:', error);
+          console.error('Error deleting account:', error);
+          window.alert('Xảy ra lỗi khi xóa tài khoản.');
         }
-    };
-    
+      };
   return (
     <div>
        <div className='container-admin'>
