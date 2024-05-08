@@ -66,7 +66,7 @@ const Register = () => {
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        setError('Tài khoản đã tồn tại.');
+        setError('Email đã tồn tại.');
       } else {
         setError('Đã xảy ra lỗi khi đăng ký.');
       }
