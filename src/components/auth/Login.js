@@ -59,16 +59,16 @@ const Login = () => {
               <h2 className="card-title">Đăng nhập</h2>
               <div className="form-group">
                 <label>Email:</label>
-                <input type="email" className="form-control" value={username} onChange={(e) => setEmail(e.target.value)} />
+                <input type="email" className="form-control" value={username} onChange={(e) => setEmail(e.target.value)} placeholder='Nhập email của bạn'/>
               </div>
               <div className="form-group">
                 <label>Mật khẩu:</label>
-                <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Nhập mật khẩu của bạn'/>
               </div>
               <button className="btn btn-primary" onClick={handleLogin}>Đăng nhập</button>
               {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
             </div>
-            <p className="mt-3">Không có tài khoản? <Link to="/register">Đăng ký ngay!</Link></p>
+            <p className="mt-3">Không có tài khoản? <Link to="/register"> Đăng ký ngay!</Link></p>
           </div>
         </div>
       </div>    

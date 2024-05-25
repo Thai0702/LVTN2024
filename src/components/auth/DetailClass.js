@@ -81,7 +81,7 @@ const ClassDetailPage = () => {
       })
       .catch(error => console.error('Error fetching report list:', error));
   }, [classId]);
-  // delete report 
+  // delete report
   const handleDeleteRepoet = async (id) => {
     const confirmed = window.confirm("Bạn có chắc muốn xóa repoort này không?");
     if (!confirmed) {
@@ -273,7 +273,7 @@ const ClassDetailPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Kiểm tra xem các trường đã được nhập đầy đủ chưa
-    if (!leader_id || !class_id || !group_name) {
+    if (!leader_id || !group_name) {
       window.alert('Vui lòng điền đầy đủ thông tin.');
       return;
     }
@@ -285,14 +285,14 @@ const ClassDetailPage = () => {
     try {
       const response = await axios.post(`http://localhost:8080/api/class/create-a-group`, {
         leaderId: leader_id,
-        classId: class_id,
+        classId: classId,
         groupName: group_name,
       });
       // Kiểm tra xem yêu cầu đã thành công hay không
       if (response.status !== 200) {
         // Đặt lại các trường nhập
         setLeaderid('');
-        setClassId('');
+       // setClassId('');
         setGroupName('');
         // Đặt thông báo thành công
         window.alert("Add group success")
@@ -301,14 +301,14 @@ const ClassDetailPage = () => {
         // Xử lý thông báo lỗi nếu có
         window.alert('Có lỗi xảy ra khi tạo nhóm. Vui lòng thử lại sau.');
         setLeaderid('');
-        setClassId('');
+       // setClassId('');
         setGroupName('');
       }
     } catch (error) {
       // Xử lý thông báo lỗi trả về từ máy chủ
       window.alert('Có lỗi xảy ra khi tạo nhóm. Vui lòng thử lại sau.');
       setLeaderid('');
-      setClassId('');
+     // setClassId('');
       setGroupName('');
     }
   };
@@ -495,13 +495,52 @@ const ClassDetailPage = () => {
       <Navbar />
       <div className='container-main'>
         <div className='container-header'>
+          {/* Phần Stream */}
           <div className={`header-1 ${isStream ? 'open' : ''}`} onClick={toggleStream}>Stream</div>
-          <div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}>Report</div>
+          {/* <div className={`header-1 ${isStream ? 'open' : ''}`} onClick={toggleStream}> <Link to={`/stream-view/${classId}`}>Stream</Link></div> */}
+
+          {/* Phần Report */}
+          {/* {<div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}>Report</div> } */}
+          {/* {classList.map((classItem) => ( 
+          <div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}><Link to={`/report-view/${classItem.subjectClassId}`}>Report</Link></div>
+          ))} */}
+          {/* {classList.length > 0  && (
+            <div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}>
+              <Link to={`/report-view/${classId}`}>Report</Link>
+            </div>
+          )} */}
+          
+          {/* Phần People */}
+          {/* <div className={`header-1 ${isPeople ? 'open' : ''}`} onClick={togglePeople}><Link to="/people-view">People</Link></div> */}
+          {/* {classList.length > 0  && (
+            <div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}>
+              <Link to={`/people-view/${classList[0].subjectClassId}`}>People</Link>
+            </div>
+          )} */}
+
+          {/* {classList.length > 0  && (
+            <div className={`header-1 ${isPeople ? 'open' : ''}`} onClick={togglePeople}>
+              <Link to={`/people-view/${classId}`}>People</Link>
+            </div>
+          )} */}
+
+
           <div className={`header-1 ${isPeople ? 'open' : ''}`} onClick={togglePeople}>People</div>
-          <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleProject}>Project</div>
-          <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}>
-            Manager group
-          </div>
+
+          {/* Phần PROJECT */}
+          {/* <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleProject}><Link to={`/project-view/${classId}`}>Project</Link></div> */}
+           <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleProject}>Project</div> 
+
+          {/* Phần Manager */}
+          {/* <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}><Link to="/addmember-view">Manager</Link></div> */}
+           {/* <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}>Group</div>  */}
+          {/* <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}><Link to={`/group-view`}>Group</Link></div> */}
+          
+            <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}>
+              <Link to={`/group-view/${classId}`}>Group</Link>
+            </div>
+          
+          {/* <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}><Link to={`/group-view/${classId}`}>Group</Link></div> */}
 
           <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={classDetail.groupRegisterMethod === "RANDOM" ? null : toggleAddmember}>
             {classDetail.groupRegisterMethod === "RANDOM" ? null : classDetail.groupRegisterMethod + "  " + "add Member"}
@@ -512,7 +551,7 @@ const ClassDetailPage = () => {
           <div className='container-body'>
             <div className='create-work' onClick={toggleCreateClasswork}>
               <img src={add} alt='Create' />
-              <p>Create</p>
+              {<p>Create</p> }
             </div>
             <div className='works'>
               <ul>
@@ -544,7 +583,7 @@ const ClassDetailPage = () => {
               </select>
               <input
                 type='text'
-                placeholder='Thời gian hết hạng'
+                placeholder='Thời gian hết hạn'
                 className='input'
                 value={expiredTime}
                 onChange={(e) => setexpiredTime(e.target.value)}
@@ -580,7 +619,7 @@ const ClassDetailPage = () => {
               {error && <div className="error">{error}</div>}
               {successMessage && <div className="success">{successMessage}</div>}
               <button className='btn btn-primary' type='submit' onClick={handleAddReportRequest}>
-                Add Report
+                 Add Report
               </button>
             </form>
           </div>
@@ -605,9 +644,7 @@ const ClassDetailPage = () => {
                   ))}
                 </ul>
               </div>
-
             </div>
-
           </div>
         )}
         {isPeople && (
@@ -628,13 +665,14 @@ const ClassDetailPage = () => {
               <ul>
                 {studentList.map((student) => (
                   <li key={student.classId}>
-                    <span>{student.classId}-{student.studentId}-{student.studentClass}</span>
-                    <button className='btnDeleteSV' onClick={() => handleDeleteSV(student.accountId)}>Delete</button>
+                    <span>{student.studentId}-{student.fullName}</span>
+                    <div className='btnPeople'>
+                    <button  onClick={() => handleDeleteSV(student.accountId)}>Delete</button>
+                    </div>                    
                   </li>
                 ))}
               </ul>
             </div>
-
           </div>
         )}
         {isGroup && (
@@ -647,8 +685,14 @@ const ClassDetailPage = () => {
               <p className='dsshow'>List Group</p>
               {grouptList.map((group) => (
                 <li key={group.groupId} onClick={() => toggleProjectOfGroup(group.groupId)}>
-                  <span onClick={toggleProjectOfGroup1}>{group.groupName}</span>
-                  <button className='btnDeleteSV' onClick={() => handleDeleteGroup(group.groupId)}>Delete</button>
+                 {/* <span >{group.groupName}</span> */}
+                <Link to={`/show_member/${classId}`}style={{ textDecoration: 'none', color: 'black' }}>{group.groupName}</Link>  
+                <div className='btnGroup'>
+                <button onClick={() => handleDeleteGroup(group.groupId)}>Delete</button>
+                  <button  >Update</button>
+                  <button ><Link to={`/report-view/${group.groupId}` }style={{ textDecoration: 'none', color: 'black' }}>Create Report</Link></button>
+                </div>
+                  
                 </li>
               ))}
             </div>
@@ -677,13 +721,6 @@ const ClassDetailPage = () => {
                 className='input'
                 value={leader_id}
                 onChange={(e) => setLeaderid(e.target.value)}
-              />
-              <input
-                type='text'
-                placeholder='Mã lớp'
-                className='input'
-                value={class_id}
-                onChange={(e) => setClassId(e.target.value)}
               />
               <input
                 type='text'
@@ -742,7 +779,7 @@ const ClassDetailPage = () => {
                 onChange={(e) => setExpiredDay(e.target.value)}
               />
               <input
-                type='text'
+                type='time'
                 placeholder='Thời gian hết hạn'
                 className='input'
                 value={expired_time}

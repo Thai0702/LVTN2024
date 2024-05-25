@@ -57,17 +57,25 @@
 
 }
 /*phan body*/
-.container-header{
+.container-header {
     display: flex;
+    justify-content: space-between;
+    align-items: center; /* Vertically center the items */
     font-size: 15px;
-    height: 40px;
+    height: 80px;
     padding: 7px;
     font-weight: bold;
     border: 1px solid black;
     width: 100%;
     background-color: antiquewhite;
-
 }
+
+.header-1 {
+    flex: 1; /* Make each item take up equal space */
+    text-align: center; /* Center text inside each flex item */
+    padding: 0 10px; /* Optional: Add some padding for better spacing */
+}
+
 
 .container-main{
     position: absolute; /* Đặt vị trí tuyệt đối */
@@ -94,7 +102,6 @@
 .container-body img{
     margin-left: 230px;
     margin-top: 10px;
-    height: 40px;
     padding-bottom: 7px;
     padding-right: 15px;
 }
@@ -103,10 +110,12 @@
 }
 .create-work{
     cursor: pointer;
+    
 }
 .works {
     background-color: aqua;
     width: 100%;
+    height: 400px;
     max-height: 550px; /* Thay đổi height thành max-height để khi nội dung không đầy, không có thanh cuộn xuất hiện */
     overflow-y: auto;
     border: 1px solid black;
@@ -124,23 +133,45 @@
     position: relative; /* Để có thể điều chỉnh vị trí của nút xóa */
   }
   
- .btnDeleteSV {
+ .btnGroup {
   position: absolute;
   top: 5px;
   right: 5px;
-  background-color: red;
-  color: white;
   border: none;
   border-radius: 6px; /* Giảm border-radius để nút trở nên nhỏ hơn */
   padding: 2px 6px; /* Giảm padding để nút trở nên nhỏ hơn */
   cursor: pointer;
   margin-top: 1px;
 }
-.btnDeleteSV:hover{
+.btnGroup button{
+    margin-left: 20px;
+    background-color: white;
+    color: black;
+}
+.btnGroup button:hover{
+
     background-color: rgb(35, 100, 157);
 }
 
-  
+.btnPeople{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border: none;
+    border-radius: 6px; /* Giảm border-radius để nút trở nên nhỏ hơn */
+    padding: 2px 6px; /* Giảm padding để nút trở nên nhỏ hơn */
+    cursor: pointer;
+    margin-top: 1px;
+} 
+.btnPeople button{
+    margin-left: 20px;
+    background-color: white;
+    color: black;
+} 
+.btnPeople button:hover{
+    background-color: rgb(35, 100, 157);
+
+}
 .create-work{
     display: flex;
     background-color: aquamarine;
@@ -186,7 +217,7 @@
 }
 .import-people input{
     margin-top: 4px;
-    margin-left: 200px;
+    margin-left: 50px;
     margin-right: 2px;
 }
 .import-people button{
@@ -342,6 +373,10 @@
 .btnxoasua{
     display: flex;
     margin-right: 10px;
+
+
+
+
     margin-right: -10px;
 }
 .btnxoasua button:hover{

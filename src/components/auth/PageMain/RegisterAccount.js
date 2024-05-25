@@ -13,28 +13,28 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!username || !password || !phone || !fullname) {
-      setError('Vui lòng điền đầy đủ thông tin.');
-      return;
-    }
-    const usernamePattern = /^[a-zA-Z0-9._]+@gmail.com$/; 
-    if (!usernamePattern.test(username)) {
-      setError('Tên đăng nhập không được chứa ký tự đặc biệt.');
-      return;
-    }
-    const phonePattern = /^\d+$/;
-    if (!phonePattern.test(phone)) {
-      setError('Số điện thoại chỉ được chứa các chữ số.');
-      return;
-    }
-    if (password.length < 8) {
-      setError('Mật khẩu ít nhât 8 ký tự.');
-      return;
-    }
-    if (phone.length !== 10) {
-      setError('Số điện thoại phải có 10 số.');
-      return;
-    }
+    // if (!username || !password || !phone || !fullname) {
+    //   setError('Vui lòng điền đầy đủ thông tin.');
+    //   return;
+    // }
+    // const usernamePattern = /^[a-zA-Z0-9._]+@gmail.com$/; 
+    // if (!usernamePattern.test(username)) {
+    //   setError('Tên đăng nhập không được chứa ký tự đặc biệt.');
+    //   return;
+    // }
+    // const phonePattern = /^\d+$/;
+    // if (!phonePattern.test(phone)) {
+    //   setError('Số điện thoại chỉ được chứa các chữ số.');
+    //   return;
+    // }
+    // if (password.length < 8) {
+    //   setError('Mật khẩu ít nhât 8 ký tự.');
+    //   return;
+    // }
+    // if (phone.length !== 10) {
+    //   setError('Số điện thoại phải có 10 số.');
+    //   return;
+    // }
     try {
       const response = await axios.post('http://localhost:8080/api/authenticate/register', {
         username: username,

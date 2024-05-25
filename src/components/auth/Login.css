@@ -15,10 +15,12 @@
 .card-title {
   text-align: center;
   margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .form-group {
   margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .form-control {
@@ -52,6 +54,7 @@
 p.mt-3 {
   display: flex;
   width: 400px;
+  font-weight: bold;
 }
 
 #navbarNav {

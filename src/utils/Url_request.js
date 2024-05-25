@@ -1,7 +1,10 @@
-const BE_URL = "http://localhost:8080/api";
-// const Login = "/user/login";
-const Signup = "authenticate/register";
 
-export {
-    Signup,
-  };
+
+const url = 'http://localhost:8080'; 
+
+// Hàm export để truy cập URL từ các file khác
+const geturl = () => {
+  return url;
+};
+
+export default geturl;
