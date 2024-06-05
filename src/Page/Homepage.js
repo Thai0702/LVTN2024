@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/auth/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
+import { BE_URL } from '../utils/Url_request';
 
 const Home = () => {
   
@@ -21,12 +22,14 @@ const Home = () => {
     console.log("hello",token)
   }, []);
   const handleSubmit = async (e) => {
+    const token=localStorage.getItem('token');
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:8080/api/class/${updateData.subjectClassId}`, {
+      const response = await fetch(`${BE_URL}/api-gv/class/update/${updateData.subjectClassId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization':'Bearer ' +token
         },
         body: JSON.stringify(updateData),
       });
@@ -53,50 +56,96 @@ const Home = () => {
 
   const [classList, setClassList] = useState([]);
   const [classListStudent, setClassListStudent] = useState([]);
- // lay userId by account 
- useEffect(() => {
-  const fetchClasses = async () => {
-    try {
-      const userId = localStorage.getItem('accountId'); 
+  useEffect(() => {
+    const fetchClasses = async () => {
+      // Lấy token từ localStorage
+      const token = localStorage.getItem('token');
+      const userId = localStorage.getItem('accountId');
+      
       if (!userId) {
         console.error('userId not found in localStorage');
         return;
       }
-      const response = await fetch(`http://localhost:8080/api/class/createdBy/${userId}`);
-      const classData = await response.json();
-      setClassList(classData);
-    } catch (error) {
-      console.error('Error fetching classes:', error);
-    }
-  };
-  fetchClasses();
-}, []);
+
+      try {
+        const response = await fetch(`${BE_URL}/api-gv/class/createdBy/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token // Thêm token vào header
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const classData = await response.json();
+        setClassList(classData);
+      } catch (error) {
+        console.error('Error fetching classes:', error);
+      }
+    };
+
+    fetchClasses();
+  }, []);
 // get list class of student 
 useEffect(() => {
   const fetchClasses = async () => {
     try {
       const userId = localStorage.getItem('accountId');
+      const token = localStorage.getItem('token');
+
       if (!userId) {
         console.error('userId not found in localStorage');
         return;
       }
-      const response = await fetch(`http://localhost:8080/api/user/${userId}/joined-class`);
+
+      const response = await fetch(`${BE_URL}/api/user/${userId}/joined-class`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
       const classData = await response.json();
       setClassListStudent(classData);
     } catch (error) {
       console.error('Error fetching classes:', error);
     }
   };
+
   fetchClasses();
 }, []);
 
   const handleDelete = async (classId) => {
+    const token=localStorage.getItem('token');
       try {
         // Kiểm tra xem lớp đã thêm nhóm hay chưa
-        const response = await fetch(`http://localhost:8080/api/class/${classId}/group-list`);
+        const response = await fetch(`${BE_URL}/api-gv/classId/group-list/${classId}`,{
+          method:'GET',
+          headers:{
+            'Content-Type':'application/json',
+            'Authorization':'Bearer ' + token
+          }
+        }
+        );
         const dataGroup = await response.json();
         //kiem tra them sinh vien vào class
-        const responseSV = await fetch(`http://localhost:8080/api/class/${classId}/student-list`);
+        const responseSV = await fetch(`${BE_URL}/api/class/student-list/${classId}`,{
+
+          method:'GET',
+          headers:{
+            'Content-Type':'application/json',
+            'Authorization':'Bearer ' + token
+          }
+
+        });
         const dataSV = await responseSV.json(); 
         // Nếu lớp đã thêm nhóm, hiển thị thông báo và không xóa
         if (dataGroup.length > 0) {
@@ -109,16 +158,19 @@ useEffect(() => {
         else {
           // Nếu lớp chưa thêm nhóm, tiến hành xóa
           window.confirm("Bạn có chắc muốn xóa lớp này không?");
-          await fetch(`http://localhost:8080/api/class/${classId}`, {
+          await fetch(`${BE_URL}/api-gv/class/delete/${classId}`, {
             method: 'DELETE',
+            headers:{
+              'Content-Type':'application/json',
+              'Authorization':'Bearer ' + token
+            }
           });
           // Cập nhật lại danh sách lớp sau khi xóa thành công
           setClassList(prevList => prevList.filter(item => item.subjectClassId !== classId));
         }
       } catch (error) {
         console.error('Error deleting class:', error);
-      }
-    
+      }   
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -176,15 +228,15 @@ useEffect(() => {
               
             ))}
           </ul>
-          {/* <ul className="class-list">
+          <ul className="class-list">
             {classListStudent.map((classItem) => (
               <li key={classItem.id} className='showclass-1'>
                 <div>
-                  <div className='name_class'><Link to={`/classstudent/${classItem.subjectClassId}`}>{classItem.subjectName}</Link></div>
+                  <div className='name_class'><Link to={`/class/${classItem.subjectClassId}`}>{classItem.subjectName}</Link></div>
                 </div>    
               </li>  
             ))}
-          </ul> */}
+          </ul>
         </div>
       </div>
     </div>

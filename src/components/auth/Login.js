@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Login.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { BE_URL } from '../../utils/Url_request';
 
 const Login = () => {
   const [username, setEmail] = useState('');
@@ -17,7 +18,7 @@ const Login = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:8080/api/authenticate/login', {
+      const response = await axios.post(`${BE_URL}/api/authenticate/login`, {
         username: username,
         password: password
       });
@@ -25,7 +26,7 @@ const Login = () => {
         const { token } = response.data;
         localStorage.setItem('token', token);
         console.log(token);
-        const userIdResponse = await axios.get('http://localhost:8080/api/account/token-detail', {
+        const userIdResponse = await axios.get(`${BE_URL}/api/account/token-detail`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -36,12 +37,19 @@ const Login = () => {
          
         console.log("chao", userId);   
         const { fullName } = userId;
-        const {accountId} =userId; // Tách giá trị fullName từ userId
+        const {accountId} =userId;
+        const {type}=userId; // Tách giá trị fullName từ userId
         console.log("fullName:", fullName); // In giá trị fullName vào console
         // Sử dụng giá trị fullName ở đây, ví dụ: hiển thị trên giao diện
         localStorage.setItem('accountId', accountId); 
         localStorage.setItem('fullName', fullName);
-        navigate('/');
+        if(type==='ADMIN')
+          {
+            navigate('/admin');
+          }
+          else{
+            navigate('/');
+          }
       } else {
         setError('Đăng nhập không thành công.');
       }
@@ -49,7 +57,6 @@ const Login = () => {
       setError('Đăng nhập không thành công.');
     }
   };
-  
   return (
     <div className="container">
       <div className="row justify-content-center">
@@ -69,6 +76,7 @@ const Login = () => {
               {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
             </div>
             <p className="mt-3">Không có tài khoản? <Link to="/register"> Đăng ký ngay!</Link></p>
+            <p className="mt-3"> <Link to="/forgot_pass">Forgot mật khẩu! </Link></p>
           </div>
         </div>
       </div>    

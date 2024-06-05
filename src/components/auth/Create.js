@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import './main.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { BE_URL } from '../../utils/Url_request';
 const Create = () => {
   const navigate = useNavigate();
   const [classData, setClassData] = useState({
@@ -47,7 +48,7 @@ const Create = () => {
       // Lấy token từ localStorage
       const token = localStorage.getItem('token');
 
-      const response = await fetch('http://localhost:8080/api/class', {
+      const response = await fetch(`${BE_URL}/api-gv/class`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +73,7 @@ const Create = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/account');
+        const response = await fetch(`${BE_URL}/api-gv/account`);
         const userData = await response.json();
         setUsers(userData);
       } catch (error) {
@@ -86,7 +87,7 @@ const Create = () => {
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/class');
+        const response = await fetch(`${BE_URL}/api-gv/class`);
         const classData = await response.json();
         setClassList(classData);
       } catch (error) {

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import { BE_URL } from '../../../utils/Url_request';
 
-const Register = () => {
+const RegisterAdmin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
@@ -37,7 +37,7 @@ const Register = () => {
     //   return;
     // }
     try {
-      const response = await axios.post(`${BE_URL}/api/authenticate/register`, {
+      const response = await axios.post(`${BE_URL}/api/authenticate/registerAdmin`, {
         username: username,
         password: password,
         fullname: fullname,
@@ -61,7 +61,7 @@ const Register = () => {
         const {accountId} =userId; // Tách giá trị fullName từ userI
         // Sử dụng giá trị fullName ở đây, ví dụ: hiển thị trên giao diện
         localStorage.setItem('accountId', accountId); 
-        navigate('/');
+        navigate('/login');
       } else {
         setError('Đăng ký thất bại.');
       }
@@ -110,4 +110,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterAdmin;

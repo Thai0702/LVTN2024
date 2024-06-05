@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import Navbar from './Navbar';
 import axios from 'axios';
 import add from './img/add.png';
+import { BE_URL } from '../../utils/Url_request';
 const ClassDetailPage = () => {
   const [classDetail, setClassDetail] = useState(null);
   const { classId } = useParams(); // Lấy classId từ URL
@@ -37,7 +38,7 @@ const ClassDetailPage = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        `http://localhost:8080/api/report-request`,
+        `${BE_URL}/api-gv/report-request`,
         {
           subjectClass: subjectClass,
           requestOfProject: requestOfProject,
@@ -72,25 +73,48 @@ const ClassDetailPage = () => {
   //lấy danh sách report of class id
   const [reportList, setreportList] = useState([]);
   useEffect(() => {
-    // Fetch the list of report request
-    fetch(`http://localhost:8080/api/report-request/${classId}`)
-      .then(response => response.json())
-      .then(data => {
-        setreportList(data);
-        setLoading(false); // Set loading to false after data is fetched
-      })
-      .catch(error => console.error('Error fetching report list:', error));
-  }, [classId]);
+    const token = localStorage.getItem('token');
+    
+    const fetchReportList = async () => {
+        try {
+            const response = await fetch(`${BE_URL}/api-gv/report-request/${classId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            setreportList(data);
+        } catch (error) {
+            console.error('Error fetching report list:', error);
+        } finally {
+            setLoading(false); // Set loading to false after data is fetched or an error occurs
+        }
+    };
+    fetchReportList();
+}, [classId]);
   // delete report
   const handleDeleteRepoet = async (id) => {
+    const token = localStorage.getItem('token');
     const confirmed = window.confirm("Bạn có chắc muốn xóa repoort này không?");
     if (!confirmed) {
       return;
     }
     try {
-      const url = `http://localhost:8080/api/report-request/${id}`;
+      
+      const url = `${BE_URL}/api-gv/report-request/delete/${id}`;
       const responseDelete = await fetch(url, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+      }
       });
       if (responseDelete.ok) {
         window.alert("Xóa report thành công!");
@@ -109,14 +133,16 @@ const ClassDetailPage = () => {
   const [selectedClassId, setSelectedClassId] = useState(null);
   const [classList, setClassList] = useState([]);
   const handleFileUpload = async () => {
+    const token=localStorage.getItem('token');
     const file = fileInputRef.current.files[0];
-    if (file && selectedClassId) {
+    if (file) {
       const formData = new FormData();
       formData.append('file', file);
       try {
-        await axios.post(`http://localhost:8080/api/account/class/${selectedClassId}/excel`, formData, {
+        await axios.post(`${BE_URL}/api-gv/account/class/excel/${classId}`, formData, {
           headers: {
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer ' + token
           }
         });
         window.alert('File uploaded successfully!');
@@ -134,66 +160,103 @@ const ClassDetailPage = () => {
   // lay userId by account 
   useEffect(() => {
     const fetchClasses = async () => {
+      // Lấy token từ localStorage
+      const token = localStorage.getItem('token');
+      const userId = localStorage.getItem('accountId');
+      
+      if (!userId) {
+        console.error('userId not found in localStorage');
+        return;
+      }
+
       try {
-        const userId = localStorage.getItem('accountId'); // Lấy userId từ localStorage
-        if (!userId) {
-          console.error('userId not found in localStorage');
-          return;
+        const response = await fetch(`${BE_URL}/api-gv/class/createdBy/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token // Thêm token vào header
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
-        const response = await fetch(`http://localhost:8080/api/class/createdBy/${userId}`);
+
         const classData = await response.json();
         setClassList(classData);
       } catch (error) {
         console.error('Error fetching classes:', error);
       }
     };
+
     fetchClasses();
   }, []);
   // /*show list student of class*/
   const [studentList, setStudentList] = useState([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    // Fetch the list of students
-    fetch(`http://localhost:8080/api/class/${classId}/student-list`)
-      .then(response => response.json())
-      .then(data => {
-        setStudentList(data);
-        setLoading(false); // Set loading to false after data is fetched
-      })
-      .catch(error => console.error('Error fetching student list:', error));
-  }, [classId]);
-  const handleDeleteSV = async (id) => {
-    const confirmed = window.confirm("Bạn có chắc muốn xóa sinh viên này không?");
-    if (!confirmed) {
-      // Không xóa nếu người dùng không xác nhận
-      return;
-    }
-    try {
-      const url = `http://localhost:8080/api/class/student-list/${classId}/${id}`;
-      const responseDelete = await fetch(url, {
-        method: 'DELETE'
-      });
+useEffect(() => {
+        const token = localStorage.getItem('token');
+        
+        const fetchStudentList = async () => {
+            try {
+                const response = await fetch(`${BE_URL}/api/class/student-list/${classId}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
 
-      if (responseDelete.ok) {
-        // Xóa sinh viên khỏi danh sách nếu xóa thành công
-        setStudentList(studentList.filter(student => student.studentId !== id));
-        alert("Xóa sinh viên thành công!");
-        // Load lại trang sau khi xóa thành công
-        window.location.reload(true);
-      } else {
-        console.error('Failed to delete student');
-        alert("Xóa sinh viên không thành công!");
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                setStudentList(data);
+            } catch (error) {
+                console.error('Error fetching student list:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchStudentList();
+    }, [classId]);
+    const handleDeleteSV = async (id) => {
+      const token = localStorage.getItem('token');
+      const confirmed = window.confirm("Bạn có chắc muốn xóa sinh viên này không?");
+      if (!confirmed) {
+        // Không xóa nếu người dùng không xác nhận
+        return;
       }
-    } catch (error) {
-      console.error('Error deleting student:', error);
-      alert("Đã xảy ra lỗi khi xóa sinh viên!");
-    }
+      try {
+        const url = `${BE_URL}/api-gv/class/delete/student-list/${classId}/${id}`;
+        const responseDelete = await fetch(url, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        });
+        if (responseDelete.ok) {
+          // Xóa sinh viên khỏi danh sách nếu xóa thành công
+          setStudentList(studentList.filter(student => student.studentId !== id));
+          window.alert(" Bạn đã xóa sinh viên với mã"+" "+ id )
+          window.location.reload(true);        
+        } else {
+          console.error('Failed to delete student');
+          alert("Xóa sinh viên không thành công!");
+        }
+      } catch (error) {
+        console.error('Error deleting student:', error);
+        alert("Đã xảy ra lỗi khi xóa sinh viên!");
+      }
   };
+  
   /*show list group of class */
   const [grouptList, setGroupList] = useState([]);
   useEffect(() => {
     // Fetch the list of students
-    fetch(`http://localhost:8080/api/class/${classId}/group-list`)
+    fetch(`${BE_URL}/api/class/${classId}/group-list`)
       .then(response => response.json())
       .then(data => {
         setGroupList(data);
@@ -203,7 +266,7 @@ const ClassDetailPage = () => {
   // Hiển thị danh sách dự án của một nhóm khi nhấp vào tên nhóm
   const toggleProjectOfGroup = async (groupId) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/group/${groupId}/projects`);
+      const response = await fetch(`${BE_URL}/api/group/${groupId}/projects`);
       if (!response.ok) {
         throw new Error('Failed to fetch projects for this group');
       }
@@ -232,7 +295,7 @@ const ClassDetailPage = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        `http://localhost:8080/api/project/create-project`,
+        `${BE_URL}/api/project/create-project`,
         {
           projectName: project_name,
           projectOfGroup: project_of_group,
@@ -283,7 +346,7 @@ const ClassDetailPage = () => {
       return;
     }
     try {
-      const response = await axios.post(`http://localhost:8080/api/class/create-a-group`, {
+      const response = await axios.post(`${BE_URL}/api/class/create-a-group`, {
         leaderId: leader_id,
         classId: classId,
         groupName: group_name,
@@ -319,7 +382,7 @@ const ClassDetailPage = () => {
       return;
     }
     try {
-      const url = `http://localhost:8080/api/group/${id}`;
+      const url = `${BE_URL}/api/group/${id}`;
       const responseDelete = await fetch(url, {
         method: 'DELETE'
       });
@@ -353,20 +416,58 @@ const ClassDetailPage = () => {
     };
   }, []);
   /*show detail of class */
+  
   useEffect(() => {
     const fetchClassDetail = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('No token found');
+        setLoading(false);
+        return;
+      }
+
+      if (!classId) {
+        setError('Class ID is required');
+        setLoading(false);
+        return;
+      }
+
       try {
-        const response = await fetch(`http://localhost:8080/api/class/${classId}`);
+        const response = await fetch(`${BE_URL}/api/class/get/${classId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token // Add token to header
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
         const classDetailData = await response.json();
         setClassDetail(classDetailData);
       } catch (error) {
         console.error('Error:', error);
+        setError('Failed to fetch class detail');
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchClassDetail();
   }, [classId]);
-  if (!classDetail) {
+
+  if (loading) {
     return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  if (!classDetail) {
+    return <p>No class detail available</p>;
   }
   const toggleClasswork = () => {
     setIsClasswork(!isClassworkopen);
@@ -476,7 +577,7 @@ const ClassDetailPage = () => {
 
   const handleSave = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/api/class/add-member', {
+      const response = await axios.post(`${BE_URL}/api/class/add-member`, {
         classId: classId,
         groupName: groupName,
         accountId: accountId
@@ -500,7 +601,7 @@ const ClassDetailPage = () => {
           {/* <div className={`header-1 ${isStream ? 'open' : ''}`} onClick={toggleStream}> <Link to={`/stream-view/${classId}`}>Stream</Link></div> */}
 
           {/* Phần Report */}
-          {/* {<div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}>Report</div> } */}
+          {<div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}>Report</div> }
           {/* {classList.map((classItem) => ( 
           <div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}><Link to={`/report-view/${classItem.subjectClassId}`}>Report</Link></div>
           ))} */}
@@ -533,12 +634,12 @@ const ClassDetailPage = () => {
 
           {/* Phần Manager */}
           {/* <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}><Link to="/addmember-view">Manager</Link></div> */}
-           {/* <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}>Group</div>  */}
+           <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}>Group</div> 
           {/* <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}><Link to={`/group-view`}>Group</Link></div> */}
-          
+{/*           
             <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}>
               <Link to={`/group-view/${classId}`}>Group</Link>
-            </div>
+            </div> */}
           
           {/* <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}><Link to={`/group-view/${classId}`}>Group</Link></div> */}
 
@@ -582,7 +683,7 @@ const ClassDetailPage = () => {
                 ))}
               </select>
               <input
-                type='text'
+                type='time'
                 placeholder='Thời gian hết hạn'
                 className='input'
                 value={expiredTime}
@@ -632,7 +733,7 @@ const ClassDetailPage = () => {
             <div className='body-2'>
               <div className='body-code'>
                 <p>Code class</p>
-                <p>{classDetail.subjectClassId}</p>
+                <p>{classDetail.inviteCode}</p>
               </div>
               <div className='works'>
                 <ul>
@@ -651,12 +752,12 @@ const ClassDetailPage = () => {
           <div className='container-body'>
             <div className='import-people'>
               <input type='file' ref={fileInputRef} />
-              <select onChange={(e) => setSelectedClassId(e.target.value)} value={selectedClassId}>
+              {/* <select onChange={(e) => setSelectedClassId(e.target.value)} value={selectedClassId}>
                 <option value=''>Select Class</option>
                 {classList.map((classItem) => (
                   <option key={classItem.subjectClassId} value={classItem.subjectClassId}>{classItem.subjectName}</option>
                 ))}
-              </select>
+              </select> */}
               <button onClick={handleFileUpload}>Add</button>
 
             </div>

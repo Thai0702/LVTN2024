@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/auth/Login.js";
 import RegisterPage from "./components/auth/PageMain/RegisterAccount.js";
+import RegisterAdmin from "./components/auth/pageAdmin/RegisterAdmin.js";
 import Homepage from "./Page/Homepage.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Join from './components/auth/Join.js'
@@ -29,6 +30,16 @@ import Create_report from "./Page/Create_report.js"
 import Add_group from "./Page/Add_group.js";
 import ShowMemberGroup from "./Page/ShowMemberGroup.js";
 import AddProject from "./Page/Add_project.js";
+import ForgotPass from "./components/auth/ForgotPass.js";
+import ResetPass from "./components/auth/ResetPass.js";
+import ChangePass from "./components/auth/ChangePass.js";
+import HomeAdmin from "./components/auth/pageAdmin/HomeAdmin.js";
+import ChangPassAdmin from "./components/auth/pageAdmin/ChangPassAdmin.js";
+import ListAccount from "./components/auth/pageAdmin/ListAccount.js";
+import ListClass from "./components/auth/pageAdmin/ListClass.js";
+import ListGroup from "./components/auth/pageAdmin/ListGroup.js";
+import ListProject from "./components/auth/pageAdmin/ListProject.js";
+import ListReport from "./components/auth/pageAdmin/ListReport.js";
 
 const App = () => {
   return (
@@ -58,10 +69,10 @@ const App = () => {
 
           {/* REPORT */}
            {/* <Route path="/report-view/:groupId" element={<Report_view/>}/> */}
-          <Route path="/report-view/:groupId" element={<Create_report/>}/>
+          {/* <Route path="/report-view/:groupId" element={<Create_report/>}/> */}
           
           {/* PEOPLE */}
-          <Route path="/people-view/:classId" element={<People_view/>}/>
+          {/* <Route path="/people-view/:classId" element={<People_view/>}/>
 
           <Route path="/addmember-view" element={<AddMember_view/>}/>
 
@@ -69,12 +80,34 @@ const App = () => {
           <Route path="/group-view/:classId" element={<Group_view/>}/>
           <Route path="/group-view/:classId/add-group" element={<Add_group/>}/>
           
-          <Route path="/project-view/:classId" element={<Project_view/>}/>
+          <Route path="/project-view/:classId" element={<Project_view/>}/> */}
           <Route path="/project-view/:classId/add-project" element={<AddProject/>}/>
 
           <Route path="/show_member/:classId" element={<ShowMemberGroup/>}/>  
 
-        </Routes>        
+          {/* forgot password */}
+          <Route path="/forgot_pass" element={<ForgotPass/>}/>  
+
+          <Route path="/reset_pass" element={<ResetPass/>}></Route>
+          {/* ChangePass */}
+          <Route path="/change_pass" element={<ChangePass/>}/>
+
+
+          {/* Admin page */}
+        <Route path="/regiterAdmin" element={<RegisterAdmin/>}/>
+        <Route path="/homAdmin" element={<HomeAdmin/>}/>
+        <Route path="/changepassAdmin" element={<ChangPassAdmin/>}/>
+        <Route path="/listAccount" element={<ListAccount/>}/>
+        <Route path="/listClass" element={<ListClass/>}/>
+        <Route path="/listGroup" element={<ListGroup/>}/>
+        <Route path="/listProject" element={<ListProject/>}/>
+        <Route path="/listReport" element={<ListReport/>}/>
+
+        
+        </Routes>   
+
+        
+
       </div>
     </Router>
   );

@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import add from './img/add.png';
 import student from './img/student.png'
 import { useNavigate } from 'react-router-dom';
+import { BE_URL } from '../../utils/Url_request';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
@@ -49,6 +50,7 @@ function Navbar() {
   });
   const [users, setUsers] = useState([]);
   const [classList, setClassList] = useState([]);
+
   const [classListStudent, setClassListStudent] = useState([]);
 
   const handleChange = (e) => {
@@ -70,39 +72,69 @@ function Navbar() {
   // lay userId by account 
   useEffect(() => {
     const fetchClasses = async () => {
+      // Lấy token từ localStorage
+      const token = localStorage.getItem('token');
+      const userId = localStorage.getItem('accountId');
+      
+      if (!userId) {
+        console.error('userId not found in localStorage');
+        return;
+      }
+
       try {
-        const userId = localStorage.getItem('accountId');
-        if (!userId) {
-          console.error('userId not found in localStorage');
-          return;
+        const response = await fetch(`${BE_URL}/api-gv/class/createdBy/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token // Thêm token vào header
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
-        const response = await fetch(`http://localhost:8080/api/class/createdBy/${userId}`);
+
         const classData = await response.json();
         setClassList(classData);
       } catch (error) {
         console.error('Error fetching classes:', error);
       }
     };
+
     fetchClasses();
   }, []);
   const fullName = localStorage.getItem('fullName');
   //get all class of 
-  // lay userId by account 
   useEffect(() => {
     const fetchClasses = async () => {
       try {
         const userId = localStorage.getItem('accountId');
+        const token = localStorage.getItem('token');
+
         if (!userId) {
           console.error('userId not found in localStorage');
           return;
         }
-        const response = await fetch(`http://localhost:8080/api/user/${userId}/joined-class`);
+
+        const response = await fetch(`${BE_URL}/api/user/${userId}/joined-class`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
         const classData = await response.json();
         setClassListStudent(classData);
       } catch (error) {
         console.error('Error fetching classes:', error);
       }
     };
+
     fetchClasses();
   }, []);
   // Chạy lại effect khi classList thay đổi
@@ -179,12 +211,12 @@ function Navbar() {
             <div  className='class-list-teach'>
               {classListStudent.map((classItem) => (
                 <li key={classItem.id}>
-                  <Link to={`/classstudent/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
+                  <Link to={`/class/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
                 </li>
               ))}
             </div>)}
-          <Link className='link' onClick={() => handleLinkClick('Setting')}>
-            <div className='menu_1'> <img src={setting} /> Setting</div>
+          <Link className='link' onClick={() => handleLinkClick('Setting')} to={`/change_pass`}>
+            <div className='menu_1'> <img src={setting} /> Change Pass</div>
           </Link>
         </div>
       )}
