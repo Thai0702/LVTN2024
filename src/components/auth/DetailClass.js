@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Navbar from './Navbar';
 import axios from 'axios';
 import add from './img/add.png';
 import { BE_URL } from '../../utils/Url_request';
 const ClassDetailPage = () => {
   const [classDetail, setClassDetail] = useState(null);
+  const navigate = useNavigate();
   const { classId } = useParams(); // Lấy classId từ URL
   const [isClassworkopen, setIsClasswork] = useState(false);
   const [isCreateClassworkopen, setIsCreateClasswork] = useState(false);
@@ -74,58 +75,104 @@ const ClassDetailPage = () => {
   const [reportList, setreportList] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem('token');
-    
+
     const fetchReportList = async () => {
-        try {
-            const response = await fetch(`${BE_URL}/api-gv/report-request/${classId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                }
-            });
+      try {
+        const response = await fetch(`${BE_URL}/api-gv/report-request/${classId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            setreportList(data);
-        } catch (error) {
-            console.error('Error fetching report list:', error);
-        } finally {
-            setLoading(false); // Set loading to false after data is fetched or an error occurs
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
+
+        const data = await response.json();
+        setreportList(data);
+      } catch (error) {
+        console.error('Error fetching report list:', error);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched or an error occurs
+      }
     };
     fetchReportList();
-}, [classId]);
+  }, [classId]);
   // delete report
-  const handleDeleteRepoet = async (id) => {
-    const token = localStorage.getItem('token');
-    const confirmed = window.confirm("Bạn có chắc muốn xóa repoort này không?");
-    if (!confirmed) {
+  // const handleDeleteRepoet = async (id) => {
+  //   const token = localStorage.getItem('token');
+  //   const confirmed = window.confirm("Bạn có chắc muốn xóa repoort này không?");
+  //   if (!confirmed) {
+  //     return;
+  //   }
+  //   try {
+
+  //     const url = `${BE_URL}/api-gv/report-request/delete/${id}`;
+  //     const responseDelete = await fetch(url, {
+  //       method: 'DELETE',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': 'Bearer ' + token
+  //       }
+  //     });
+  //     if (responseDelete.ok) {
+  //       window.alert("Xóa report thành công!");
+  //       window.location.reload(true);
+  //     } else {
+  //       console.error('Failed to delete report');
+  //       alert("Đã xảy ra lỗi khi xóa report!");
+  //     }
+  //   } catch (error) {
+  //     console.error('Error deleting report:', error);
+  //     alert("Đã xảy ra lỗi khi xóa report!");
+  //   }
+  // };
+
+   // Delete project of group
+   const[listReport,setListReport]=useState();
+   const handleDeleteReport = async (requestId) => {
+    if (!requestId) {
+      console.error('request ID is missing or undefined');
+      window.alert('request ID is missing or undefined');
       return;
     }
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found');
+      window.alert('No token found');
+      return;
+    }
+
+    const confirmed = window.confirm("Bạn có chắc muốn xóa request này không?");
+    if (!confirmed) {
+      // Do not delete if user does not confirm
+      return;
+    }
+
     try {
-      
-      const url = `${BE_URL}/api-gv/report-request/delete/${id}`;
-      const responseDelete = await fetch(url, {
+      const responseDelete = await fetch(`${BE_URL}/api-gv/report-request/delete/${requestId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
-      }
+        }
       });
+
       if (responseDelete.ok) {
-        window.alert("Xóa report thành công!");
-        window.location.reload(true);
+        // Remove project from list if deletion is successful
+        setListReport(listReport.filter(project => project.requestId !== requestId));
+        window.alert('Xóa project thành công.');
       } else {
-        console.error('Failed to delete report');
-        alert("Đã xảy ra lỗi khi xóa report!");
+        const errorData = await responseDelete.json();
+        console.error('Error deleting project:', errorData.message);
+        window.alert('Xảy ra lỗi khi xóa project: ' + errorData.message);
       }
     } catch (error) {
-      console.error('Error deleting report:', error);
-      alert("Đã xảy ra lỗi khi xóa report!");
+      console.error('Error deleting request:', error);
+      window.alert('Xảy ra lỗi khi xóa request.');
     }
   };
   /* upload file on list student */
@@ -133,13 +180,13 @@ const ClassDetailPage = () => {
   const [selectedClassId, setSelectedClassId] = useState(null);
   const [classList, setClassList] = useState([]);
   const handleFileUpload = async () => {
-    const token=localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const file = fileInputRef.current.files[0];
     if (file) {
       const formData = new FormData();
       formData.append('file', file);
       try {
-        await axios.post(`${BE_URL}/api-gv/account/class/excel/${classId}`, formData, {
+        await axios.post(`${BE_URL}/api-gv/class/excel/${classId}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': 'Bearer ' + token
@@ -163,7 +210,7 @@ const ClassDetailPage = () => {
       // Lấy token từ localStorage
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('accountId');
-      
+
       if (!userId) {
         console.error('userId not found in localStorage');
         return;
@@ -194,69 +241,76 @@ const ClassDetailPage = () => {
   // /*show list student of class*/
   const [studentList, setStudentList] = useState([]);
   const [loading, setLoading] = useState(true);
-useEffect(() => {
-        const token = localStorage.getItem('token');
-        
-        const fetchStudentList = async () => {
-            try {
-                const response = await fetch(`${BE_URL}/api/class/student-list/${classId}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    }
-                });
+  useEffect(() => {
+    const token = localStorage.getItem('token');
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const data = await response.json();
-                setStudentList(data);
-            } catch (error) {
-                console.error('Error fetching student list:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchStudentList();
-    }, [classId]);
-    const handleDeleteSV = async (id) => {
-      const token = localStorage.getItem('token');
-      const confirmed = window.confirm("Bạn có chắc muốn xóa sinh viên này không?");
-      if (!confirmed) {
-        // Không xóa nếu người dùng không xác nhận
-        return;
-      }
+    const fetchStudentList = async () => {
       try {
-        const url = `${BE_URL}/api-gv/class/delete/student-list/${classId}/${id}`;
-        const responseDelete = await fetch(url, {
-          method: 'DELETE',
+        const response = await fetch(`${BE_URL}/api/class/student-list/${classId}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
           }
         });
-        if (responseDelete.ok) {
-          // Xóa sinh viên khỏi danh sách nếu xóa thành công
-          setStudentList(studentList.filter(student => student.studentId !== id));
-          window.alert(" Bạn đã xóa sinh viên với mã"+" "+ id )
-          window.location.reload(true);        
-        } else {
-          console.error('Failed to delete student');
-          alert("Xóa sinh viên không thành công!");
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
+
+        const data = await response.json();
+        setStudentList(data);
       } catch (error) {
-        console.error('Error deleting student:', error);
-        alert("Đã xảy ra lỗi khi xóa sinh viên!");
+        console.error('Error fetching student list:', error);
+      } finally {
+        setLoading(false);
       }
+    };
+
+    fetchStudentList();
+  }, [classId]);
+  const handleDeleteSV = async (id) => {
+    const token = localStorage.getItem('token');
+    const confirmed = window.confirm("Bạn có chắc muốn xóa sinh viên này không?");
+    if (!confirmed) {
+      // Không xóa nếu người dùng không xác nhận
+      return;
+    }
+    try {
+      const url = `${BE_URL}/api-gv/class/delete/student-list/${classId}/${id}`;
+      const responseDelete = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        }
+      });
+      if (responseDelete.ok) {
+        // Xóa sinh viên khỏi danh sách nếu xóa thành công
+        setStudentList(studentList.filter(student => student.studentId !== id));
+        window.alert(" Bạn đã xóa sinh viên với mã" + " " + id)
+        window.location.reload(true);
+      } else {
+        console.error('Failed to delete student');
+        alert("Xóa sinh viên không thành công!");
+      }
+    } catch (error) {
+      console.error('Error deleting student:', error);
+      alert("Đã xảy ra lỗi khi xóa sinh viên!");
+    }
   };
-  
+
   /*show list group of class */
   const [grouptList, setGroupList] = useState([]);
   useEffect(() => {
     // Fetch the list of students
-    fetch(`${BE_URL}/api/class/${classId}/group-list`)
+    const token = localStorage.getItem('token');
+    fetch(`http://localhost:8080/api-gv/classId/group-list/${classId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    })
       .then(response => response.json())
       .then(data => {
         setGroupList(data);
@@ -295,7 +349,7 @@ useEffect(() => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        `${BE_URL}/api/project/create-project`,
+        `${BE_URL}/api-gv/project/create-project`,
         {
           projectName: project_name,
           projectOfGroup: project_of_group,
@@ -327,52 +381,45 @@ useEffect(() => {
   /*Add group*/
   const [groupName, setgroupName] = useState('');
   const [class_id, setClassId] = useState('');
-  const [group_name, setGroupName] = useState('');
-  const [leader_id, setLeaderid] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [groupId, setGroupId] = useState('');
+  const [groupData, setGroupData] = useState({
+    classId: classId,
+    groupName: '',
+    leaderId: '',
+  });
+  const handleChange = (e) => {
+    setGroupData({ ...groupData, [e.target.name]: e.target.value });
+  };
+  const handleCreateGroup = async () => {
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // Kiểm tra xem các trường đã được nhập đầy đủ chưa
-    if (!leader_id || !group_name) {
+    if (!groupData.groupName || !groupData.leaderId) {
       window.alert('Vui lòng điền đầy đủ thông tin.');
       return;
     }
-    // Kiểm tra leader_id và class_id phải là số
-    if (isNaN(leader_id) || isNaN(class_id)) {
-      window.alert('Leader ID và Class ID phải là số.');
-      return;
-    }
+
     try {
-      const response = await axios.post(`${BE_URL}/api/class/create-a-group`, {
-        leaderId: leader_id,
-        classId: classId,
-        groupName: group_name,
+      // Lấy token từ localStorage
+      const token = localStorage.getItem('token');
+
+      const response = await fetch(`${BE_URL}/api/class/create-a-group`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token // Thêm token vào header
+        },
+        body: JSON.stringify({ ...groupData })
       });
-      // Kiểm tra xem yêu cầu đã thành công hay không
-      if (response.status !== 200) {
-        // Đặt lại các trường nhập
-        setLeaderid('');
-       // setClassId('');
-        setGroupName('');
-        // Đặt thông báo thành công
-        window.alert("Add group success")
-        window.location.reload(false)
-      } else {
-        // Xử lý thông báo lỗi nếu có
-        window.alert('Có lỗi xảy ra khi tạo nhóm. Vui lòng thử lại sau.');
-        setLeaderid('');
-       // setClassId('');
-        setGroupName('');
+      if (response.ok) {
+        window.alert('File uploaded successfully!');
+        // Load lại trang sau khi thêm thành công
+        window.location.reload(false);
+      }
+      else {
+        window.alert('add group fail !');
       }
     } catch (error) {
-      // Xử lý thông báo lỗi trả về từ máy chủ
-      window.alert('Có lỗi xảy ra khi tạo nhóm. Vui lòng thử lại sau.');
-      setLeaderid('');
-     // setClassId('');
-      setGroupName('');
+      console.error('Error:', error);
     }
   };
   // delete group of class
@@ -416,7 +463,7 @@ useEffect(() => {
     };
   }, []);
   /*show detail of class */
-  
+
   useEffect(() => {
     const fetchClassDetail = async () => {
       const token = localStorage.getItem('token');
@@ -433,20 +480,24 @@ useEffect(() => {
       }
 
       try {
-        const response = await fetch(`${BE_URL}/api/class/get/${classId}`, {
+        const response = await fetch(`${BE_URL}/api-gv/class/get/${classId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token // Add token to header
           }
         });
-        
+
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-
+        
         const classDetailData = await response.json();
         setClassDetail(classDetailData);
+        const {memberPerGroup}=classDetailData
+        localStorage.setItem('memberPerGroup', memberPerGroup);    
+        console.log("hhee:",memberPerGroup)
+
       } catch (error) {
         console.error('Error:', error);
         setError('Failed to fetch class detail');
@@ -461,6 +512,7 @@ useEffect(() => {
   if (loading) {
     return <p>Loading...</p>;
   }
+
 
   if (error) {
     return <p>{error}</p>;
@@ -601,7 +653,7 @@ useEffect(() => {
           {/* <div className={`header-1 ${isStream ? 'open' : ''}`} onClick={toggleStream}> <Link to={`/stream-view/${classId}`}>Stream</Link></div> */}
 
           {/* Phần Report */}
-          {<div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}>Report</div> }
+          {<div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}>Report</div>}
           {/* {classList.map((classItem) => ( 
           <div className={`header-1 ${isClassworkopen ? 'open' : ''}`} onClick={toggleClasswork}><Link to={`/report-view/${classItem.subjectClassId}`}>Report</Link></div>
           ))} */}
@@ -610,7 +662,7 @@ useEffect(() => {
               <Link to={`/report-view/${classId}`}>Report</Link>
             </div>
           )} */}
-          
+
           {/* Phần People */}
           {/* <div className={`header-1 ${isPeople ? 'open' : ''}`} onClick={togglePeople}><Link to="/people-view">People</Link></div> */}
           {/* {classList.length > 0  && (
@@ -630,17 +682,17 @@ useEffect(() => {
 
           {/* Phần PROJECT */}
           {/* <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleProject}><Link to={`/project-view/${classId}`}>Project</Link></div> */}
-           <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleProject}>Project</div> 
+          <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleProject}>Project</div>
 
           {/* Phần Manager */}
           {/* <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}><Link to="/addmember-view">Manager</Link></div> */}
-           <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}>Group</div> 
+          <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}>Group</div>
           {/* <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}><Link to={`/group-view`}>Group</Link></div> */}
-{/*           
+          {/*           
             <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}>
               <Link to={`/group-view/${classId}`}>Group</Link>
             </div> */}
-          
+
           {/* <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={toggleGroup}><Link to={`/group-view/${classId}`}>Group</Link></div> */}
 
           <div className={`header-1 ${isGroup ? 'open' : ''}`} onClick={classDetail.groupRegisterMethod === "RANDOM" ? null : toggleAddmember}>
@@ -652,14 +704,14 @@ useEffect(() => {
           <div className='container-body'>
             <div className='create-work' onClick={toggleCreateClasswork}>
               <img src={add} alt='Create' />
-              {<p>Create</p> }
+              {<p>Create</p>}
             </div>
             <div className='works'>
               <ul>
                 {reportList.map((report) => (
                   <li key={report.requestId}>
                     <span>{report.requestTile}</span>
-                    <button className='btnDeleteSV' onClick={() => handleDeleteRepoet(report.requestId)}>Delete</button>
+                    <button className='btnDeleteSV' onClick={() => handleDeleteReport(report.requestId)}>Delete</button>
                   </li>
                 ))}
               </ul>
@@ -696,13 +748,6 @@ useEffect(() => {
                 value={expiredDate}
                 onChange={(e) => setexpiredDate(e.target.value)}
               />
-              {/* <input
-                type='text'
-                placeholder='Kết thúc'
-                className='input'
-                value={expiredAction}
-                onChange={(e) => setexpiredAction(e.target.value)}
-              /> */}
               <input
                 type='text'
                 placeholder='Chủ đề report'
@@ -720,7 +765,7 @@ useEffect(() => {
               {error && <div className="error">{error}</div>}
               {successMessage && <div className="success">{successMessage}</div>}
               <button className='btn btn-primary' type='submit' onClick={handleAddReportRequest}>
-                 Add Report
+                Add Report
               </button>
             </form>
           </div>
@@ -740,7 +785,7 @@ useEffect(() => {
                   {reportList.map((report) => (
                     <li key={report.requestId}>
                       <span>{report.requestTile}</span>
-                      <button className='btnDeleteSV' onClick={() => handleDeleteRepoet(report.requestId)}>Delete</button>
+                      <button className='btnDeleteSV' onClick={() => handleDeleteReport(report.requestId)}>Delete</button>
                     </li>
                   ))}
                 </ul>
@@ -768,8 +813,8 @@ useEffect(() => {
                   <li key={student.classId}>
                     <span>{student.studentId}-{student.fullName}</span>
                     <div className='btnPeople'>
-                    <button  onClick={() => handleDeleteSV(student.accountId)}>Delete</button>
-                    </div>                    
+                      <button onClick={() => handleDeleteSV(student.accountId)}>Delete</button>
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -784,18 +829,18 @@ useEffect(() => {
             </div>
             <div className='works'>
               <p className='dsshow'>List Group</p>
-              {grouptList.map((group) => (
-                <li key={group.groupId} onClick={() => toggleProjectOfGroup(group.groupId)}>
-                 {/* <span >{group.groupName}</span> */}
-                <Link to={`/show_member/${classId}`}style={{ textDecoration: 'none', color: 'black' }}>{group.groupName}</Link>  
-                <div className='btnGroup'>
-                <button onClick={() => handleDeleteGroup(group.groupId)}>Delete</button>
-                  <button  >Update</button>
-                  <button ><Link to={`/report-view/${group.groupId}` }style={{ textDecoration: 'none', color: 'black' }}>Create Report</Link></button>
-                </div>
-                  
-                </li>
-              ))}
+              <ul>
+                <ul>
+                  {grouptList.map((listgroup) => (
+                    <li key={listgroup.groupId}>
+                     <Link to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>{listgroup.classId} - {listgroup.groupName}</span></Link> 
+                      <div className=''>
+                        <button  >Delete</button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </ul>
             </div>
           </div>
         )}
@@ -815,24 +860,24 @@ useEffect(() => {
         {isCreateGroup && (
           <div ref={createClassRef} className='container-create-project'>
 
-            <form onSubmit={handleSubmit} className='addGroup'>
+            <form className='addGroup'>
               <input
                 type='text'
                 placeholder='Mã leader'
                 className='input'
-                value={leader_id}
-                onChange={(e) => setLeaderid(e.target.value)}
+                name='leaderId'
+                value={groupData.leaderId}
+                onChange={handleChange}
               />
               <input
                 type='text'
                 placeholder='Tên nhóm'
                 className='input'
-                value={group_name}
-                onChange={(e) => setGroupName(e.target.value)}
+                name='groupName'
+                value={groupData.groupName}
+                onChange={handleChange}
               />
-              <button className='btn btn-primary' type='submit'>
-                Create
-              </button>
+              <button className='button-create' onClick={handleCreateGroup}>Create</button>
             </form>
           </div>
         )}
@@ -860,8 +905,8 @@ useEffect(() => {
               <select onChange={(e) => setProjectOfGroup(e.target.value)} value={project_of_group}>
                 <option value=''>Select Group</option>
                 {grouptList.map((group) => (
-                  <option key={group.group_id} value={group.group_id}>
-                    {group.groupId}
+                  <option key={group.groupId} value={group.groupId}>
+                    {group.groupName}
                   </option>
                 ))}
               </select>
@@ -901,7 +946,7 @@ useEffect(() => {
               <select onChange={(e) => setgroupName(e.target.value)} value={groupName} className='addMember'>
                 <option value=''>Select Group</option>
                 {grouptList.map((group) => (
-                  <option key={group.group_id} value={group.group_id}>
+                  <option key={group.groupId} value={group.groupId}>
                     {group.groupName}
                   </option>
                 ))}

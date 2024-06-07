@@ -27,7 +27,7 @@ const ListGroup = () => {
 
         };
         fettListGroup();
-    })
+    },)
     return (
         <div>
             <NavbarAdmin />

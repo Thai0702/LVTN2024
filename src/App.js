@@ -16,7 +16,6 @@ import Project from "./components/auth/PageMain/Project.js";
 import Group from "./components/auth/PageMain/Group.js";
 import ListStudent from "./components/auth/PageMain/ListStudent.js";
 import Random from "./components/auth/PageMain/Random.js";
-import ShowProject from "./components/auth/PageMain/ShowProject.js";
 import Add from "./components/auth/PageMain/Add.js";
 import DetailClassStudent from "./components/auth/DetailClassStudent.js";
 
@@ -28,7 +27,7 @@ import Project_view from "./Page/Project_view.js"
 import Create_report from "./Page/Create_report.js"
 //import Report_view from "./Page/Report_view.js"
 import Add_group from "./Page/Add_group.js";
-import ShowMemberGroup from "./Page/ShowMemberGroup.js";
+// import ShowMemberGroup from "./Page/ShowMemberGroup.js";
 import AddProject from "./Page/Add_project.js";
 import ForgotPass from "./components/auth/ForgotPass.js";
 import ResetPass from "./components/auth/ResetPass.js";
@@ -40,7 +39,8 @@ import ListClass from "./components/auth/pageAdmin/ListClass.js";
 import ListGroup from "./components/auth/pageAdmin/ListGroup.js";
 import ListProject from "./components/auth/pageAdmin/ListProject.js";
 import ListReport from "./components/auth/pageAdmin/ListReport.js";
-
+import ShowMemberGroup from './components/auth/PageTeacher/ShowMemberGroup.js';
+import CreateReport from "./components/auth/PageTeacher/CreateReport.js";
 const App = () => {
   return (
     <Router>
@@ -51,7 +51,7 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/join" element={<Join/>}/>
           <Route path="/create" element={<Create/>}/>
-          <Route path="/showproject" element={<ShowProject/>}/>
+          {/* <Route path="/showproject" element={<ShowProject/>}/> */}
           <Route path="/class" element={<Class/>}/>
           <Route path="/showclass/:groupId" element={<ShowClass/>}/>
           <Route path="/admin" element={<Admin/>}/>
@@ -83,7 +83,7 @@ const App = () => {
           <Route path="/project-view/:classId" element={<Project_view/>}/> */}
           <Route path="/project-view/:classId/add-project" element={<AddProject/>}/>
 
-          <Route path="/show_member/:classId" element={<ShowMemberGroup/>}/>  
+          {/* <Route path="/show_member/:classId" element={<ShowMemberGroup/>}/>   */}
 
           {/* forgot password */}
           <Route path="/forgot_pass" element={<ForgotPass/>}/>  
@@ -91,6 +91,9 @@ const App = () => {
           <Route path="/reset_pass" element={<ResetPass/>}></Route>
           {/* ChangePass */}
           <Route path="/change_pass" element={<ChangePass/>}/>
+
+          <Route path="/showmemberGroup/:classId/:groupId" element={<ShowMemberGroup/>}/>
+          <Route path="/createReport/:classId/:groupId" element={<CreateReport/>}/>
 
 
           {/* Admin page */}
