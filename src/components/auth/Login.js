@@ -43,6 +43,8 @@ const Login = () => {
         // Sử dụng giá trị fullName ở đây, ví dụ: hiển thị trên giao diện
         localStorage.setItem('accountId', accountId); 
         localStorage.setItem('fullName', fullName);
+        localStorage.setItem('type',type);
+        console.log("chao type", type);
         if(type==='ADMIN')
           {
             navigate('/admin');

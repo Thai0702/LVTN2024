@@ -41,6 +41,9 @@ import ListProject from "./components/auth/pageAdmin/ListProject.js";
 import ListReport from "./components/auth/pageAdmin/ListReport.js";
 import ShowMemberGroup from './components/auth/PageTeacher/ShowMemberGroup.js';
 import CreateReport from "./components/auth/PageTeacher/CreateReport.js";
+// page class detail
+import Stream from "./components/auth/PageMain/Stream.js";
+import AddGroup from "./components/auth/PageMain/AddGroup.js";
 const App = () => {
   return (
     <Router>
@@ -49,67 +52,55 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Homepage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/join" element={<Join/>}/>
-          <Route path="/create" element={<Create/>}/>
-          {/* <Route path="/showproject" element={<ShowProject/>}/> */}
-          <Route path="/class" element={<Class/>}/>
-          <Route path="/showclass/:groupId" element={<ShowClass/>}/>
-          <Route path="/admin" element={<Admin/>}/>
-          <Route path="/people" element={<People/>}/>
-          <Route path="/group" element={<Group/>}/>
-          <Route path="/project" element={<Project/>}/>
-          <Route path="/listsv" element={<ListStudent/>}/> 
-          <Route path="/random" element={<Random/>}/> 
-          <Route path="/add" element={<Add/>}/> 
-          <Route path="/class/:classId" element={<DetailClass/>} />
-          <Route path="/classstudent/:classId" element={<DetailClassStudent/>} />
+          <Route path="/join" element={<Join />} />
+          <Route path="/create" element={<Create />} />
+          <Route path="/class" element={<Class />} />
+          <Route path="/showclass/:groupId" element={<ShowClass />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/people" element={<People />} />
+          <Route path="/group" element={<Group />} />
+          <Route path="/project" element={<Project />} />
+          <Route path="/listsv" element={<ListStudent />} />
+          <Route path="/random" element={<Random />} />
+          <Route path="/add" element={<Add />} />
+          <Route path="/class/:classId" element={<DetailClass />} />
+          <Route path="/classstudent/:classId" element={<DetailClassStudent />} />
 
-          {/* STREAM */}
-          {/* <Route path="/stream-view/:classId" element={<Stream_view/>}/> */}
-
-          {/* REPORT */}
-           {/* <Route path="/report-view/:groupId" element={<Report_view/>}/> */}
-          {/* <Route path="/report-view/:groupId" element={<Create_report/>}/> */}
-          
-          {/* PEOPLE */}
-          {/* <Route path="/people-view/:classId" element={<People_view/>}/>
-
-          <Route path="/addmember-view" element={<AddMember_view/>}/>
+          {/* page class detail */}
+          <Route path="/stream/:classId" element={<Stream />} />
+          <Route path="/people/:classId" element={<People />} />
+          <Route path="/project/:classId" element={<Project/>}/>
+          <Route path="/group/:classId" element={<Group/>}/>
+          <Route path="/addGroup/:classId" element={<AddGroup/>}/>
 
 
-          <Route path="/group-view/:classId" element={<Group_view/>}/>
-          <Route path="/group-view/:classId/add-group" element={<Add_group/>}/>
-          
-          <Route path="/project-view/:classId" element={<Project_view/>}/> */}
-          <Route path="/project-view/:classId/add-project" element={<AddProject/>}/>
-
-          {/* <Route path="/show_member/:classId" element={<ShowMemberGroup/>}/>   */}
+          <Route path="/project-view/:classId/add-project" element={<AddProject />} />
 
           {/* forgot password */}
-          <Route path="/forgot_pass" element={<ForgotPass/>}/>  
+          <Route path="/forgot_pass" element={<ForgotPass />} />
 
-          <Route path="/reset_pass" element={<ResetPass/>}></Route>
+          <Route path="/reset_pass" element={<ResetPass />}></Route>
           {/* ChangePass */}
-          <Route path="/change_pass" element={<ChangePass/>}/>
+          <Route path="/change_pass" element={<ChangePass />} />
 
-          <Route path="/showmemberGroup/:classId/:groupId" element={<ShowMemberGroup/>}/>
-          <Route path="/createReport/:classId/:groupId" element={<CreateReport/>}/>
+          <Route path="/showmemberGroup/:classId/:groupId" element={<ShowMemberGroup />} />
+          <Route path="/createReport/:classId/:groupId" element={<CreateReport />} />
 
 
           {/* Admin page */}
-        <Route path="/regiterAdmin" element={<RegisterAdmin/>}/>
-        <Route path="/homAdmin" element={<HomeAdmin/>}/>
-        <Route path="/changepassAdmin" element={<ChangPassAdmin/>}/>
-        <Route path="/listAccount" element={<ListAccount/>}/>
-        <Route path="/listClass" element={<ListClass/>}/>
-        <Route path="/listGroup" element={<ListGroup/>}/>
-        <Route path="/listProject" element={<ListProject/>}/>
-        <Route path="/listReport" element={<ListReport/>}/>
+          <Route path="/regiterAdmin" element={<RegisterAdmin />} />
+          <Route path="/homAdmin" element={<HomeAdmin />} />
+          <Route path="/changepassAdmin" element={<ChangPassAdmin />} />
+          <Route path="/listAccount" element={<ListAccount />} />
+          <Route path="/listClass" element={<ListClass />} />
+          <Route path="/listGroup" element={<ListGroup />} />
+          <Route path="/listProject" element={<ListProject />} />
+          <Route path="/listReport" element={<ListReport />} />
 
-        
-        </Routes>   
 
-        
+        </Routes>
+
+
 
       </div>
     </Router>

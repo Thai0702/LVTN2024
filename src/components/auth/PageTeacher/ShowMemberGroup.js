@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { BE_URL } from '../../../utils/Url_request';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import Navbar from '../Navbar';
+import DetailClass from '../DetailClass'
 
 const GroupList = () => {
   const { classId, groupId,projectId } = useParams();
@@ -9,6 +11,7 @@ const GroupList = () => {
   const [maxMembers, setMaxMembers] = useState(0);
   const [currentMembers, setCurrentMembers] = useState(0);
   const navigate = useNavigate();
+  const type=localStorage.getItem('type');
   const memberPerGroup = parseInt(localStorage.getItem('memberPerGroup'), 10);
 
   useEffect(() => {
@@ -43,7 +46,6 @@ const GroupList = () => {
       console.error('No token found');
       return;
     }
-
     try {
       const response = await fetch(`${BE_URL}/api/class/group/add-member/${classId}/${groupId}`, {
         method: 'POST',
@@ -94,8 +96,6 @@ const GroupList = () => {
     fettListProject();
   },)
   // delete project og group
-
-  // Delete project of group
   const handleDeleteProject = async (projectId) => {
     if (!projectId) {
       console.error('Project ID is missing or undefined');
@@ -195,6 +195,8 @@ const GroupList = () => {
   };
   return (
     <div>
+      <Navbar/>
+      <DetailClass/>
       <h1>Group Member</h1>
       <button onClick={joinGroup}>Tham Gia Nhóm</button>
       

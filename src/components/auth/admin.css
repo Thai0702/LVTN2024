@@ -52,7 +52,7 @@
 .update-form {
     background-color: rgb(126, 105, 76);
     position: absolute;
-    top: 50%;
+    top: 290%;
     width: 300px;
     left: 50%;
     transform: translate(-50%, -50%);

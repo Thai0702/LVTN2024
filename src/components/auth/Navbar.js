@@ -19,7 +19,7 @@ function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Trạng thái đăng nhập
   const [username, setUsername] = useState(''); // Tên người dùng
   const navigate = useNavigate();
-
+  const {classId} =useParams();
   useEffect(() => {
     const userLoggedIn = localStorage.getItem('isLoggedIn');
     const savedUsername = localStorage.getItem('username');
@@ -39,23 +39,12 @@ function Navbar() {
     setIsMenuOpen(!isMenuOpen);
 
   };
-  const [classData, setClassData] = useState({
-    subject_name: '',
-    create_by: '',
-    create_at: '',
-    school_year: '',
-    number_of_group: '',
-    member_per_group: '',
-    group_register_method: ''
-  });
+
   const [users, setUsers] = useState([]);
   const [classList, setClassList] = useState([]);
 
   const [classListStudent, setClassListStudent] = useState([]);
 
-  const handleChange = (e) => {
-    setClassData({ ...classData, [e.target.name]: e.target.value });
-  };
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -75,7 +64,7 @@ function Navbar() {
       // Lấy token từ localStorage
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('accountId');
-      
+
       if (!userId) {
         console.error('userId not found in localStorage');
         return;
@@ -104,6 +93,7 @@ function Navbar() {
     fetchClasses();
   }, []);
   const fullName = localStorage.getItem('fullName');
+
   //get all class of 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -178,7 +168,57 @@ function Navbar() {
   const handleClassClick = (classItem) => {
     setSelectedClass(classItem);
   };
+  // hiển thị hi tiết lớp môn học
+  const [loading, setLoading] = useState(true);
+  const [classDetail, setClassDetail] = useState(null);
+  const [error, setError] = useState('');
+  useEffect(() => {
+      const fetchClassDetail = async () => {
+          const token = localStorage.getItem('token');
+          if (!token) {
+              setError('No token found');
+              setLoading(false);
+              return;
+          }
+          if (!classId) {
+              setError('Class ID is required');
+              setLoading(false);
+              return;
+          }
 
+          try {
+              const response = await fetch(`${BE_URL}/api-gv/class/get/${classId}`, {
+                  method: 'GET',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': 'Bearer ' + token // Add token to header
+                  }
+              });
+
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+
+              const classDetailData = await response.json();
+              setClassDetail(classDetailData);
+              const { memberPerGroup } = classDetailData
+              localStorage.setItem('memberPerGroup', memberPerGroup);
+              const {groupRegisterMethod} =classDetailData
+              localStorage.setItem('groupRegisterMethod',groupRegisterMethod);
+              console.log("hhee:", memberPerGroup)
+
+          } catch (error) {
+              console.error('Error:', error);
+              setError('Failed to fetch class detail');
+          } finally {
+              setLoading(false);
+          }
+      };
+
+      fetchClassDetail();
+  }, [classId]);
+  const  type  = localStorage.getItem('type');
+  console.log("hello type:",type);
   return (
     <header className="header">
 
@@ -188,13 +228,16 @@ function Navbar() {
 
 
       {isMenuOpen && (
-        <div  className="additional-components">
+        <div className="additional-components">
           <Link to='/' className='link' onClick={() => handleLinkClick('Home')}>
             <div className='menu_1'><img src={home} /> Home</div>
           </Link>
-          <Link className='link' onClick={() => handleLinkClick('Teaching')}>
+          {type === "GV" ? <Link className='link' onClick={() => handleLinkClick('Teaching')}>
             <div className='menu_1' onClick={toggleTeaching}> <img src={teach} /> Class Created </div>
-          </Link>
+          </Link> : <Link className='link' onClick={() => handleLinkClick('Student')}>
+            <div className='menu_1' onClick={toggleStedent}> <img src={student} /> Class Joined</div>
+          </Link>}
+          
           {isTeachingOpen && (
             <div className='class-list-teach'>
               {classList.map((classItem) => (
@@ -204,11 +247,9 @@ function Navbar() {
               ))}
             </div>
           )}
-          <Link className='link' onClick={() => handleLinkClick('Student')}>
-            <div className='menu_1' onClick={toggleStedent}> <img src={student} /> Class Joined</div>
-          </Link>
+          
           {isStudentOpen && (
-            <div  className='class-list-teach'>
+            <div className='class-list-teach'>
               {classListStudent.map((classItem) => (
                 <li key={classItem.id}>
                   <Link to={`/class/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.subjectName}</Link> {/* Sử dụng id của lớp */}

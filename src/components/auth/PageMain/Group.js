@@ -1,76 +1,184 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import Navbar from '../Navbar';
+import DetailClass from '../DetailClass'
+import { BE_URL } from '../../../utils/Url_request';
 
 const Group = () => {
-        const [classData, setClassData] = useState({
-            class_id: '',
-        
-            group_name: '',
-            leader_id: ''
-        });
-        const [class_id, setClassId] = useState('');
-        const [group_name, setGroupName] = useState('');
-        const [leader_id, setLeaderid] = useState('');
-        const [error, setError] = useState('');
-        const [successMessage, setSuccessMessage] = useState('');
-
-        const handleSubmit = async (e) => {
-            e.preventDefault();
-            try {
-                const response = await axios.post(`http://localhost:8080/api/class/create-a-group`, {
-                    leaderId: leader_id,
-                    classId: class_id,
-                    groupName: group_name,
-                });
-                if (response.status != 200) {
-                    // Đặt lại các trường nhập
-                    setLeaderid('');
-                    setClassId('');
-                    setGroupName('');
-                    // Đặt thông báo thành công
-                    setSuccessMessage('Group created successfully.');
-                    setTimeout(() => {
-                        setSuccessMessage('');
-                    }, 3000);
-                }
-            } catch (error) {
-                setError('Lỗi đăng ký');
+    const { classId, groupId } = useParams();
+    // show group of class
+    /*show list group of class */
+    const [grouptList, setGroupList] = useState([]);
+    useEffect(() => {
+        // Fetch the list of students
+        const token = localStorage.getItem('token');
+        fetch(`${BE_URL}/api-gv/classId/group-list/${classId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
             }
-        };
+        })
+            .then(response => response.json())
+            .then(data => {
+                setGroupList(data);
+            })
+            .catch(error => console.error('Error fetching student list:', error));
+    }, [classId]);
+    // delete group
+    const handleDeleteGroup = async (groupId) => {
+        if (!groupId) {
+            console.error('group ID is missing or undefined');
+            window.alert('group ID is missing or undefined');
+            return;
+        }
 
-        return (
-            <div className='container-create-project'>
-                <form onSubmit={handleSubmit}>
-                    {error && <div className="error">{error}</div>}
-                    {successMessage && <div className="success">{successMessage}</div>}
-                    <input
-                        type='text'
-                        placeholder='Leader ID'
-                        className='input'
-                        value={leader_id}
-                        onChange={(e) => setLeaderid(e.target.value)}
-                    />
-                    <input
-                        type='text'
-                        placeholder='Class ID'
-                        className='input'
-                        value={class_id}
-                        onChange={(e) => setClassId(e.target.value)}
-                    />
-                    <input
-                        type='text'
-                        placeholder='Group Name'
-                        className='input'
-                        value={group_name}
-                        onChange={(e) => setGroupName(e.target.value)}
-                    />
-                    <button className='btn btn-primary' type='submit'>
-                        Add group
-                    </button>
-                </form>
-            </div>
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            window.alert('No token found');
+            return;
+        }
+
+        const confirmed = window.confirm("Bạn có chắc muốn xóa group này không?");
+        if (!confirmed) {
+            // Do not delete if user does not confirm
+            return;
+        }
+
+        try {
+            const responseDelete = await fetch(`${BE_URL}/api/group/delete/${groupId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+
+            if (responseDelete.ok) {
+                // Remove project from list if deletion is successful
+                setGroupList(grouptList.filter(group => group.groupId !== groupId));
+                window.alert('Xóa group thành công.');
+            } else {
+                const errorData = await responseDelete.json();
+                console.error('Error deletinggroup:', errorData.message);
+                window.alert('Xảy ra lỗi khi xóa group: ' + errorData.message);
+            }
+        } catch (error) {
+            console.error('Error deleting group:', error);
+            window.alert('Xảy ra lỗi khi xóa group.');
+        }
+    };
+    // update
+
+    const [showUpdateForm, setShowUpdateForm] = useState([]);
+    const [updateData, setUpdateData] = useState({
+        leaderId: '',
+        classId: classId,
+        groupName: '',
+    });
+    const handleUpdate = (classItem) => {
+        setUpdateData(classItem);
+        setShowUpdateForm(true); // Hiển thị form cập nhật khi nhấp vào "Cập nhật"
+    };
+    const handleSubmit = async (e) => {
+    const token = localStorage.getItem('token');
+    for (const key in updateData) {
+        if (!updateData[key]) {
+            alert('Vui lòng điền đầy đủ thông tin.');
+            return;
+        }
+    }
+    e.preventDefault();
+    try {
+      const response = await fetch(`${BE_URL}/api/group/update/${updateData.groupId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(updateData),
+      });
+      if (response.ok) {
+        // Cập nhật trực tiếp danh sách lớp sau khi cập nhật thành công
+        setGroupList(prevList =>
+          prevList.map(item =>
+            item.subjectClassId === updateData.groupId ? updateData : item
+          )
         );
+        setUpdateData({
+            leaderId: '',
+            classId: classId,
+            groupName: '',
+        });
+        setShowUpdateForm(false);
+        window.alert("Update success !!")
+        window.location.reload(true); // Ẩn form cập nhật sau khi cập nhật thành công
+      } else {
+        console.error('Failed to update project');
+      }
+    } catch (error) {
+      console.error('Error updating project:', error);
+    }
+  };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUpdateData(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+    return (
+        <div>
+            <Navbar />
+            <DetailClass />
+            <div className='container-body'>
+                <div className='create-work'>
+                    {/* <img src={add} alt='Create' /> */}
+                    <Link to={`/addGroup/${classId}`}><p>Add group</p></Link>
+                </div>
+                <div className='works'>
+                    <p className='dsshow'>List Group</p>
+                    <ul>
+                        <ul>
+                            {grouptList.map((listgroup) => (
+                                <li key={listgroup.groupId}>
+                                    <Link to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>{listgroup.classId} - {listgroup.groupName}</span></Link>
+                                    <div className=''>
+                                        <button onClick={() => handleDeleteGroup(listgroup.groupId)} >Delete</button>
+                                        <button onClick={() => handleUpdate(listgroup)}> Update</button>
+                                    </div>
+                                    {showUpdateForm && updateData.groupId === listgroup.groupId && (
+                                        <div className="update-form">
+                                            <form onSubmit={handleSubmit}>
+                                                <input
+                                                    type="text"
+                                                    name="leaderId"
+                                                    value={updateData.leaderId}
+                                                    onChange={handleInputChange}
+                                                    placeholder="Mã leader"
+                                                />
+                                                <input
+                                                    type="text"
+                                                    name="groupName"
+                                                    value={updateData.groupName}
+                                                    onChange={handleInputChange}
+                                                    placeholder="Tên nhóm"
+                                                />                                               
+                                                <button type="submit">Lưu</button>
+                                            </form>
+                                        </div>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default Group;

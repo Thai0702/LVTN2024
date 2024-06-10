@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate,useParams } from 'react-router-dom';
 import axios from 'axios';
 import { BE_URL } from '../../../utils/Url_request';
+import Navbar from '../Navbar';
+import DetailClass from '../DetailClass'
 const CreateReport = () => {
  // add report request
  const {classId,groupId,projectId}=useParams();
@@ -15,6 +17,7 @@ const CreateReport = () => {
  const [error, setError] = useState('');
  const [successMessage, setSuccessMessage] = useState('');
  const [requestDescription, setrequestDescription] = useState('');
+ const navigate = useNavigate();
  const handleAddReportRequest = async (e) => {
    e.preventDefault();
    // Kiểm tra không được bỏ trống các trường
@@ -51,6 +54,7 @@ const CreateReport = () => {
        setrequestTile('');
        setrequestDescription('');
        window.alert("Report created successfully !");
+       navigate(`/stream/${classId}`)
        window.location.reload(false);
      }
    } catch (error) {
@@ -86,6 +90,8 @@ const CreateReport = () => {
  },)
   return (
     <div>
+      <Navbar/>
+      <DetailClass/>
       <div ref={createClassRef} className='container-create-project'>
             <form onSubmit={handleAddReportRequest}>
               <select onChange={(e) => setrequestOfProject(e.target.value)} value={requestOfProject}>

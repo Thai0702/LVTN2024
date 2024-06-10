@@ -1,78 +1,124 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios'; // Import Axios for making HTTP requests
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { BE_URL } from '../../../utils/Url_request';
+import Navbar from '../Navbar';
+import DetailClass from '../DetailClass'
 
 const People = () => {
-    const [isPeople, setIsPeople] = useState(false);
-    const [fileList, setFileList] = useState([]); // State to store list of uploaded files
-    const [classList, setClassList] = useState([]); // State to store list of classes
-    const [selectedClassId, setSelectedClassId] = useState(null); // State to store the selected class ID
-    const [successMessage, setSuccessMessage] = useState(null); // State to store success message
-    const [errorMessage, setErrorMessage] = useState(null); // State to store error message
+    const { classId } = useParams();
     const fileInputRef = useRef(null);
+    // /*show list student of class*/
+    const [studentList, setStudentList] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const type = localStorage.getItem('type');
+    useEffect(() => {
+        const token = localStorage.getItem('token');
 
-    // Function to toggle the display of people section
-    const togglePeople = () => {
-        setIsPeople(!isPeople);
+        const fetchStudentList = async () => {
+            try {
+                const response = await fetch(`${BE_URL}/api/class/student-list/${classId}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                setStudentList(data);
+            } catch (error) {
+                console.error('Error fetching student list:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchStudentList();
+    }, [classId]);
+    const handleDeleteSV = async (id) => {
+        const token = localStorage.getItem('token');
+        const confirmed = window.confirm("Bạn có chắc muốn xóa sinh viên này không?");
+        if (!confirmed) {
+            // Không xóa nếu người dùng không xác nhận
+            return;
+        }
+        try {
+            const url = `${BE_URL}/api-gv/class/delete/student-list/${classId}/${id}`;
+            const responseDelete = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            if (responseDelete.ok) {
+                // Xóa sinh viên khỏi danh sách nếu xóa thành công
+                setStudentList(studentList.filter(student => student.studentId !== id));
+                window.alert(" Bạn đã xóa sinh viên với mã" + " " + id)
+                window.location.reload(true);
+            } else {
+                console.error('Failed to delete student');
+                alert("Xóa sinh viên không thành công!");
+            }
+        } catch (error) {
+            console.error('Error deleting student:', error);
+            alert("Đã xảy ra lỗi khi xóa sinh viên!");
+        }
     };
+    // upload file 
     const handleFileUpload = async () => {
+        const token = localStorage.getItem('token');
         const file = fileInputRef.current.files[0];
-        if (file && selectedClassId) {
+        if (file) {
             const formData = new FormData();
             formData.append('file', file);
             try {
-                await axios.post(`http://localhost:8080/api/account/${selectedClassId}/excel`, formData, {
+                await axios.post(`${BE_URL}/api-gv/class/excel/${classId}`, formData, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': 'Bearer ' + token
                     }
                 });
-                setSuccessMessage('File uploaded successfully!');
-                setTimeout(() => {
-                    setSuccessMessage(null);
-                }, 3000);
-                setErrorMessage(null);
+                window.alert('File uploaded successfully!');
+                // Load lại trang sau khi thêm thành công
+                window.location.reload(false);
             } catch (error) {
-                console.error('Error uploading file:', error);
-                setErrorMessage('Error uploading file!');
+                window.alert('File uploaded fail!');
             }
         } else {
             console.error('No file selected or class not selected');
-            setErrorMessage('No file selected or class not selected!');
+            window.alert('No file selected or class not selected!');
         }
     };
-
-
-    // show class on selected
-    const fetchClasses = async () => {
-        try {
-            const response = await fetch('http://localhost:8080/api/class');
-            const classData = await response.json();
-            setClassList(classData);
-        } catch (error) {
-            console.error('Error fetching classes:', error);
-            // Set error message
-            setErrorMessage('Error fetching classes!');
-        }
-    };
-    useEffect(() => {
-        fetchClasses();
-    }, []);
 
     return (
-        <div className='container-main'>
-            <div className='container-header'>
-                <div className={`header-1 ${isPeople ? 'open' : ''}`} onClick={togglePeople}>People</div>
-            </div>
+        <div>
+            <Navbar />
+            <DetailClass />
             <div className='container-body'>
                 <div className='import-people'>
-                    <input type='file' ref={fileInputRef} /> {/* File input */}
-                    <select onChange={(e) => setSelectedClassId(e.target.value)} value={selectedClassId}>
-                        <option value=''>Select Class</option>
-                        {classList.map((classItem) => (
-                            <option key={classItem.subject_class_id} value={classItem.subject_class_id}>{classItem.subject_class_id}</option>
-                        ))}
-                    </select> 
+                    <input type='file' ref={fileInputRef} />
                     <button onClick={handleFileUpload}>Add</button>
+                </div>
+                <div className='works'>
+                    <p className='dsshow'>List Students</p>
+                    <ul>
+                        {studentList.map((student) => (
+                            <li key={student.classId}>
+                                <span>{student.studentId}-{student.fullName}</span>
+                                <div className='btnPeople'>
+
+                                    {type === "GV" && (
+                                        <button onClick={() => handleDeleteSV(student.accountId)}>Delete</button>
+                                    )}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
         </div>
