@@ -4,6 +4,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../Navbar';
 import DetailClass from '../DetailClass'
+import '../Login.css'; 
 
 const GroupList = () => {
   const { classId, groupId,projectId } = useParams();
@@ -200,7 +201,7 @@ const GroupList = () => {
       <h1>Group Member</h1>
       <button onClick={joinGroup}>Tham Gia Nhóm</button>
       
-      <Link to={`/createReport/${classId}/${groupId}`}> <button>Tạo Báo Cáo</button></Link>
+      <Link className='link' to={`/createReport/${classId}/${groupId}`}> <button>Tạo Báo Cáo</button></Link>
     
       <div className='works'>
         <p className='dsshow'>List Member Group</p>

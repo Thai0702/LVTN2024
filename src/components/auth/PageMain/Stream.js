@@ -236,9 +236,9 @@ const Stream = () => {
                         <ul>
                             {reportList.map((report) => (
                                 <li key={report.requestId}>
-                                    <span>{report.requestTile}</span>
+                                    <span>{report.requestTile} -  Ngày và giờ hết hạn : {report.expiredDate}/{report.expiredTime}</span>
                                     <button onClick={() => handleDeleteReport(report.requestId)}>Delete</button>
-                                    <button onClick={() => handleUpdate(report)}>Sửa</button>
+                                    {/* <button onClick={() => handleUpdate(report)}>Sửa</button> */}
                                     {showUpdateForm && updateData.requestId === report.requestId && (
                                         <div className="update-form">
                                             <form onSubmit={handleSubmit}>

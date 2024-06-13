@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Navbar from './Navbar';
-
+import './Login.css';
 const ClassDetailPage = () => {
   const { classId } = useParams(); // Lấy classId từ URL
   // lay userId by account 
@@ -15,20 +15,20 @@ const ClassDetailPage = () => {
         <div className='container-header'>
           {type === "GV" ? (
             <>
-              <Link to={`/stream/${classId}`}>
+              <Link className='link' to={`/stream/${classId}`}>
                 <div className='header-1'>Stream</div>
               </Link>
-              <Link to={`/people/${classId}`}>
+              <Link className='link' to={`/people/${classId}`}>
                 <div className='header-1'>People</div>
               </Link>
-              <Link to={`/project/${classId}`}>
+              <Link className='link' to={`/project/${classId}`}>
                 <div className='header-1'>Project</div>
               </Link>
-              <Link to={`/group/${classId}`}>
+              <Link  className='link'to={`/group/${classId}`}>
                 <div className='header-1'>Group</div>
               </Link>
               {groupRegisterMethod !== "RANDOM" && (
-                <Link>
+                <Link className='link'>
                   <div className='header-1'>
                     {groupRegisterMethod + " add Member"}
                   </div>
@@ -37,13 +37,13 @@ const ClassDetailPage = () => {
             </>
           ) : (
             <>
-              <Link to={`/stream/${classId}`}>
+              <Link className='link' to={`/stream/${classId}`}>
                 <div className='header-1'>Stream</div>
               </Link>
-              <Link to={`/people/${classId}`}>
+              <Link className='link' to={`/people/${classId}`}>
                 <div className='header-1'>People</div>
               </Link>
-              <Link to={`/group/${classId}`}>
+              <Link className='link' to={`/group/${classId}`}>
                 <div className='header-1'>Group</div>
               </Link>
             </>

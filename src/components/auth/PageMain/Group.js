@@ -138,7 +138,7 @@ const Group = () => {
             <div className='container-group'>
                 <div className='create-work'>
                     {/* <img src={add} alt='Create' /> */}
-                    <Link to={`/addGroup/${classId}`}><p className='add-group-text'>Add group</p></Link>
+                    <Link className='link' to={`/addGroup/${classId}`}><p className='add-group-text'>Add group</p></Link>
                 </div>
                 <div className='listg'>
                     <p className='listgroup'>List Group</p>
@@ -146,7 +146,7 @@ const Group = () => {
                         <ul>
                             {grouptList.map((listgroup) => (
                                 <li key={listgroup.groupId}>
-                                    <Link to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>{listgroup.classId} - {listgroup.groupName}</span></Link>
+                                    <Link className='link' to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>{listgroup.classId} - {listgroup.groupName}</span></Link>
                                     <div className=''>
                                         <button onClick={() => handleDeleteGroup(listgroup.groupId)} >Delete</button>
                                         <button onClick={() => handleUpdate(listgroup)}> Update</button>

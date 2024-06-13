@@ -99,8 +99,6 @@ const Project = () => {
                         ))}
                     </select>
                     <br></br>
-
-
                     <label>Mô tả: </label>
                     <input
                         type='text'

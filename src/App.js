@@ -19,16 +19,7 @@ import Random from "./components/auth/PageMain/Random.js";
 import Add from "./components/auth/PageMain/Add.js";
 import DetailClassStudent from "./components/auth/DetailClassStudent.js";
 
-//import Stream_view from "./Page/Stream_view.js"
-import AddMember_view from "./Page/AddMember_view.js"
-import Group_view from "./Page/Group_view.js"
-import People_view from "./Page/People_view.js"
-import Project_view from "./Page/Project_view.js"
-import Create_report from "./Page/Create_report.js"
-//import Report_view from "./Page/Report_view.js"
-import Add_group from "./Page/Add_group.js";
 // import ShowMemberGroup from "./Page/ShowMemberGroup.js";
-import AddProject from "./Page/Add_project.js";
 import ForgotPass from "./components/auth/ForgotPass.js";
 import ResetPass from "./components/auth/ResetPass.js";
 import ChangePass from "./components/auth/ChangePass.js";
@@ -44,6 +35,8 @@ import CreateReport from "./components/auth/PageTeacher/CreateReport.js";
 // page class detail
 import Stream from "./components/auth/PageMain/Stream.js";
 import AddGroup from "./components/auth/PageMain/AddGroup.js";
+//page tearch
+import UpdateReport from "./components/auth/PageTeacher/UpdateReport.js";
 const App = () => {
   return (
     <Router>
@@ -69,12 +62,11 @@ const App = () => {
           {/* page class detail */}
           <Route path="/stream/:classId" element={<Stream />} />
           <Route path="/people/:classId" element={<People />} />
-          <Route path="/project/:classId" element={<Project/>}/>
-          <Route path="/group/:classId" element={<Group/>}/>
-          <Route path="/addGroup/:classId" element={<AddGroup/>}/>
+          <Route path="/project/:classId" element={<Project />} />
+          <Route path="/group/:classId" element={<Group />} />
+          <Route path="/addGroup/:classId" element={<AddGroup />} />
 
 
-          <Route path="/project-view/:classId/add-project" element={<AddProject />} />
 
           {/* forgot password */}
           <Route path="/forgot_pass" element={<ForgotPass />} />
@@ -97,7 +89,8 @@ const App = () => {
           <Route path="/listProject" element={<ListProject />} />
           <Route path="/listReport" element={<ListReport />} />
 
-
+          {/* Page tearcher */}
+          <Route path="/updateReport/:classId/:requestId" element={<UpdateReport />} />
         </Routes>
 
 
