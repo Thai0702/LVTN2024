@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NavbarAdmin from './NavbarAdmin'
+import NavbarAdmin from './NavbarAdmin';
 import { BE_URL } from '../../../utils/Url_request';
+import './css/ChangePass.css';
 
 const ChangPassAdmin = () => {
     const [changepass, setChangePass] = useState({
@@ -59,34 +60,47 @@ const ChangPassAdmin = () => {
         }
     };
 
-  return (
-    <div>
-      <NavbarAdmin/>
-      <p>Thay đôi mật khẩu</p>
-            <input 
-                type='password'
-                placeholder='Old Password'
-                name='oldPassword'
-                onChange={handleInputChange}
-                value={changepass.oldPassword}
-            />
-            <input 
-                type='password'
-                placeholder='New Password'
-                name='newPassword'
-                onChange={handleInputChange}
-                value={changepass.newPassword}
-            />
-            <input 
-                type='password'
-                placeholder='Confirm Password'
-                name='confirmNewPassword'
-                onChange={handleInputChange}
-                value={changepass.confirmNewPassword}
-            />
-            <button onClick={changePass}>Change</button>
-    </div>
-  )
+    return (
+        <div>
+            <NavbarAdmin />
+            <div className='container-changepass'>
+                <div className='tdmk'>
+                <p>Thay đổi mật khẩu</p>
+                <div className="form-group">
+                    <label>Nhập mật khẩu cũ:</label>
+                    <input 
+                        type='password'
+                        placeholder='Old Password'
+                        name='oldPassword'
+                        onChange={handleInputChange}
+                        value={changepass.oldPassword}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Nhập mật khẩu mới:</label>
+                    <input 
+                        type='password'
+                        placeholder='New Password'
+                        name='newPassword'
+                        onChange={handleInputChange}
+                        value={changepass.newPassword}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Nhập lại mật khẩu:</label>
+                    <input 
+                        type='password'
+                        placeholder='Confirm Password'
+                        name='confirmNewPassword'
+                        onChange={handleInputChange}
+                        value={changepass.confirmNewPassword}
+                    />
+                </div>
+                <button onClick={changePass}>Change</button>
+            </div>
+            </div>
+        </div>
+    );
 }
 
-export default ChangPassAdmin
+export default ChangPassAdmin;

@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../Navbar';
 import DetailClass from '../DetailClass'
 import { BE_URL } from '../../../utils/Url_request';
+import groupcss from './css/group.css'
 
 const Group = () => {
     const { classId, groupId } = useParams();
@@ -134,13 +135,13 @@ const Group = () => {
         <div>
             <Navbar />
             <DetailClass />
-            <div className='container-body'>
+            <div className='container-group'>
                 <div className='create-work'>
                     {/* <img src={add} alt='Create' /> */}
-                    <Link to={`/addGroup/${classId}`}><p>Add group</p></Link>
+                    <Link to={`/addGroup/${classId}`}><p className='add-group-text'>Add group</p></Link>
                 </div>
-                <div className='works'>
-                    <p className='dsshow'>List Group</p>
+                <div className='listg'>
+                    <p className='listgroup'>List Group</p>
                     <ul>
                         <ul>
                             {grouptList.map((listgroup) => (

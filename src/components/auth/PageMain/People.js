@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { BE_URL } from '../../../utils/Url_request';
 import Navbar from '../Navbar';
 import DetailClass from '../DetailClass'
+import peoplecss from './css/people.css'
 
 const People = () => {
     const { classId } = useParams();
@@ -99,23 +100,24 @@ const People = () => {
         <div>
             <Navbar />
             <DetailClass />
-            <div className='container-body'>
+            <div className='container-people'>
                 <div className='import-people'>
                     <input type='file' ref={fileInputRef} />
                     <button onClick={handleFileUpload}>Add</button>
                 </div>
-                <div className='works'>
-                    <p className='dsshow'>List Students</p>
+                <div className='listpe'>
+                    <p className='listpeople'>List Students</p>
                     <ul>
                         {studentList.map((student) => (
                             <li key={student.classId}>
-                                <span>{student.studentId}-{student.fullName}</span>
-                                <div className='btnPeople'>
-
-                                    {type === "GV" && (
-                                        <button onClick={() => handleDeleteSV(student.accountId)}>Delete</button>
-                                    )}
-                                </div>
+                                <span>{student.studentId} - {student.fullName}</span>
+                                {type === "GV" && (
+                                    // <button className='btnPeople' onClick={() => handleDeleteSV(student.accountId)}>Delete</button>
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <button class="btn btn-warning me-md-2" type="edit">EDIT</button>
+                                        <button class="btn btn-danger" type="delete" onClick={() => handleDeleteSV(student.accountId)}>DELETE</button>
+                                    </div>  
+                                )}
                             </li>
                         ))}
                     </ul>
@@ -123,6 +125,7 @@ const People = () => {
             </div>
         </div>
     );
+    
 };
 
 export default People;

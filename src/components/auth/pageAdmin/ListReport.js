@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import NavbarAdmin from './NavbarAdmin';
 import { BE_URL } from '../../../utils/Url_request';
+import listreport from './css/ListReport.css'
 
 const ListReport = () => {
     const [listReport, setListReport] = useState([]);
@@ -35,22 +36,25 @@ const ListReport = () => {
     return (
         <div>
             <NavbarAdmin />
-            <div className='works'>
-                <p className='dsshow'>List Report</p>
+            <div className='containerreport'>
+            <div className='listre'>
+                <p className='listreport'>List Report</p>
                 <ul>
                     {Array.isArray(listReport) && listReport.length > 0 ? (
                         listReport.map((report) => (
                             <li key={report.requestId}>
                                 <span>{report.requestTile} - Của lớp: {report.subjectClass}</span>
-                                <div>
-                                    <button>Delete</button>
-                                </div>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button class="btn btn-warning me-md-2" type="edit">EDIT</button>
+                                    <button class="btn btn-danger" type="delete">DELETE</button>
+                                </div>  
                             </li>
                         ))
                     ) : (
                         <p>No reports found.</p>
                     )}
                 </ul>
+            </div>
             </div>
         </div>
     );

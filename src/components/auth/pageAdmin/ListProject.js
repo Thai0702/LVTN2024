@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import NavbarAdmin from './NavbarAdmin';
 import { BE_URL } from '../../../utils/Url_request';
+import listproject from './css/ListProject.css'
 
 const ListProject = () => {
     const [listProject, setListProject] = useState([]); // Sửa lỗi chính tả 'setListProject'
@@ -35,22 +36,25 @@ const ListProject = () => {
     return (
         <div>
             <NavbarAdmin />
-            <div className='works'>
-                <p className='dsshow'>List Project</p>
+            <div className='containerproject'>
+            <div className='listpro'>
+                <p className='listproject'>List Project</p>
                 <ul>
                     {Array.isArray(listProject) && listProject.length > 0 ? (
                         listProject.map((project) => (
                             <li key={project.projectId}>
                                 <span>{project.projectName} - Của Group: {project.projectOfGroup}</span>
-                                <div>
-                                    <button>Delete</button>
-                                </div>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button class="btn btn-warning me-md-2" type="edit">EDIT</button>
+                                    <button class="btn btn-danger" type="delete">DELETE</button>
+                                </div>  
                             </li>
                         ))
                     ) : (
                         <p>No projects found.</p>
                     )}
                 </ul>
+            </div>
             </div>
         </div>
     );

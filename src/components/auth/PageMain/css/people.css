@@ -1,0 +1,68 @@
+.container-people {
+    background-color: rgb(96, 137, 107);
+    display: flex;
+    flex-direction: column; 
+    position: absolute;
+    top: 4cm; 
+    left: 7cm; 
+    right: 0.5cm; 
+    bottom: 10px; 
+    padding: 20px; 
+    overflow: auto; 
+}
+
+.import-people {
+    margin-bottom: 20px;
+}
+
+.listpe {
+    margin-top: 30px;
+    margin-left: 1px;
+    margin-right: 0px;
+    width: 100%;
+    background-color: #8dd8d3;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.listpeople {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.listpe ul {
+    padding: 0;
+}
+
+.listpe li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #515c52;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    list-style-type: none;
+    transition: background-color 0.3s ease;
+}
+
+.listpe li:hover {
+    background-color: #6b796b;
+}
+
+.btnPeople {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btnPeople:hover {
+    background-color: #ff1a1a;
+}

@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { useFetcher } from 'react-router-dom';
 import { BE_URL } from '../../../utils/Url_request';
 import NavbarAdmin from './NavbarAdmin';
+import listaccount from './css/ListAccount.css'
+
 
 const ListAccount = () => {
     const [listaccount, setListAcoount] = useState([]);
@@ -36,14 +38,16 @@ const ListAccount = () => {
     return (
         <div>
             <NavbarAdmin />
-            <div className='works'>
-                <p className='dsshow'>List Account</p>
+            
+            <div className='listac'>
+                <p className='listaccount'>List Account</p>
                 <ul>
                     {listaccount.map((account) => (
                         <li key={account.userId}>
                             <span>{account.fullName}-{account.email}</span>
-                            <div className=''>
-                                <button  >Delete</button>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button class="btn btn-warning me-md-2" type="edit">EDIT</button>
+                                <button class="btn btn-danger" type="delete">DELETE</button>
                             </div>
                         </li>
                     ))}

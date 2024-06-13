@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Navbar from './Navbar';
+
 const ClassDetailPage = () => {
   const { classId } = useParams(); // Lấy classId từ URL
   // lay userId by account 

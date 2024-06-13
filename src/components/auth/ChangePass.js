@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { BE_URL } from '../../utils/Url_request';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import change from './PageTeacher/css/changepass.css'
 
 const ChangePass = () => {
     const [changepass, setChangePass] = useState({
@@ -62,7 +63,10 @@ const ChangePass = () => {
     return (
         <div>
             <Navbar/>
-            <p>Thay đôi mật khẩu</p>
+            <div className='container-change'> 
+                <div className='tdmk'>
+            <p>Thay đổi mật khẩu</p>
+            <div className="form-group">
             <input 
                 type='password'
                 placeholder='Old Password'
@@ -70,6 +74,8 @@ const ChangePass = () => {
                 onChange={handleInputChange}
                 value={changepass.oldPassword}
             />
+            </div>
+            <div className="form-group">
             <input 
                 type='password'
                 placeholder='New Password'
@@ -77,6 +83,8 @@ const ChangePass = () => {
                 onChange={handleInputChange}
                 value={changepass.newPassword}
             />
+            </div>
+            <div className="form-group">
             <input 
                 type='password'
                 placeholder='Confirm Password'
@@ -84,7 +92,10 @@ const ChangePass = () => {
                 onChange={handleInputChange}
                 value={changepass.confirmNewPassword}
             />
+            </div>
             <button onClick={changePass}>Change</button>
+        </div>
+        </div>
         </div>
     );
 };

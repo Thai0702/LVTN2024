@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import NavbarAdmin from './NavbarAdmin'
 import { BE_URL } from '../../../utils/Url_request';
+import listgroup from './css/ListGroup.css'
 
 const ListGroup = () => {
     const [listGroup, setListGroup] = useState([]);
@@ -31,20 +32,22 @@ const ListGroup = () => {
     return (
         <div>
             <NavbarAdmin />
-            <div className='works'>
-                <p className='dsshow'>List Group</p>
+            <div className='containergroup'>
+            <div className='listg'>
+                <p className='listgroup'>List Group</p>
                 <ul>
                     {listGroup.map((listgroup) => (
                         <li key={listgroup.groupId}>
                             <span>Mã lớp : {listgroup.classId} - {listgroup.groupName}</span>
-                            <div className=''>
-                                <button  >Delete</button>
-                            </div>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button class="btn btn-warning me-md-2" type="edit">EDIT</button>
+                                <button class="btn btn-danger" type="delete">DELETE</button>
+                            </div>  
                         </li>
                     ))}
                 </ul>
             </div>
-
+            </div>
         </div>
     )
 }

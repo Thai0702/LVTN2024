@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import NavbarAdmin from './NavbarAdmin'
 import { BE_URL } from '../../../utils/Url_request';
+import listclass from './css/ListClass.css'
+
 
 const ListClass = () => {
     const [listClass, setListClass] = useState([]);
@@ -34,18 +36,21 @@ const ListClass = () => {
     return (
         <div>
             <NavbarAdmin />
-            <div className='works'>
-              <p className='dsshow'>List Class</p>
+            <div className='containerclass'>
+            <div className='listcl'>
+              <p className='listclass'>List Class</p>
               <ul>
                 {listClass.map((classlist) => (
                   <li key={classlist.subjectClassId}>
                     <span>{classlist.subjectName}-{classlist.schoolYear}</span>
-                    <div className=''>
-                    <button  >Delete</button>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button class="btn btn-warning me-md-2" type="edit">EDIT</button>
+                        <button class="btn btn-danger" type="delete">DELETE</button>
                     </div>                    
                   </li>
                 ))}
               </ul>
+            </div>
             </div>
 
         </div>

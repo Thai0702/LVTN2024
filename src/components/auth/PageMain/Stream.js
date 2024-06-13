@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { BE_URL } from '../../../utils/Url_request';
 import Navbar from '../Navbar';
 import DetailClass from '../DetailClass'
+import css from './css/Stream.css'
 
 const Stream = () => {
     const { classId } = useParams(); // Lấy classId từ URL
@@ -219,7 +220,7 @@ const Stream = () => {
         <div>
             <Navbar />
             <DetailClass />
-            <div className='container-body'>
+            <div className='container-stream'>
                 <div className='body-1'>
                     <span>Tên giảng viên :{fullName}</span>
                     <p>{classDetail.subjectName}</p>

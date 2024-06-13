@@ -78,14 +78,19 @@ const Project = () => {
             <DetailClass/>
             <div ref={createClassRef} className='container-create-project'>
                 <form onSubmit={handleAddProject}>
+                    <label>Tên đồ án: </label>
                     <input
                         type='text'
                         placeholder='Tên đồ án'
                         className='input'
                         value={project_name}
                         onChange={(e) => setProjectName(e.target.value)}
+                        style={{ marginLeft: '100px' }}
                     />
-                    <select onChange={(e) => setProjectOfGroup(e.target.value)} value={project_of_group}>
+                    <br></br>
+
+                    <label>Chọn Group: </label>
+                    <select onChange={(e) => setProjectOfGroup(e.target.value)} value={project_of_group} style={{ marginLeft: '83px' }}>
                         <option value=''>Select Group</option>
                         {grouptList.map((group) => (
                             <option key={group.groupId} value={group.groupId}>
@@ -93,26 +98,39 @@ const Project = () => {
                             </option>
                         ))}
                     </select>
+                    <br></br>
+
+
+                    <label>Mô tả: </label>
                     <input
                         type='text'
                         placeholder='Mô tả'
                         className='input'
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
+                        style={{ marginLeft: '130px' }}
                     />
+                    <br></br>
+
+                    <label>Ngày tạo: </label>
                     <input
                         type='date'
                         placeholder='CreateDay'
                         className='input'
                         value={expired_day}
                         onChange={(e) => setExpiredDay(e.target.value)}
+                        style={{ marginLeft: '105px' }}
                     />
+                    <br></br>
+
+                    <label>Thời gian hết hạn: </label>
                     <input
                         type='time'
                         placeholder='Thời gian hết hạn'
                         className='input'
                         value={expired_time}
                         onChange={(e) => setExpiredTime(e.target.value)}
+                        style={{ marginLeft: '40px' }}
                     />
                     {error && <div className="error">{error}</div>}
                     {successMessage && <div className="success">{successMessage}</div>}

@@ -71,9 +71,12 @@
 }
 
 .header-1 {
-    flex: 1; /* Make each item take up equal space */
-    text-align: center; /* Center text inside each flex item */
-    padding: 0 10px; /* Optional: Add some padding for better spacing */
+    flex: 1; 
+    text-align: center; 
+    padding: 0 10px; 
+    /* text-decoration: none;
+    color: inherit;  */
+    
 }
 
 

@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
+
 const DetailPeople = () => {
 
 const { classId } = useParams(); // Lấy classId từ URL
@@ -68,7 +69,7 @@ useEffect(() => {
   return (
     <div>
       <Navbar />
-      <div className='container-body'>
+      <div className='container-people'>
             <div className='c'>
               <input type='file' ref={fileInputRef} />
               {/* <select onChange={(e) => setSelectedClassId(e.target.value)} value={classId}>
@@ -81,8 +82,8 @@ useEffect(() => {
               <button onClick={handleFileUpload}>Add</button>
 
             </div>
-            <div className='works'>
-              <p className='dsshow'>List Students</p>
+            <div className='listpe'>
+              <p className='listpeople'>List Students</p>
               <ul>
                 {studentList.map((student) => (
                   <li key={student.classId}>
