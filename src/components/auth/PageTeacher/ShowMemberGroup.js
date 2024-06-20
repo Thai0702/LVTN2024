@@ -4,7 +4,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../Navbar';
 import DetailClass from '../DetailClass'
-import '../Login.css'; 
+import css from './css/showmember.css'
 
 const GroupList = () => {
   const { classId, groupId,projectId } = useParams();
@@ -48,7 +48,7 @@ const GroupList = () => {
       return;
     }
     try {
-      const response = await fetch(`${BE_URL}/api/class/group/add-member/${classId}/${groupId}`, {
+      const response = await fetch(`${BE_URL}/api/class/${classId}/group/${groupId}/join-group`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,8 +89,7 @@ const GroupList = () => {
         const data = await respone.json();
         setListProject(data);
       }
-      catch (error) {
-        console.log("error to fetching", error);
+      catch (error) {console.log("error to fetching", error);
       }
 
     };
@@ -184,8 +183,7 @@ const GroupList = () => {
     }
   };
   const handleUpdate = (classItem) => {
-    setUpdateData(classItem);
-    setShowUpdateForm(true); // Hiển thị form cập nhật khi nhấp vào "Cập nhật"
+    setUpdateData(classItem);setShowUpdateForm(true); // Hiển thị form cập nhật khi nhấp vào "Cập nhật"
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -198,21 +196,32 @@ const GroupList = () => {
     <div>
       <Navbar/>
       <DetailClass/>
-      <h1>Group Member</h1>
-      <button onClick={joinGroup}>Tham Gia Nhóm</button>
-      
-      <Link className='link' to={`/createReport/${classId}/${groupId}`}> <button>Tạo Báo Cáo</button></Link>
-    
-      <div className='works'>
-        <p className='dsshow'>List Member Group</p>
-        <ul>
-          {members.map(member => (
-            <li key={member.groupId}>{member.memberName}</li>
-          ))}
-        </ul>
 
-        <ul>
-          <p className='dsshow'>Project Of Group</p>
+      <div className='showmember'>
+        <h1>Group Member</h1>
+        <div className='container-chung'>
+          <div className='tgn'>
+            {/* <button onClick={joinGroup}>Tham Gia Nhóm</button> */}
+            <button onClick={joinGroup} type="thamgianhom" class="btn btn-outline-thamgianhom">Tham Gia Nhóm</button>
+          </div>
+          <div className='tbc'>
+            <Link to={`/createReport/${classId}/${groupId}`}> <button>Tạo Báo Cáo</button></Link>
+          </div>
+        </div>
+
+        <div className='container-rieng'>
+          <div className='left-column'>
+          <p className='listmember'>List Member Group</p>
+          <ul>
+            {members.map(member => (
+              <li key={member.groupId}>{member.memberName}</li>
+            ))}
+          </ul>
+          </div>
+
+        {/* <ul> */}
+        <div className='right-column'>
+          <p className='project'>Project Of Group</p>
           {listProject.map(project => (
             <li key={project.projectId}>
               <p>Tên đồ án: {project.projectName}<br /> Ngày hết hạn: {project.expiredDay}<br />Thời gian hết hạn:{project.expiredTime}
@@ -249,19 +258,20 @@ const GroupList = () => {
                       type="time"
                       name="expiredTime"
                       value={updateData.expiredTime}
-                      onChange={handleInputChange}
-                      placeholder="Thời gian hết hạn"
-                    />
-                    <button type="submit">Lưu</button>
-                  </form>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
+                      onChange={handleInputChange}placeholder="Thời gian hết hạn"
+                      />
+                      <button type="submit">Lưu</button>
+                    </form>
+                  </div>
+                )}
+              </li>
+            ))}
+          {/* </ul> */}
+        </div>
       </div>
-    </div>
-  );
-};
-
-export default GroupList;
+      </div>
+      </div>
+    );
+  };
+  
+  export default GroupList;

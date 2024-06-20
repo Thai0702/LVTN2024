@@ -4,10 +4,8 @@ import { BE_URL } from '../../../utils/Url_request';
 import Navbar from '../Navbar';
 import DetailClass from '../DetailClass'
 import css from './css/Stream.css'
-
 const Stream = () => {
     const { classId } = useParams(); // Lấy classId từ URL
-
     // hiển thị hi tiết lớp môn học
     const [loading, setLoading] = useState(true);
     const [classDetail, setClassDetail] = useState(null);
@@ -41,9 +39,9 @@ const Stream = () => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-
                 const classDetailData = await response.json();
                 setClassDetail(classDetailData);
+                console.log("chao:",classDetailData );
                 const { memberPerGroup } = classDetailData
                 localStorage.setItem('memberPerGroup', memberPerGroup);
                 const { groupRegisterMethod } = classDetailData
@@ -212,17 +210,16 @@ const Stream = () => {
     if (error) {
         return <p>{error}</p>;
     }
-
     if (!classDetail) {
         return <p>No class detail available</p>;
     }
     return (
         <div>
             <Navbar />
-            <DetailClass />
+            <DetailClass/>
             <div className='container-stream'>
                 <div className='body-1'>
-                    <span>Tên giảng viên :{fullName}</span>
+                    <span>Tên giảng viên :{classDetail.fullNameCreate}</span>
                     <p>{classDetail.subjectName}</p>
                 </div>
                 <div className='body-2'>
@@ -238,6 +235,7 @@ const Stream = () => {
                                 <li key={report.requestId}>
                                     <span>{report.requestTile} -  Ngày và giờ hết hạn : {report.expiredDate}/{report.expiredTime}</span>
                                     <button onClick={() => handleDeleteReport(report.requestId)}>Delete</button>
+                                    
                                     {/* <button onClick={() => handleUpdate(report)}>Sửa</button> */}
                                     {showUpdateForm && updateData.requestId === report.requestId && (
                                         <div className="update-form">

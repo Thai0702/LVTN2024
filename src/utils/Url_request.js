@@ -2,7 +2,6 @@ const BE_URL = "http://localhost:8080";
 
 // "http://localhost:8080/api";
 // "https://luanvan.onrender.com/api"
-
 // Module Account
 const UserDetail = "/api-gv/account/token-detail";
 const Get_Account = "/api-gv/account";

@@ -219,6 +219,20 @@ useEffect(() => {
                           onChange={handleInputChange}
                           placeholder="Năm học"
                         />
+                        <input
+                          type="text"
+                          name="numberOfGroup"
+                          value={updateData.numberOfGroup}
+                          onChange={handleInputChange}
+                          placeholder="Năm học"
+                        />
+                        <input
+                          type="text"
+                          name="memberPerGroup"
+                          value={updateData.memberPerGroup}
+                          onChange={handleInputChange}
+                          placeholder="Năm học"
+                        />
                         <button type="submit">Lưu</button>
                       </form>
                     </div>

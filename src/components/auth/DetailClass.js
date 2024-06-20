@@ -27,13 +27,13 @@ const ClassDetailPage = () => {
               <Link  className='link'to={`/group/${classId}`}>
                 <div className='header-1'>Group</div>
               </Link>
-              {groupRegisterMethod !== "RANDOM" && (
-                <Link className='link'>
+              {groupRegisterMethod !== "RANDOM" && groupRegisterMethod !== "Student" && (
+                <Link className='link' to={`/tearchAdd/${classId}`}>
                   <div className='header-1'>
                     {groupRegisterMethod + " add Member"}
                   </div>
                 </Link>
-              )}
+              )}              
             </>
           ) : (
             <>

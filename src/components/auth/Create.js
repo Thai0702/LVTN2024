@@ -8,6 +8,7 @@ const Create = () => {
   const navigate = useNavigate();
   const [classData, setClassData] = useState({
     subjectName: '',
+    // fullNameCreate:'',
     schoolYear: '',
     numberOfGroup: '',
     memberPerGroup: '',
@@ -105,6 +106,7 @@ const Create = () => {
       <div className='container-create'>
         <p>Create class!</p>
         <input type='text' placeholder='Tên lớp môn học' className='input' name='subjectName' value={classData.subjectName} onChange={handleChange}></input>
+        {/* <input type='text' placeholder='Tên giảng viên' className='input' name='fullNameCreate' value={classData.fullNameCreate} onChange={handleChange}></input> */}
         <input type='text' placeholder='Năm học' className='input' name='schoolYear' value={classData.schoolYear} onChange={handleChange}></input>
         <input type='text' placeholder='Số lượng nhóm trong lớp' className='input' name='numberOfGroup' value={classData.numberOfGroup} onChange={handleChange}></input>
         <input type='text' placeholder='Số lượng thành viên nhóm' className='input' name='memberPerGroup' value={classData.memberPerGroup} onChange={handleChange}></input>

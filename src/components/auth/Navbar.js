@@ -11,7 +11,7 @@ import add from './img/add.png';
 import student from './img/student.png'
 import { useNavigate } from 'react-router-dom';
 import { BE_URL } from '../../utils/Url_request';
-
+import arrow from '../auth/pageAdmin/imgAdmin/arrow.png'
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const [projectText, setProjectText] = useState('Project'); // State variable for project text
@@ -20,6 +20,7 @@ function Navbar() {
   const [username, setUsername] = useState(''); // Tên người dùng
   const navigate = useNavigate();
   const {classId} =useParams();
+  const [isSetting, setIsSetting] = useState(false);
   useEffect(() => {
     const userLoggedIn = localStorage.getItem('isLoggedIn');
     const savedUsername = localStorage.getItem('username');
@@ -219,6 +220,9 @@ function Navbar() {
   }, [classId]);
   const  type  = localStorage.getItem('type');
   console.log("hello type:",type);
+  const togglesetting = () => {
+    setIsSetting(!isSetting);
+  }
   return (
     <header className="header">
 
@@ -256,9 +260,15 @@ function Navbar() {
                 </li>
               ))}
             </div>)}
-          <Link className='link' onClick={() => handleLinkClick('Setting')} to={`/change_pass`}>
-            <div className='menu_1'> <img src={setting} /> Change Pass</div>
+            <Link className='link' onClick={() => handleLinkClick('Setting')}>
+            <div className='menu_1' onClick={togglesetting}><img src={setting} />Setting</div>
           </Link>
+          {isSetting && (
+            <Link to={`/change_pass`} className='link' onClick={() => handleLinkClick('Change password')}>
+              <div className='class-list-teach'>
+                <img src={arrow} /> Change password
+              </div></Link>
+          )}
         </div>
       )}
       <nav className="nav">

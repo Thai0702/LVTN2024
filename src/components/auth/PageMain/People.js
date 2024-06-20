@@ -110,7 +110,7 @@ const People = () => {
                     <ul>
                         {studentList.map((student) => (
                             <li key={student.classId}>
-                                <span>Lớp : {student.classId} - {student.fullName}</span>
+                                <span>Mã lớp : {student.classId} - Tên sinh viên : {student.fullName} - Mã sinh viên : {student.studentId}</span>
                                 {type === "GV" && (
                                     // <button className='btnPeople' onClick={() => handleDeleteSV(student.accountId)}>Delete</button>
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">

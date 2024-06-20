@@ -121,9 +121,9 @@ function NavbarAdmin() {
                 <span>Hi !{fullName}</span>
               </li>
               <li>
-                <Link to='/login' onClick={handleLogout} style={{ textDecoration: 'none' }}>
+                {/* <Link to='/login' onClick={handleLogout} style={{ textDecoration: 'none' }}>
                   Đăng xuất
-                </Link>
+                </Link> */}
                 <Link to='/regiterAdmin' style={{ textDecoration: 'none' }}>
                   Đăng ký
                 </Link>

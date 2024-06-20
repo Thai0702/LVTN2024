@@ -1,0 +1,83 @@
+.showmember {
+    display: flex;
+    flex-direction: column; 
+    background-color: #8dd8d3;
+    position: absolute;
+    top: 3.8cm; 
+    left: 6.9cm; 
+    right: 10px; 
+    bottom: 10px; 
+    padding: 20px; 
+    overflow: auto; 
+}
+
+h1 {
+    text-align: center;
+}
+
+.container-chung {
+    display: flex; /* Sử dụng flexbox để căn chỉnh các phần tử */
+    justify-content: space-between; /* Căn các phần tử ở hai đầu của container */
+    width: 100%; /* Chiều rộng của container */
+    max-width: 10cm; /* Độ rộng tối đa của container là 10cm */
+    margin: 0 auto; /* Căn giữa container */
+  }
+  
+  .tgn, .tbc {
+    width: 50%; /* Độ rộng của mỗi phần là 50% */
+    text-align: center; /* Căn giữa nội dung trong phần tử */
+    margin-top: 20px; /* Khoảng cách từ trên xuống */
+  }
+  
+  .btn.btn-outline-thamgianhom, .tbc button {
+    padding: 10px 20px; /* Kích thước padding của nút */
+    border: none; /* Không có viền */
+    border-radius: 5px; /* Độ bo góc */
+    cursor: pointer; /* Con trỏ chuột thành pointer khi rê chuột vào */
+  }
+  
+  .btn.btn-outline-thamgianhom {
+    background-color: #4CAF50; 
+    color: white; 
+  }
+  
+  .tbc button {
+    background-color: #4CAF50; 
+    color: white; 
+  }
+  
+  .btn.btn-outline-thamgianhom:hover, .tbc button:hover {
+    opacity: 0.8; /* Độ mờ khi rê chuột vào */
+  }
+
+  
+  .container-rieng {
+    display: flex;
+    /* flex-direction: column;  */
+    background-color: #b7d4a0;
+    position: absolute;
+    top: 4cm; 
+    left: 0.5cm; 
+    right: 0.5cm; 
+    bottom: 10px; 
+    padding: 20px; 
+    overflow: auto; 
+}
+.left-column,
+.right-column {
+  flex: 1; /* Căn chỉnh độ rộng tự động của hai cột */
+  padding: 10px; /* Khoảng cách padding bên trong cột */
+}
+
+.left-column {
+  background-color: #7cc227; /* Màu nền cho cột trái */
+  margin-right: 10px; /* Khoảng cách từ phải của cột trái */
+}
+
+.right-column {
+  background-color: #c5741f; /* Màu nền cho cột phải */
+  margin-left: 10px; /* Khoảng cách từ trái của cột phải */
+}
+
+
+

@@ -146,7 +146,7 @@ const Group = () => {
                         <ul>
                             {grouptList.map((listgroup) => (
                                 <li key={listgroup.groupId}>
-                                    <Link className='link' to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>{listgroup.classId} - {listgroup.groupName}</span></Link>
+                                    <Link className='link' to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>Mã lớp : {listgroup.classId} - Tên nhóm : {listgroup.groupName}</span></Link>
                                     <div className=''>
                                         <button onClick={() => handleDeleteGroup(listgroup.groupId)} >Delete</button>
                                         <button onClick={() => handleUpdate(listgroup)}> Update</button>

@@ -38,8 +38,9 @@ const AddGroup = () => {
                 body: JSON.stringify({ ...groupData })
             });
             if (response.ok) {
-                window.alert('File uploaded successfully!');
                 navigate(`/group/${classId}`);
+                window.alert('Add group successfully!');
+                
                 // Load lại trang sau khi thêm thành công
             }
             else {
