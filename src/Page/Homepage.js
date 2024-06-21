@@ -199,6 +199,7 @@ useEffect(() => {
                     <p className='btnxoasua'>
                       <button onClick={() => handleDelete(classItem.subjectClassId)}>Xóa</button>
                       <button onClick={() => handleUpdate(classItem)}>Sửa</button>
+                      {/* <button><Link to={`/editclass/${classItem.subjectClassId}`}>Sửa</Link></button> */}
                     </p>
                   </div>
                 </div>

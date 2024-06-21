@@ -112,7 +112,6 @@ useEffect(() => {
                 value={requestOfProject}
                 onChange={(e) => setrequestOfProject(e.target.value)}
               /> */}
-        
               <select onChange={(e) => setsubjectClass(e.target.value)} value={subjectClass}>
                 <option value=''>Select Class</option>
                 {classList.map((classItem) => (

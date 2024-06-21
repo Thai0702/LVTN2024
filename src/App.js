@@ -44,6 +44,10 @@ import CreateReport from "./components/auth/PageTeacher/CreateReport.js";
 // page class detail
 import Stream from "./components/auth/PageMain/Stream.js";
 import AddGroup from "./components/auth/PageMain/AddGroup.js";
+
+import EditClass from "./Page/EditClass.js";
+
+
 const App = () => {
   return (
     <Router>
@@ -63,7 +67,7 @@ const App = () => {
           <Route path="/listsv" element={<ListStudent />} />
           <Route path="/random" element={<Random />} />
           <Route path="/add" element={<Add />} />
-          <Route path="/class/:classId" element={<DetailClass />} />
+          <Route path="/class/:classId" element={<Stream />} />
           <Route path="/classstudent/:classId" element={<DetailClassStudent />} />
 
           {/* page class detail */}
@@ -97,6 +101,9 @@ const App = () => {
           <Route path="/listProject" element={<ListProject />} />
           <Route path="/listReport" element={<ListReport />} />
 
+
+
+          <Route path="/editclass/:classId" element={<EditClass />} />
 
         </Routes>
 
