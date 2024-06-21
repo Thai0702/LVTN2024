@@ -83,7 +83,7 @@ const AddGroup = () => {
 
                 <form className='addGroup'>
                     <input
-                        type='text'
+                        type='number'
                         placeholder='Mã leader'
                         className='input'
                         name='leaderId'
