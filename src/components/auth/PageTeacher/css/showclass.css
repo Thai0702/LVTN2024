@@ -29,7 +29,6 @@
     text-decoration: none;
 }
 .menu_1{
-    
     cursor: pointer;
 }
 .class-item{
@@ -37,22 +36,29 @@
     cursor: pointer;
 }
 /* Container chứa tất cả các lớp học */
-.class-list-show {
-    /* display: flex;  */
+ .class-list-show {
+     display: flex;  
     display: flex; 
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));  /*Số lớp học trên mỗi hàng, mỗi ô có chiều rộng tối thiểu 300px  */
+     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));  /*Số lớp học trên mỗi hàng, mỗi ô có chiều rộng tối thiểu 300px   */
     /* grid-template-columns: repeat(3, 1fr);  */
-    gap: 50px; /* Khoảng cách giữa các ô */
-    
-  }
-  .class-list {
+    gap: 50px; 
+  } 
+.class-list {
  /* Set the maximum height */
-    /*overflow-y: auto;*/ /* Add vertical scrollbar when content exceeds the height */
+     overflow-y: auto;  
+
+    display: grid;
+    background-color: #f3f3f4;
+    grid-template-columns: repeat(3, 1fr);
+    gap:50px;
+    /* background-color: #0e2cd5; */
+    /* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); */
+    
 }
 
   /* Style cho mỗi lớp học */
   .class-item-show {
-    background-color: #b3b7cd;
+    background-color: #0e2cd5;
     padding: 20px;
     /* width: 250px; */
     width: 100%;
@@ -92,13 +98,13 @@
     border: 2px solid black;
   }
 /* xuong dong*/
- /* .class-list-show {
+  .class-list-show {
     display: flex;
     
     flex-wrap: wrap; 
     justify-content: flex-start;  
     gap: 20px; 
-}  */
+}  
 .show-class ul {
     display: flex;
     

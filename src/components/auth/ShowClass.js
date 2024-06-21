@@ -1,5 +1,5 @@
 import React from 'react';
-import css from './PageTeacher/css/showclass.css'
+
 const ShowClass = ({ classList }) => {
     return (
         <div className='class-list-show'>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/auth/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import { BE_URL } from '../utils/Url_request';
+import css from './css/showclass.css'
 
 const Home = () => {
   
