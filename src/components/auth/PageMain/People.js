@@ -103,7 +103,9 @@ const People = () => {
             <div className='container-people'>
                 <div className='import-people'>
                     <input type='file' ref={fileInputRef} />
-                    <button onClick={handleFileUpload}>Add</button>
+                    <button onClick={handleFileUpload}>Add</button> 
+                    <input type='text' placeholder='Nhập MSSV...' style={{ marginLeft: '160px', marginRight: '-50px'}} />
+                    <button>THÊM</button>
                 </div>
                 <div className='listpe'>
                     <p className='listpeople'>List Students</p>

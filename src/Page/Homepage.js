@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/auth/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import { BE_URL } from '../utils/Url_request';
+import css from './css/showclass.css'
 
 const Home = () => {
   
@@ -199,6 +200,7 @@ useEffect(() => {
                     <p className='btnxoasua'>
                       <button onClick={() => handleDelete(classItem.subjectClassId)}>Xóa</button>
                       <button onClick={() => handleUpdate(classItem)}>Sửa</button>
+                      {/* <button><Link to={`/editclass/${classItem.subjectClassId}`}>Sửa</Link></button> */}
                     </p>
                   </div>
                 </div>

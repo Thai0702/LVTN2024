@@ -11,7 +11,12 @@ import add from './img/add.png';
 import student from './img/student.png'
 import { useNavigate } from 'react-router-dom';
 import { BE_URL } from '../../utils/Url_request';
+<<<<<<< HEAD
 import arrow from '../auth/pageAdmin/imgAdmin/arrow.png'
+=======
+import css from './PageTeacher/css/navbar.css'
+
+>>>>>>> ngay21
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const [projectText, setProjectText] = useState('Project'); // State variable for project text
