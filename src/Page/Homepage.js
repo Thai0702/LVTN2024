@@ -180,7 +180,6 @@ useEffect(() => {
       [name]: value
     }));
   };
-
   const handleUpdate = (classItem) => {
     setUpdateData(classItem);
     setShowUpdateForm(true); // Hiển thị form cập nhật khi nhấp vào "Cập nhật"

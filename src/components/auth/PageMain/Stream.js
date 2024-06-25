@@ -4,6 +4,7 @@ import { BE_URL } from '../../../utils/Url_request';
 import Navbar from '../Navbar';
 import DetailClass from '../DetailClass'
 import css from './css/Stream.css'
+import axios from 'axios';
 const Stream = () => {
     const { classId } = useParams(); // Lấy classId từ URL
     // hiển thị hi tiết lớp môn học
@@ -46,8 +47,11 @@ const Stream = () => {
                 localStorage.setItem('memberPerGroup', memberPerGroup);
                 const { groupRegisterMethod } = classDetailData
                 localStorage.setItem('groupRegisterMethod', groupRegisterMethod);
+                const { subjectName } = classDetailData
+                localStorage.setItem('subjectName', subjectName);
+                const { schoolYear } = classDetailData
+                localStorage.setItem('schoolYear', schoolYear);
                 console.log("hhee:", memberPerGroup)
-
             } catch (error) {
                 console.error('Error:', error);
                 setError('Failed to fetch class detail');
@@ -200,7 +204,8 @@ const Stream = () => {
         setUpdateData(reportItem);
         setShowUpdateForm(true); // Hiển thị form cập nhật khi nhấp vào "Cập nhật"
     };
-
+    // add sinh vien bang ma sinh vien
+    
 
     if (loading) {
         return <p>Loading...</p>;
@@ -219,7 +224,7 @@ const Stream = () => {
             <DetailClass/>
             <div className='container-stream'>
                 <div className='body-1'>
-                    <span>Tên giảng viên :{classDetail.fullNameCreate}</span>
+                    {/* <span>Tên giảng viên :{classDetail.fullNameCreate}</span> */}
                     <p>{classDetail.subjectName}</p>
                 </div>
                 <div className='body-2'>

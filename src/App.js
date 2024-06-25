@@ -34,16 +34,14 @@ import CreateReport from "./components/auth/PageTeacher/CreateReport.js";
 // page class detail
 import Stream from "./components/auth/PageMain/Stream.js";
 import AddGroup from "./components/auth/PageMain/AddGroup.js";
-<<<<<<< HEAD
 //page tearch
 import UpdateReport from "./components/auth/PageTeacher/UpdateReport.js";
 import TearchAddMember from "./components/auth/PageMain/TearchAddMember.js";
-=======
+
 
 import EditClass from "./Page/EditClass.js";
+import MethodAddGroup from "./components/auth/PageMain/MethodAddGroup.js";
 
-
->>>>>>> ngay21
 const App = () => {
   return (
     <Router>
@@ -64,11 +62,8 @@ const App = () => {
           <Route path="/random" element={<Random />} />
           <Route path="/add" element={<Add />} />
           <Route path="/class/:classId" element={<Stream />} />
-<<<<<<< HEAD
-         
-=======
-          <Route path="/classstudent/:classId" element={<DetailClassStudent />} />
->>>>>>> ngay21
+
+
 
           {/* page class detail */}
           <Route path="/stream/:classId" element={<Stream />} />
@@ -77,6 +72,7 @@ const App = () => {
           <Route path="/group/:classId" element={<Group />} />
           <Route path="/addGroup/:classId" element={<AddGroup />} />
           <Route path="/tearchAdd/:classId" element={<TearchAddMember/>}/>
+          <Route path="/methodGroup/:classId" element={<MethodAddGroup/>}/>
 
 
           {/* forgot password */}
@@ -100,15 +96,14 @@ const App = () => {
           <Route path="/listProject" element={<ListProject />} />
           <Route path="/listReport" element={<ListReport />} />
 
-<<<<<<< HEAD
+
           {/* Page tearcher */}
           <Route path="/updateReport/:classId/:requestId" element={<UpdateReport />} />
-=======
 
 
           <Route path="/editclass/:classId" element={<EditClass />} />
 
->>>>>>> ngay21
+
         </Routes>
 
 

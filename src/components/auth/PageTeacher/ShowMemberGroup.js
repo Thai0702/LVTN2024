@@ -258,7 +258,7 @@ const GroupList = () => {
                       type="time"
                       name="expiredTime"
                       value={updateData.expiredTime}
-<<<<<<< HEAD
+
                       onChange={handleInputChange}placeholder="Thời gian hết hạn"
                       />
                       <button type="submit">Lưu</button>
@@ -276,23 +276,6 @@ const GroupList = () => {
   };
   
   export default GroupList;
-=======
-                      onChange={handleInputChange}
-                      placeholder="Thời gian hết hạn"
-                    />
-                    <button type="submit">Lưu</button>
-                  </form>
-                </div>
-              )}
-            </li>
-          ))}
-        {/* </ul> */}
-      </div>
-    </div>
-    </div>
-    </div>
-  );
-};
 
-export default GroupList;
->>>>>>> ngay21
+
+

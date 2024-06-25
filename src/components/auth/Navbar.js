@@ -11,22 +11,25 @@ import add from './img/add.png';
 import student from './img/student.png'
 import { useNavigate } from 'react-router-dom';
 import { BE_URL } from '../../utils/Url_request';
-<<<<<<< HEAD
 import arrow from '../auth/pageAdmin/imgAdmin/arrow.png'
-=======
+
 import css from './PageTeacher/css/navbar.css'
 
->>>>>>> ngay21
+
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
-  const [projectText, setProjectText] = useState('Project'); // State variable for project text
+  const [projectText, setProjectText] = useState('Suport'); // State variable for project text
   const [isCreate, setIsCreate] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Trạng thái đăng nhập
   const [username, setUsername] = useState(''); // Tên người dùng
   const navigate = useNavigate();
-  const {classId} =useParams();
+  const { classId } = useParams();
   const [isSetting, setIsSetting] = useState(false);
   useEffect(() => {
+    const savedProjectText = localStorage.getItem('projectText');
+    if (savedProjectText) {
+      setProjectText(savedProjectText);
+    }
     const userLoggedIn = localStorage.getItem('isLoggedIn');
     const savedUsername = localStorage.getItem('username');
 
@@ -133,9 +136,12 @@ function Navbar() {
 
     fetchClasses();
   }, []);
+
   // Chạy lại effect khi classList thay đổi
   const handleLinkClick = (text) => {
-    setProjectText(text);
+    const newText = `Suport   >  ${text}`;
+    setProjectText(newText);
+    localStorage.setItem('projectText', newText);
     setIsMenuOpen(true);
   };
 
@@ -179,52 +185,52 @@ function Navbar() {
   const [classDetail, setClassDetail] = useState(null);
   const [error, setError] = useState('');
   useEffect(() => {
-      const fetchClassDetail = async () => {
-          const token = localStorage.getItem('token');
-          if (!token) {
-              setError('No token found');
-              setLoading(false);
-              return;
+    const fetchClassDetail = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('No token found');
+        setLoading(false);
+        return;
+      }
+      if (!classId) {
+        setError('Class ID is required');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`${BE_URL}/api-gv/class/get/${classId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token // Add token to header
           }
-          if (!classId) {
-              setError('Class ID is required');
-              setLoading(false);
-              return;
-          }
+        });
 
-          try {
-              const response = await fetch(`${BE_URL}/api-gv/class/get/${classId}`, {
-                  method: 'GET',
-                  headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization': 'Bearer ' + token // Add token to header
-                  }
-              });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
 
-              if (!response.ok) {
-                  throw new Error('Network response was not ok');
-              }
+        const classDetailData = await response.json();
+        setClassDetail(classDetailData);
+        const { memberPerGroup } = classDetailData
+        localStorage.setItem('memberPerGroup', memberPerGroup);
+        const { groupRegisterMethod } = classDetailData
+        localStorage.setItem('groupRegisterMethod', groupRegisterMethod);
+        console.log("hhee:", memberPerGroup)
 
-              const classDetailData = await response.json();
-              setClassDetail(classDetailData);
-              const { memberPerGroup } = classDetailData
-              localStorage.setItem('memberPerGroup', memberPerGroup);
-              const {groupRegisterMethod} =classDetailData
-              localStorage.setItem('groupRegisterMethod',groupRegisterMethod);
-              console.log("hhee:", memberPerGroup)
+      } catch (error) {
+        console.error('Error:', error);
+        setError('Failed to fetch class detail');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-          } catch (error) {
-              console.error('Error:', error);
-              setError('Failed to fetch class detail');
-          } finally {
-              setLoading(false);
-          }
-      };
-
-      fetchClassDetail();
+    fetchClassDetail();
   }, [classId]);
-  const  type  = localStorage.getItem('type');
-  console.log("hello type:",type);
+  const type = localStorage.getItem('type');
+  console.log("hello type:", type);
   const togglesetting = () => {
     setIsSetting(!isSetting);
   }
@@ -246,17 +252,17 @@ function Navbar() {
           </Link> : <Link className='link' onClick={() => handleLinkClick('Student')}>
             <div className='menu_1' onClick={toggleStedent}> <img src={student} /> Class Joined</div>
           </Link>}
-          
+
           {isTeachingOpen && (
             <div className='class-list-teach'>
               {classList.map((classItem) => (
                 <li key={classItem.id}>
-                  <Link to={`/class/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
+                  <Link to={`/class/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }} onClick={() => handleLinkClick(classItem.subjectName)}> {classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
                 </li>
               ))}
             </div>
           )}
-          
+
           {isStudentOpen && (
             <div className='class-list-teach'>
               {classListStudent.map((classItem) => (
@@ -265,7 +271,7 @@ function Navbar() {
                 </li>
               ))}
             </div>)}
-            <Link className='link' onClick={() => handleLinkClick('Setting')}>
+          <Link className='link' onClick={() => handleLinkClick('Setting')}>
             <div className='menu_1' onClick={togglesetting}><img src={setting} />Setting</div>
           </Link>
           {isSetting && (

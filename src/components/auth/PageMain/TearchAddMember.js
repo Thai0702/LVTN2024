@@ -83,7 +83,7 @@ const TeacherAddMember = () => {
         }));
 
         try {
-            const response = await fetch(`${BE_URL}/api/class/add-member`, {
+            const response = await fetch(`${BE_URL}/api-gv/class/add-member`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

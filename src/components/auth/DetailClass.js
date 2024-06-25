@@ -27,6 +27,9 @@ const ClassDetailPage = () => {
               <Link  className='link'to={`/group/${classId}`}>
                 <div className='header-1'>Group</div>
               </Link>
+              <Link className='link' to={`/methodGroup/${classId}`}>
+                <div className='header-1'>Chọn phương thức tạo nhóm</div>
+              </Link>
               {groupRegisterMethod !== "RANDOM" && groupRegisterMethod !== "Student" && (
                 <Link className='link' to={`/tearchAdd/${classId}`}>
                   <div className='header-1'>

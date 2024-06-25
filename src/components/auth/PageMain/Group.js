@@ -138,12 +138,12 @@ const Group = () => {
             <div className='container-group'>
                 <div className='create-work'>
                     {/* <img src={add} alt='Create' /> */}
-<<<<<<< HEAD
+
                     <Link className='link' to={`/addGroup/${classId}`}><p className='add-group-text'>Add group</p></Link>
-=======
+
                     {/* <Link to={`/addGroup/${classId}`}><p className='add-group-text'>Add group</p></Link> */}
-                    <Link to={`/addGroup/${classId}`}><button className='add-group-text'>Add group</button></Link>
->>>>>>> ngay21
+                    {/* <Link to={`/addGroup/${classId}`}><button className='add-group-text'></button></Link> */}
+
                 </div>
                 <div className='listg'>
                     <p className='listgroup'>List Group</p>
@@ -151,17 +151,11 @@ const Group = () => {
                         <ul>
                             {grouptList.map((listgroup) => (
                                 <li key={listgroup.groupId}>
-<<<<<<< HEAD
-                                    <Link className='link' to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>Mã lớp : {listgroup.classId} - Tên nhóm : {listgroup.groupName}</span></Link>
-                                    <div className=''>
-=======
-                                    <Link to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>{listgroup.classId} - {listgroup.groupName}</span></Link>
-                                    {/* <div className=''>
->>>>>>> ngay21
-                                        <button onClick={() => handleDeleteGroup(listgroup.groupId)} >Delete</button>
-                                        <button onClick={() => handleUpdate(listgroup)}> Update</button>
-                                    </div> */}
 
+                                    <Link className='link' to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>Mã lớp : {listgroup.classId} - Tên nhóm : {listgroup.groupName}</span></Link>
+                                  
+                                    {/* <Link to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>{listgroup.classId} - {listgroup.groupName}</span></Link> */}
+                                    
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                         <button onClick={() => handleDeleteGroup(listgroup.groupId)} class="btn btn-danger" type="delete">DELETE</button>
                                         <button onClick={() => handleUpdate(listgroup)} class="btn btn-update" type="update" 

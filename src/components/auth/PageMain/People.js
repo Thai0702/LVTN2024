@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios'; // Import Axios for making HTTP requests
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { BE_URL } from '../../../utils/Url_request';
 import Navbar from '../Navbar';
 import DetailClass from '../DetailClass'
@@ -13,63 +13,87 @@ const People = () => {
     const [studentList, setStudentList] = useState([]);
     const [loading, setLoading] = useState(true);
     const type = localStorage.getItem('type');
-    useEffect(() => {
+    const navigate = useNavigate();
+    // useEffect(() => {
+    //     const token = localStorage.getItem('token');
+    //     const fetchStudentList = async () => {
+    //         try {
+    //             const response = await fetch(`${BE_URL}/api/class/student-list/${classId}`, {
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                     'Authorization': 'Bearer ' + token
+    //                 }
+    //             });
+
+    //             if (!response.ok) {
+    //                 throw new Error('Network response was not ok');
+    //             }
+
+    //             const data = await response.json();
+    //             setStudentList(data);
+    //         } catch (error) {
+    //             console.error('Error fetching student list:', error);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+
+    //     fetchStudentList();
+    // }, [classId]);
+    const fetchStudentList = async () => {
         const token = localStorage.getItem('token');
-
-        const fetchStudentList = async () => {
-            try {
-                const response = await fetch(`${BE_URL}/api/class/student-list/${classId}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const data = await response.json();
-                setStudentList(data);
-            } catch (error) {
-                console.error('Error fetching student list:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
+        try {
+          const response = await fetch(`${BE_URL}/api/class/student-list/${classId}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token,
+            },
+          });
+    
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+    
+          const data = await response.json();
+          setStudentList(data);
+        } catch (error) {
+          console.error('Error fetching student list:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      useEffect(() => {
         fetchStudentList();
-    }, [classId]);
-    const handleDeleteSV = async (id) => {
+      }, [classId]);
+    
+      const handleDeleteSV = async (id) => {
         const token = localStorage.getItem('token');
-        const confirmed = window.confirm("Bạn có chắc muốn xóa sinh viên này không?");
+        const confirmed = window.confirm('Bạn có chắc muốn xóa sinh viên này không?');
         if (!confirmed) {
-            // Không xóa nếu người dùng không xác nhận
-            return;
+          return;
         }
         try {
-            const url = `${BE_URL}/api-gv/class/delete/student-list/${classId}/${id}`;
-            const responseDelete = await fetch(url, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                }
-            });
-            if (responseDelete.ok) {
-                // Xóa sinh viên khỏi danh sách nếu xóa thành công
-                setStudentList(studentList.filter(student => student.studentId !== id));
-                window.alert(" Bạn đã xóa sinh viên với mã" + " " + id)
-                window.location.reload(true);
-            } else {
-                console.error('Failed to delete student');
-                alert("Xóa sinh viên không thành công!");
-            }
+          const url = `${BE_URL}/api-gv/class/delete/student-list/${classId}/${id}`;
+          const responseDelete = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token,
+            },
+          });
+          if (responseDelete.ok) {
+            setStudentList(studentList.filter((student) => student.studentId !== id));
+            window.alert('Bạn đã xóa sinh viên với mã ' + id);
+            fetchStudentList();
+          } else {
+            console.error('Failed to delete student');
+            window.alert('Xóa sinh viên không thành công!');
+          }
         } catch (error) {
-            console.error('Error deleting student:', error);
-            alert("Đã xảy ra lỗi khi xóa sinh viên!");
+          console.error('Error deleting student:', error);
+          window.alert('Đã xảy ra lỗi khi xóa sinh viên!');
         }
-    };
+      };
     // upload file 
     const handleFileUpload = async () => {
         const token = localStorage.getItem('token');
@@ -95,6 +119,42 @@ const People = () => {
             window.alert('No file selected or class not selected!');
         }
     };
+      const [studentId, setStudentId] = useState('');
+   const [isLoading, setIsLoading] = useState(false);
+  const [students, setStudents] = useState([]);
+
+  const handleAddStudent = async (e) => {
+    e.preventDefault();
+    if (!studentId) {
+      window.alert('Vui lòng điền đủ thông tin.');
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        `${BE_URL}/api-gv/add-student/class/${classId}`,
+        { studentId },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setStudentId('');
+        window.alert('Student added successfully!');
+        fetchStudentList(); // Fetch the updated list of students
+      }
+    } catch (error) {
+      window.alert('Add failed!');
+      setStudentId('');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
     return (
         <div>
@@ -103,9 +163,14 @@ const People = () => {
             <div className='container-people'>
                 <div className='import-people'>
                     <input type='file' ref={fileInputRef} />
-                    <button onClick={handleFileUpload}>Add</button> 
-                    <input type='text' placeholder='Nhập MSSV...' style={{ marginLeft: '160px', marginRight: '-50px'}} />
-                    <button>THÊM</button>
+                    <button onClick={handleFileUpload}>Add</button>
+                    <input
+                        value={studentId}
+                        onChange={(e) => setStudentId(e.target.value)}
+                        type='text'
+                        placeholder='Nhập MSSV...'
+                        style={{ marginLeft: '160px', marginRight: '-50px' }}
+                    />                    <button onClick={handleAddStudent}>THÊM</button>
                 </div>
                 <div className='listpe'>
                     <p className='listpeople'>List Students</p>
@@ -118,7 +183,7 @@ const People = () => {
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                         <button class="btn btn-warning me-md-2" type="edit">EDIT</button>
                                         <button class="btn btn-danger" type="delete" onClick={() => handleDeleteSV(student.accountId)}>DELETE</button>
-                                    </div>  
+                                    </div>
                                 )}
                             </li>
                         ))}
@@ -127,7 +192,7 @@ const People = () => {
             </div>
         </div>
     );
-    
+
 };
 
 export default People;

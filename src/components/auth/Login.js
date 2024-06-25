@@ -47,7 +47,7 @@ const Login = () => {
         console.log("chao type", type);
         if(type==='ADMIN')
           {
-            navigate('/admin');
+            navigate('/homAdmin');
           }
           else{
             navigate('/');
