@@ -142,9 +142,9 @@ const TeacherAddMember = () => {
                     <button onClick={handleSave}>Save</button>
                     <p className='listpeople'>List Students</p>
                     <ul>
-                        {displayedStudentList.map((student) => (
+                        {displayedStudentList.map((student,index) => (
                             <li key={student.accountId}>
-                                <span>{student.classId} - {student.fullName}</span>
+                                <span>{index + 1}. {student.classId} - {student.fullName}</span>
                                 <input
                                     type='checkbox'
                                     onChange={() => handleCheckboxChange(student.accountId)}

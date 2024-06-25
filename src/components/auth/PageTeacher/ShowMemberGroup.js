@@ -7,12 +7,13 @@ import DetailClass from '../DetailClass'
 import css from './css/showmember.css'
 
 const GroupList = () => {
-  const { classId, groupId,projectId } = useParams();
+  const { classId, groupId, projectId } = useParams();
   const [members, setMembers] = useState([]);
   const [maxMembers, setMaxMembers] = useState(0);
   const [currentMembers, setCurrentMembers] = useState(0);
   const navigate = useNavigate();
-  const type=localStorage.getItem('type');
+  const type = localStorage.getItem('type');
+  const groupRegisterMethod = localStorage.getItem('groupRegisterMethod')
   const memberPerGroup = parseInt(localStorage.getItem('memberPerGroup'), 10);
 
   useEffect(() => {
@@ -89,7 +90,8 @@ const GroupList = () => {
         const data = await respone.json();
         setListProject(data);
       }
-      catch (error) {console.log("error to fetching", error);
+      catch (error) {
+        console.log("error to fetching", error);
       }
 
     };
@@ -183,7 +185,7 @@ const GroupList = () => {
     }
   };
   const handleUpdate = (classItem) => {
-    setUpdateData(classItem);setShowUpdateForm(true); // Hiển thị form cập nhật khi nhấp vào "Cập nhật"
+    setUpdateData(classItem); setShowUpdateForm(true); // Hiển thị form cập nhật khi nhấp vào "Cập nhật"
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -194,72 +196,80 @@ const GroupList = () => {
   };
   return (
     <div>
-      <Navbar/>
-      <DetailClass/>
-
+      <Navbar />
+      <DetailClass />
       <div className='showmember'>
         <h1>Group Member</h1>
         <div className='container-chung'>
           <div className='tgn'>
+            {type !== "GV" && groupRegisterMethod !== "RANDOM" && groupRegisterMethod !== "Tearch" && (
+              <button onClick={joinGroup} type="thamgianhom" class="btn btn-outline-thamgianhom">Tham Gia Nhóm</button>
+            )}
             {/* <button onClick={joinGroup}>Tham Gia Nhóm</button> */}
-            <button onClick={joinGroup} type="thamgianhom" class="btn btn-outline-thamgianhom">Tham Gia Nhóm</button>
           </div>
-          <div className='tbc'>
-            <Link to={`/createReport/${classId}/${groupId}`}> <button>Tạo Báo Cáo</button></Link>
-          </div>
+          {type !== "SV" && (
+            <div className='tbc'>
+              <Link to={`/createReport/${classId}/${groupId}`}> <button>Tạo Báo Cáo</button></Link>
+            </div>)}
         </div>
 
         <div className='container-rieng'>
           <div className='left-column'>
-          <p className='listmember'>List Member Group</p>
-          <ul>
-            {members.map(member => (
-              <li key={member.groupId}>{member.memberName}</li>
-            ))}
-          </ul>
+            <p className='listmember'>List Member Group</p>
+            <ul className='member-list'>
+              {members.map((member, index) => (
+                <li key={member.groupId}>
+                  <div className='memberGroup'>
+                    <div className='containItemMember'>
+                      <p>{index + 1}. {member.memberName}</p>
+                      <button className="btn btn-outline-thamgianhom">Remove</button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
+          {/* <ul> */}
+          <div className='right-column'>
+            <p className='project'>Project Of Group</p>
+            {listProject.map(project => (
+              <li key={project.projectId}>
+                <p>Tên đồ án: {project.projectName}<br /> Ngày hết hạn: {project.expiredDay}<br />Thời gian hết hạn:{project.expiredTime}
+                </p>
+                <div className=''>
+                  <button onClick={() => handleDeleteProject(project.projectId)} >Delete</button>
+                  <button onClick={() => handleUpdate(project)} >Update</button>
+                </div>
+                {showUpdateForm && updateData.projectId === project.projectId && (
+                  <div className="update-form">
+                    <form onSubmit={handleSubmit}>
+                      <input
+                        type="text"
+                        name="projectName"
+                        value={updateData.projectName}
+                        onChange={handleInputChange}
+                        placeholder="Tên đồ án"
+                      />
+                      <input
+                        type="text"
+                        name="projectDescription"
+                        value={updateData.projectDescription}
+                        onChange={handleInputChange}
+                        placeholder="Mô tả"
+                      />
+                      <input
+                        type="date"
+                        name="expiredDay"
+                        value={updateData.expiredDay}
+                        onChange={handleInputChange}
+                        placeholder="Ngày hết hạn"
+                      />
+                      <input
+                        type="time"
+                        name="expiredTime"
+                        value={updateData.expiredTime}
 
-        {/* <ul> */}
-        <div className='right-column'>
-          <p className='project'>Project Of Group</p>
-          {listProject.map(project => (
-            <li key={project.projectId}>
-              <p>Tên đồ án: {project.projectName}<br /> Ngày hết hạn: {project.expiredDay}<br />Thời gian hết hạn:{project.expiredTime}
-              </p>
-              <div className=''>
-                <button onClick={() => handleDeleteProject(project.projectId)} >Delete</button>
-                <button onClick={() => handleUpdate(project)} >Update</button>
-              </div>
-              {showUpdateForm && updateData.projectId === project.projectId && (
-                <div className="update-form">
-                  <form onSubmit={handleSubmit}>
-                    <input
-                      type="text"
-                      name="projectName"
-                      value={updateData.projectName}
-                      onChange={handleInputChange}
-                      placeholder="Tên đồ án"
-                    />
-                    <input
-                      type="text"
-                      name="projectDescription"
-                      value={updateData.projectDescription}
-                      onChange={handleInputChange}
-                      placeholder="Mô tả"
-                    />
-                    <input
-                      type="date"
-                      name="expiredDay"
-                      value={updateData.expiredDay}
-                      onChange={handleInputChange}
-                      placeholder="Ngày hết hạn"
-                    />
-                    <input
-                      type="time"
-                      name="expiredTime"
-                      value={updateData.expiredTime}
-
-                      onChange={handleInputChange}placeholder="Thời gian hết hạn"
+                        onChange={handleInputChange} placeholder="Thời gian hết hạn"
                       />
                       <button type="submit">Lưu</button>
                     </form>
@@ -267,15 +277,15 @@ const GroupList = () => {
                 )}
               </li>
             ))}
-          {/* </ul> */}
+            {/* </ul> */}
+          </div>
         </div>
       </div>
-      </div>
-      </div>
-    );
-  };
-  
-  export default GroupList;
+    </div>
+  );
+};
+
+export default GroupList;
 
 
 

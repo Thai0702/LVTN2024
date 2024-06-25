@@ -101,7 +101,7 @@ const App = () => {
           <Route path="/updateReport/:classId/:requestId" element={<UpdateReport />} />
 
 
-          <Route path="/editclass/:classId" element={<EditClass />} />
+          <Route path="/editclass" element={<EditClass />} />
 
 
         </Routes>

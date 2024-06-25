@@ -175,14 +175,14 @@ const People = () => {
                 <div className='listpe'>
                     <p className='listpeople'>List Students</p>
                     <ul>
-                        {studentList.map((student) => (
+                        {studentList.map((student,index) => (
                             <li key={student.classId}>
-                                <span>Mã lớp : {student.classId} - Tên sinh viên : {student.fullName} - Mã sinh viên : {student.studentId}</span>
+                                <span>{index + 1}. Mã lớp : {student.classId} - Tên sinh viên : {student.fullName} - Mã sinh viên : {student.studentId}</span>
                                 {type === "GV" && (
                                     // <button className='btnPeople' onClick={() => handleDeleteSV(student.accountId)}>Delete</button>
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                        <button class="btn btn-warning me-md-2" type="edit">EDIT</button>
-                                        <button class="btn btn-danger" type="delete" onClick={() => handleDeleteSV(student.accountId)}>DELETE</button>
+                                        
+                                        <button class="btn btn-danger" type="delete" onClick={() => handleDeleteSV(student.accountId)}>Remove</button>
                                     </div>
                                 )}
                             </li>

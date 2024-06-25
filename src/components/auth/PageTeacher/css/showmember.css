@@ -71,13 +71,43 @@ h1 {
 
 .left-column {
   background-color: #7cc227; /* Màu nền cho cột trái */
-  margin-right: 10px; /* Khoảng cách từ phải của cột trái */
+  margin-right: 10px;
+  overflow-y: auto  ; /* Khoảng cách từ phải của cột trái */
 }
 
 .right-column {
   background-color: #c5741f; /* Màu nền cho cột phải */
   margin-left: 10px; /* Khoảng cách từ trái của cột phải */
 }
+.memberGroup{
+  display: flex;
+  
+}
+.containItemMember button {
+  
+  margin-right: -100px;
+}
+.containItemMember {
+  background-color: #b7d4a0;
+  display: flex;
+  margin: 10px;
+  justify-content: space-between;
+  align-items: center;
+  width: 400px;
+}
+
+.containItemMember p {
+  margin: 0;
+}
+
+.btn-outline-thamgianhom {
+  margin-left: auto;
+}
+.member-list {
+  list-style-type: none; /* Loại bỏ dấu chấm (bullet points) */
+  padding: 0; /* Loại bỏ padding mặc định */
+}
+
 
 
 

@@ -252,7 +252,6 @@ function Navbar() {
           </Link> : <Link className='link' onClick={() => handleLinkClick('Student')}>
             <div className='menu_1' onClick={toggleStedent}> <img src={student} /> Class Joined</div>
           </Link>}
-
           {isTeachingOpen && (
             <div className='class-list-teach'>
               {classList.map((classItem) => (
@@ -267,7 +266,7 @@ function Navbar() {
             <div className='class-list-teach'>
               {classListStudent.map((classItem) => (
                 <li key={classItem.id}>
-                  <Link to={`/class/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
+                  <Link to={`/class/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }} onClick={() => handleLinkClick(classItem.subjectName)}>{classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
                 </li>
               ))}
             </div>)}

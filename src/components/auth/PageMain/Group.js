@@ -84,52 +84,52 @@ const Group = () => {
         setShowUpdateForm(true); // Hiển thị form cập nhật khi nhấp vào "Cập nhật"
     };
     const handleSubmit = async (e) => {
-    const token = localStorage.getItem('token');
-    for (const key in updateData) {
-        if (!updateData[key]) {
-            alert('Vui lòng điền đầy đủ thông tin.');
-            return;
+        const token = localStorage.getItem('token');
+        for (const key in updateData) {
+            if (!updateData[key]) {
+                alert('Vui lòng điền đầy đủ thông tin.');
+                return;
+            }
         }
-    }
-    e.preventDefault();
-    try {
-      const response = await fetch(`${BE_URL}/api/group/update/${updateData.groupId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        },
-        body: JSON.stringify(updateData),
-      });
-      if (response.ok) {
-        // Cập nhật trực tiếp danh sách lớp sau khi cập nhật thành công
-        setGroupList(prevList =>
-          prevList.map(item =>
-            item.subjectClassId === updateData.groupId ? updateData : item
-          )
-        );
-        setUpdateData({
-            leaderId: '',
-            classId: classId,
-            groupName: '',
-        });
-        setShowUpdateForm(false);
-        window.alert("Update success !!")
-        window.location.reload(true); // Ẩn form cập nhật sau khi cập nhật thành công
-      } else {
-        console.error('Failed to update project');
-      }
-    } catch (error) {
-      console.error('Error updating project:', error);
-    }
-  };
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUpdateData(prevData => ({
-      ...prevData,
-      [name]: value
-    }));
-  };
+        e.preventDefault();
+        try {
+            const response = await fetch(`${BE_URL}/api/group/update/${updateData.groupId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify(updateData),
+            });
+            if (response.ok) {
+                // Cập nhật trực tiếp danh sách lớp sau khi cập nhật thành công
+                setGroupList(prevList =>
+                    prevList.map(item =>
+                        item.subjectClassId === updateData.groupId ? updateData : item
+                    )
+                );
+                setUpdateData({
+                    leaderId: '',
+                    classId: classId,
+                    groupName: '',
+                });
+                setShowUpdateForm(false);
+                window.alert("Update success !!")
+                window.location.reload(true); // Ẩn form cập nhật sau khi cập nhật thành công
+            } else {
+                console.error('Failed to update project');
+            }
+        } catch (error) {
+            console.error('Error updating project:', error);
+        }
+    };
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setUpdateData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
 
     return (
         <div>
@@ -149,25 +149,25 @@ const Group = () => {
                     <p className='listgroup'>List Group</p>
                     <ul>
                         <ul>
-                            {grouptList.map((listgroup) => (
+                            {grouptList.map((listgroup,index) => (
                                 <li key={listgroup.groupId}>
 
-                                    <Link className='link' to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>Mã lớp : {listgroup.classId} - Tên nhóm : {listgroup.groupName}</span></Link>
-                                  
+                                    <Link className='link' to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>{index + 1}. Mã lớp : {listgroup.classId} - Tên nhóm : {listgroup.groupName}</span></Link>
+
                                     {/* <Link to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>{listgroup.classId} - {listgroup.groupName}</span></Link> */}
-                                    
+
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                         <button onClick={() => handleDeleteGroup(listgroup.groupId)} class="btn btn-danger" type="delete">DELETE</button>
-                                        <button onClick={() => handleUpdate(listgroup)} class="btn btn-update" type="update" 
-                                        style={{
-                                            backgroundColor: 'gray',
-                                            color: 'white',
-                                            border: 'none',
-                                            padding: '10px 20px',
-                                            cursor: 'pointer',
-                                            borderRadius: '5px'
+                                        <button onClick={() => handleUpdate(listgroup)} class="btn btn-update" type="update"
+                                            style={{
+                                                backgroundColor: 'gray',
+                                                color: 'white',
+                                                border: 'none',
+                                                padding: '10px 20px',
+                                                cursor: 'pointer',
+                                                borderRadius: '5px'
                                             }}>
-                                                Update
+                                            Update
                                         </button>
                                     </div>
 
@@ -187,7 +187,7 @@ const Group = () => {
                                                     value={updateData.groupName}
                                                     onChange={handleInputChange}
                                                     placeholder="Tên nhóm"
-                                                />                                               
+                                                />
                                                 <button type="submit">Lưu</button>
                                             </form>
                                         </div>

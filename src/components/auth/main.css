@@ -339,9 +339,9 @@
     margin-right: 25px;
     background-color: #b0c1cc;
     width: 200px;
+    border-radius: 10px;
     text-align: center;
     height: 200px;
-    border: 1px solid black; /* Đường viền xung quanh mỗi mục lớp */
     margin-bottom: 10px; /* Khoảng cách giữa các mục lớp */
     padding: 10px; /* Padding bên trong mỗi mục lớp */
 }
@@ -361,8 +361,11 @@
     padding-top: 10px;
     width: 199px;
     margin-left: -10px;
+    
     margin-top: -10px;
-    border: 1px solid black;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    
 }
 .button-del
 {

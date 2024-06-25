@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import Navbar from '../Navbar';
 import DetailClass from '../DetailClass';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { BE_URL } from '../../../utils/Url_request';
-
+import mehthodGroup from './css/mehthodGroup.css'
 const MethodAddGroup = () => {
     const { classId } = useParams();
     const subjectName = localStorage.getItem('subjectName')
     const schoolYear = localStorage.getItem('schoolYear')
+    const groupRegisterMethod = localStorage.getItem('groupRegisterMethod')
+    const nagavite = useNavigate()
     console.log("hello name", subjectName)
-  
+
     console.log("hello name", schoolYear)
     const [updateData, setUpdateData] = useState({
-        subjectName:subjectName,
-        schoolYear:schoolYear,
+        subjectName: subjectName,
+        schoolYear: schoolYear,
         numberOfGroup: '',
         memberPerGroup: '',
         groupRegisterMethod: ''
@@ -44,6 +46,16 @@ const MethodAddGroup = () => {
                     memberPerGroup: '',
                     groupRegisterMethod: ''
                 });
+                if (groupRegisterMethod === 'Tearch') {
+                    nagavite(`/tearchAdd/${classId}`)
+                }
+                else if(groupRegisterMethod === 'RANDOM'){
+                    nagavite(`/people/${classId}`)
+                }
+                else{
+                    nagavite(`/group/${classId}`)
+                }
+
             } else {
                 console.error('Failed to update class');
             }
@@ -68,7 +80,7 @@ const MethodAddGroup = () => {
         <div>
             <Navbar />
             <DetailClass />
-            <div className="update-form">
+            <div className="mehthodGroup">
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
@@ -84,8 +96,7 @@ const MethodAddGroup = () => {
                         onChange={handleInputChange}
                         placeholder="Số lượng thành viên trong nhóm"
                     />
-                    <select
-                        className='input'
+                    <select                        
                         name='groupRegisterMethod'
                         value={updateData.groupRegisterMethod}
                         onChange={handleInputChange}
