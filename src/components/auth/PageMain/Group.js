@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../Navbar';
-import DetailClass from '../DetailClass'
+import DetailClass from '../DetailClass';
 import { BE_URL } from '../../../utils/Url_request';
-import groupcss from './css/group.css'
+import './css/group.css';
 
 const Group = () => {
-    const { classId, groupId } = useParams();
-    // show group of class
-    /*show list group of class */
-    const [grouptList, setGroupList] = useState([]);
+    const { classId } = useParams();
+    const navigate = useNavigate();
+    const numberOfGroup = localStorage.getItem('numberOfGroup');
+    console.log("chao so luong",numberOfGroup)
+    const [groupList, setGroupList] = useState([]);
+    const [showUpdateForm, setShowUpdateForm] = useState(false);
+    const [updateData, setUpdateData] = useState({
+        leaderId: '',
+        classId: classId,
+        groupName: '',
+    });
+
     useEffect(() => {
-        // Fetch the list of students
         const token = localStorage.getItem('token');
         fetch(`${BE_URL}/api-gv/classId/group-list/${classId}`, {
             method: 'GET',
@@ -25,13 +31,13 @@ const Group = () => {
             .then(data => {
                 setGroupList(data);
             })
-            .catch(error => console.error('Error fetching student list:', error));
+            .catch(error => console.error('Error fetching group list:', error));
     }, [classId]);
-    // delete group
+
     const handleDeleteGroup = async (groupId) => {
         if (!groupId) {
-            console.error('group ID is missing or undefined');
-            window.alert('group ID is missing or undefined');
+            console.error('Group ID is missing or undefined');
+            window.alert('Group ID is missing or undefined');
             return;
         }
 
@@ -42,9 +48,8 @@ const Group = () => {
             return;
         }
 
-        const confirmed = window.confirm("Bạn có chắc muốn xóa group này không?");
+        const confirmed = window.confirm("Bạn có chắc muốn xóa nhóm này không?");
         if (!confirmed) {
-            // Do not delete if user does not confirm
             return;
         }
 
@@ -58,32 +63,26 @@ const Group = () => {
             });
 
             if (responseDelete.ok) {
-                // Remove project from list if deletion is successful
-                setGroupList(grouptList.filter(group => group.groupId !== groupId));
-                window.alert('Xóa group thành công.');
+                setGroupList(groupList.filter(group => group.groupId !== groupId));
+                window.alert('Xóa nhóm thành công.');
             } else {
                 const errorData = await responseDelete.json();
-                console.error('Error deletinggroup:', errorData.message);
-                window.alert('Xảy ra lỗi khi xóa group: ' + errorData.message);
+                console.error('Error deleting group:', errorData.message);
+                window.alert('Xảy ra lỗi khi xóa nhóm: ' + errorData.message);
             }
         } catch (error) {
             console.error('Error deleting group:', error);
-            window.alert('Xảy ra lỗi khi xóa group.');
+            window.alert('Xảy ra lỗi khi xóa nhóm.');
         }
     };
-    // update
 
-    const [showUpdateForm, setShowUpdateForm] = useState([]);
-    const [updateData, setUpdateData] = useState({
-        leaderId: '',
-        classId: classId,
-        groupName: '',
-    });
-    const handleUpdate = (classItem) => {
-        setUpdateData(classItem);
-        setShowUpdateForm(true); // Hiển thị form cập nhật khi nhấp vào "Cập nhật"
+    const handleUpdate = (groupItem) => {
+        setUpdateData(groupItem);
+        setShowUpdateForm(true);
     };
+
     const handleSubmit = async (e) => {
+        e.preventDefault();
         const token = localStorage.getItem('token');
         for (const key in updateData) {
             if (!updateData[key]) {
@@ -91,7 +90,7 @@ const Group = () => {
                 return;
             }
         }
-        e.preventDefault();
+
         try {
             const response = await fetch(`${BE_URL}/api/group/update/${updateData.groupId}`, {
                 method: 'PUT',
@@ -101,11 +100,11 @@ const Group = () => {
                 },
                 body: JSON.stringify(updateData),
             });
+
             if (response.ok) {
-                // Cập nhật trực tiếp danh sách lớp sau khi cập nhật thành công
                 setGroupList(prevList =>
                     prevList.map(item =>
-                        item.subjectClassId === updateData.groupId ? updateData : item
+                        item.groupId === updateData.groupId ? updateData : item
                     )
                 );
                 setUpdateData({
@@ -114,15 +113,15 @@ const Group = () => {
                     groupName: '',
                 });
                 setShowUpdateForm(false);
-                window.alert("Update success !!")
-                window.location.reload(true); // Ẩn form cập nhật sau khi cập nhật thành công
+                window.alert("Update success!");
             } else {
-                console.error('Failed to update project');
+                console.error('Failed to update group');
             }
         } catch (error) {
-            console.error('Error updating project:', error);
+            console.error('Error updating group:', error);
         }
     };
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUpdateData(prevData => ({
@@ -131,70 +130,69 @@ const Group = () => {
         }));
     };
 
+    const handleAddGroupClick = () => {
+        if (numberOfGroup === 'null' || numberOfGroup === null || isNaN(numberOfGroup)||numberOfGroup === 'null') {
+            alert('Vui lòng chọn số lượng nhóm');
+        } else if (groupList.length >= numberOfGroup) {
+            alert('Số lượng nhóm đã đạt giới hạn');
+        } else {
+            navigate(`/addGroup/${classId}`);
+        }
+    };
+
     return (
         <div>
             <Navbar />
             <DetailClass />
             <div className='container-group'>
                 <div className='create-work'>
-                    {/* <img src={add} alt='Create' /> */}
-
-                    <Link className='link' to={`/addGroup/${classId}`}><p className='add-group-text'>Add group</p></Link>
-
-                    {/* <Link to={`/addGroup/${classId}`}><p className='add-group-text'>Add group</p></Link> */}
-                    {/* <Link to={`/addGroup/${classId}`}><button className='add-group-text'></button></Link> */}
-
+                    <button className='link add-group-text' onClick={handleAddGroupClick}>Add group</button>
                 </div>
                 <div className='listg'>
                     <p className='listgroup'>List Group</p>
                     <ul>
-                        <ul>
-                            {grouptList.map((listgroup,index) => (
-                                <li key={listgroup.groupId}>
-
-                                    <Link className='link' to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>{index + 1}. Mã lớp : {listgroup.classId} - Tên nhóm : {listgroup.groupName}</span></Link>
-
-                                    {/* <Link to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}><span>{listgroup.classId} - {listgroup.groupName}</span></Link> */}
-
-                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                        <button onClick={() => handleDeleteGroup(listgroup.groupId)} class="btn btn-danger" type="delete">DELETE</button>
-                                        <button onClick={() => handleUpdate(listgroup)} class="btn btn-update" type="update"
-                                            style={{
-                                                backgroundColor: 'gray',
-                                                color: 'white',
-                                                border: 'none',
-                                                padding: '10px 20px',
-                                                cursor: 'pointer',
-                                                borderRadius: '5px'
-                                            }}>
-                                            Update
-                                        </button>
+                        {groupList.map((listgroup, index) => (
+                            <li key={listgroup.groupId}>
+                                <Link className='link' to={`/showmemberGroup/${listgroup.classId}/${listgroup.groupId}`}>
+                                    <span>{index + 1}. Mã lớp: {listgroup.classId} - Tên nhóm: {listgroup.groupName}</span>
+                                </Link>
+                                <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button onClick={() => handleDeleteGroup(listgroup.groupId)} className="btn btn-danger" type="delete">DELETE</button>
+                                    <button onClick={() => handleUpdate(listgroup)} className="btn btn-update" type="update"
+                                        style={{
+                                            backgroundColor: 'gray',
+                                            color: 'white',
+                                            border: 'none',
+                                            padding: '10px 20px',
+                                            cursor: 'pointer',
+                                            borderRadius: '5px'
+                                        }}>
+                                        Update
+                                    </button>
+                                </div>
+                                {showUpdateForm && updateData.groupId === listgroup.groupId && (
+                                    <div className="update-form">
+                                        <form onSubmit={handleSubmit}>
+                                            <input
+                                                type="text"
+                                                name="leaderId"
+                                                value={updateData.leaderId}
+                                                onChange={handleInputChange}
+                                                placeholder="Mã leader"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="groupName"
+                                                value={updateData.groupName}
+                                                onChange={handleInputChange}
+                                                placeholder="Tên nhóm"
+                                            />
+                                            <button type="submit">Lưu</button>
+                                        </form>
                                     </div>
-
-                                    {showUpdateForm && updateData.groupId === listgroup.groupId && (
-                                        <div className="update-form">
-                                            <form onSubmit={handleSubmit}>
-                                                <input
-                                                    type="text"
-                                                    name="leaderId"
-                                                    value={updateData.leaderId}
-                                                    onChange={handleInputChange}
-                                                    placeholder="Mã leader"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    name="groupName"
-                                                    value={updateData.groupName}
-                                                    onChange={handleInputChange}
-                                                    placeholder="Tên nhóm"
-                                                />
-                                                <button type="submit">Lưu</button>
-                                            </form>
-                                        </div>
-                                    )}
-                                </li>
-                            ))}
-                        </ul>
+                                )}
+                            </li>
+                        ))}
                     </ul>
                 </div>
             </div>

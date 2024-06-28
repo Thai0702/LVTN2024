@@ -26,27 +26,34 @@ const ClassDetailPage = () => {
           {type === "GV" ? (
             <>
               <Link className='link' to={`/stream/${classId}`}>
-                <div className='header-1'>Stream</div>
+                <div className='header-1'>Chi tiết</div>
               </Link>
               <Link className='link' to={`/people/${classId}`}>
-                <div className='header-1'>People</div>
-              </Link>
-              <Link className='link' to={`/project/${classId}`}>
-                <div className='header-1'>Project</div>
-              </Link>
-              <Link className='link' to={`/group/${classId}`}>
-                <div className='header-1'>Group</div>
+                <div className='header-1'>Thành viên</div>
               </Link>
               <Link className='link' to={`/methodGroup/${classId}`}>
                 <div className='header-1'>Chọn phương thức tạo nhóm</div>
               </Link>
+              <Link className='link' to={`/group/${classId}`}>
+                <div className='header-1'>Tạo nhóm</div>
+              </Link>
               {isGroupRegisterMethodValid && (
                 <Link className='link' to={`/tearchAdd/${classId}`}>
                   <div className='header-1'>
-                    {groupRegisterMethod + " add Member"}
+                    {groupRegisterMethod ? 'Giáo viên thêm thành viên vào nhóm' : 'Default Text'}
                   </div>
                 </Link>
               )}
+              {/* {isGroupRegisterMethodValid && (
+                <Link className='link' to={`/tearchAdd/${classId}`}>
+                  <div className='header-1'>
+                    {groupRegisterMethod+ " thêm thành viên vào nhóm"}
+                  </div>
+                </Link>
+              )} */}
+               <Link className='link' to={`/project/${classId}`}>
+                <div className='header-1'>Tạo dự án</div>
+              </Link>
             </>
           ) : (
             <>

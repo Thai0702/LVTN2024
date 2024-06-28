@@ -14,32 +14,6 @@ const People = () => {
     const [loading, setLoading] = useState(true);
     const type = localStorage.getItem('type');
     const navigate = useNavigate();
-    // useEffect(() => {
-    //     const token = localStorage.getItem('token');
-    //     const fetchStudentList = async () => {
-    //         try {
-    //             const response = await fetch(`${BE_URL}/api/class/student-list/${classId}`, {
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                     'Authorization': 'Bearer ' + token
-    //                 }
-    //             });
-
-    //             if (!response.ok) {
-    //                 throw new Error('Network response was not ok');
-    //             }
-
-    //             const data = await response.json();
-    //             setStudentList(data);
-    //         } catch (error) {
-    //             console.error('Error fetching student list:', error);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-
-    //     fetchStudentList();
-    // }, [classId]);
     const fetchStudentList = async () => {
         const token = localStorage.getItem('token');
         try {

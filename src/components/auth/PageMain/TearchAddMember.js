@@ -9,10 +9,12 @@ const TeacherAddMember = () => {
     const [studentList, setStudentList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedStudents, setSelectedStudents] = useState([]);
-    const [groupName, setGroupName] = useState('');
+    const [groupId, setGroupName] = useState('');
     const [groupList, setGroupList] = useState([]);
     const [displayedStudentList, setDisplayedStudentList] = useState([]);
     const token = localStorage.getItem('token');
+    const memberPerGroup = parseInt(localStorage.getItem('memberPerGroup'), 10);
+    
 
     // Load group list
     useEffect(() => {
@@ -64,6 +66,10 @@ const TeacherAddMember = () => {
             if (prevSelectedStudents.includes(studentId)) {
                 return prevSelectedStudents.filter(id => id !== studentId);
             } else {
+                if (prevSelectedStudents.length >= memberPerGroup) {
+                    alert('Số lượng thành viên đã đạt giới hạn');
+                    return prevSelectedStudents;
+                }
                 return [...prevSelectedStudents, studentId];
             }
         });
@@ -71,14 +77,14 @@ const TeacherAddMember = () => {
 
     // Handle save
     const handleSave = async () => {
-        if (selectedStudents.length === 0 || !groupName) {
+        if (selectedStudents.length === 0 || !groupId) {
             alert('Please select at least one student and a group.');
             return;
         }
 
         const memberList = selectedStudents.map((studentId) => ({
             classId: parseInt(classId),
-            groupName: groupName,
+            groupId: groupId,
             accountId: studentId
         }));
 
@@ -98,7 +104,6 @@ const TeacherAddMember = () => {
                 const updatedLocalStorage = JSON.parse(localStorage.getItem('selectedStudents')) || [];
                 const newSelectedStudents = [...updatedLocalStorage, ...selectedStudents];
                 localStorage.setItem('selectedStudents', JSON.stringify(newSelectedStudents));
-
                 // Update displayedStudentList to remove selected students
                 const updatedDisplayedList = displayedStudentList.filter(student => !selectedStudents.includes(student.accountId));
                 setDisplayedStudentList(updatedDisplayedList);
@@ -120,21 +125,25 @@ const TeacherAddMember = () => {
             setDisplayedStudentList(updatedDisplayedList);
         };
 
-        loadDisplayedListFromLocalStorage();
+        if (studentList.length > 0) {
+            loadDisplayedListFromLocalStorage();
+        }
     }, [studentList]);
+
     if (loading) {
         return <p>Loading...</p>;
     }
+
     return (
         <div>
             <Navbar />
             <DetailClass />
             <div className='container-people'>
                 <div className='listpe'>
-                    <select onChange={(e) => setGroupName(e.target.value)} value={groupName} style={{ marginLeft: '83px' }}>
+                    <select onChange={(e) => setGroupName(e.target.value)} value={groupId} style={{ marginLeft: '83px' }}>
                         <option value=''>Select Group</option>
                         {groupList.map((group) => (
-                            <option key={group.groupId} value={group.groupName}>
+                            <option key={group.groupId} value={group.groupId}>
                                 {group.groupName}
                             </option>
                         ))}
@@ -142,7 +151,7 @@ const TeacherAddMember = () => {
                     <button onClick={handleSave}>Save</button>
                     <p className='listpeople'>List Students</p>
                     <ul>
-                        {displayedStudentList.map((student,index) => (
+                        {displayedStudentList.map((student, index) => (
                             <li key={student.accountId}>
                                 <span>{index + 1}. {student.classId} - {student.fullName}</span>
                                 <input
@@ -158,4 +167,5 @@ const TeacherAddMember = () => {
         </div>
     );
 }
+
 export default TeacherAddMember;

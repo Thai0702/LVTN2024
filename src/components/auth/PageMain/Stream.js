@@ -51,7 +51,10 @@ const Stream = () => {
                 localStorage.setItem('subjectName', subjectName);
                 const { schoolYear } = classDetailData
                 localStorage.setItem('schoolYear', schoolYear);
-                console.log("hhee:", memberPerGroup)
+                console.log("số lượng thành viên nhóm:", memberPerGroup)
+                const {numberOfGroup} = classDetailData
+                localStorage.setItem('schoolYear', numberOfGroup);
+                console.log("số lượng nhóm:", numberOfGroup)
             } catch (error) {
                 console.error('Error:', error);
                 setError('Failed to fetch class detail');

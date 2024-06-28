@@ -194,6 +194,35 @@ const GroupList = () => {
       [name]: value
     }));
   };
+  // delete student out group
+  const handleDeleteSVOutGroup = async (id) => {
+    const token = localStorage.getItem('token');
+    const confirmed = window.confirm('Bạn có chắc muốn xóa thành viên này không?');
+    if (!confirmed) {
+      return;
+    }
+    try {
+      const url = `${BE_URL}/api-gv/delete/group/${groupId}/members/${id}`;
+      const responseDelete = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+        },
+      });
+      if (responseDelete.ok) {
+        setMembers(prevMembers => prevMembers.filter(member => member.accountId !== id));
+        setCurrentMembers(prev => prev - 1);
+        window.alert('Bạn đã xóa sinh viên với mã ' + id);
+      } else {
+        console.error('Failed to delete student');
+        window.alert('Xóa sinh viên không thành công!');
+      }
+    } catch (error) {
+      console.error('Error deleting student:', error);
+      window.alert('Đã xảy ra lỗi khi xóa sinh viên!');
+    }
+  };
   return (
     <div>
       <Navbar />
@@ -222,7 +251,7 @@ const GroupList = () => {
                   <div className='memberGroup'>
                     <div className='containItemMember'>
                       <p>{index + 1}. {member.memberName}</p>
-                      <button className="btn btn-outline-thamgianhom">Remove</button>
+                      <button className="btn btn-outline-thamgianhom" onClick={() => handleDeleteSVOutGroup(member.accountId)}>Remove</button>
                     </div>
                   </div>
                 </li>
