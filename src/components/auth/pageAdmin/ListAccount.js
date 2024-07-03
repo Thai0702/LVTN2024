@@ -72,9 +72,9 @@ const ListAccount = () => {
                 <input type='file' ref={fileInputRef} />
                 <button type="button" class="btn btn-secondary"  onClick={handleFileUpload}>Add</button>
                 <ul>
-                    {listaccount.map((account) => (
+                    {listaccount.map((account, index) => (
                         <li key={account.userId}>
-                            <span>{account.fullName}-{account.email}</span>
+                            <span>{index + 1}. Tên : {account.fullName}  -  Email : {account.email}</span>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <button class="btn btn-warning me-md-2" type="edit">EDIT</button>
                                 <button class="btn btn-danger" type="delete">DELETE</button>

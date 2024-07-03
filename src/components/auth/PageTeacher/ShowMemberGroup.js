@@ -15,14 +15,14 @@ const GroupList = () => {
   const type = localStorage.getItem('type');
   const groupRegisterMethod = localStorage.getItem('groupRegisterMethod')
   const memberPerGroup = parseInt(localStorage.getItem('memberPerGroup'), 10);
-
+  const [canCreateReport, setCanCreateReport] = useState(true); // State to determine if report can be created
+  console.log("so luong thanh vien cua nhom:", memberPerGroup)
   useEffect(() => {
     const userToken = localStorage.getItem('token');
     if (!userToken) {
       console.error('No token found');
       return;
     }
-
     fetch(`${BE_URL}/api/class/${classId}/group/${groupId}/students`, {
       headers: {
         'Authorization': `Bearer ${userToken}`
@@ -38,16 +38,17 @@ const GroupList = () => {
   }, [classId, groupId, memberPerGroup]);
 
   const joinGroup = async () => {
-    if (currentMembers >= maxMembers) {
+    if (currentMembers > maxMembers) {
       window.alert("Nhóm đã đủ thành viên");
       return;
     }
-
+    
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('No token found');
       return;
     }
+    
     try {
       const response = await fetch(`${BE_URL}/api/class/${classId}/group/${groupId}/join-group`, {
         method: 'POST',
@@ -56,47 +57,68 @@ const GroupList = () => {
           'Authorization': 'Bearer ' + token
         }
       });
-
+  
       if (response.status === 200) {
-        window.alert("Join nhóm thành công !");
+        window.alert("Tham gia nhóm thành công!");
         window.location.reload(false);
+      } else if (response.status === 400) {
+        const errorData = await response.json();
+        if (errorData.message === "Student already exists in a group for this class") {
+          window.alert("Sinh viên đã có trong nhóm.");
+        } else if (errorData.message === "GROUP FULL") {
+          window.alert("Nhóm đã đủ thành viên.");
+        } else {
+          window.alert("Tham gia nhóm thất bại: " + errorData.message);
+        }
       } else {
         const errorData = await response.json();
         console.error('Error:', errorData.message);
-        window.alert("Join thất bại: " + errorData.message);
+        window.alert("Tham gia nhóm thất bại: " + errorData.message);
       }
     } catch (error) {
       console.error('Error:', error);
-      window.alert("Vui lòng kiểm tra ! Lỗi khi join.");
+      window.alert("Tham gia nhóm thất bại !!");
     }
   };
-
+  
   // get list project of group
   const [listProject, setListProject] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const fettListProject = async () => {
+    const fetchListProject = async () => {
       try {
-        const respone = await fetch(`${BE_URL}/api-gv/group/projects/${groupId}`, {
+        const response = await fetch(`${BE_URL}/api-gv/group/projects/${groupId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
           }
         });
-        if (!respone.ok) {
+        if (!response.ok) {
           throw new Error("Network response not ok");
         }
-        const data = await respone.json();
+        const data = await response.json();
         setListProject(data);
+        // Update canCreateReport state based on whether listProject is empty or not
+        setCanCreateReport(data.length > 0);
+      } catch (error) {
+        console.log("Error fetching projects:", error);
       }
-      catch (error) {
-        console.log("error to fetching", error);
-      }
-
     };
-    fettListProject();
-  },)
+    fetchListProject();
+  }, [groupId]);
+  const handleCreateReport = () => {
+    if (!canCreateReport) {
+      window.alert('Vui lòng tạo ít nhất một project trước khi tạo báo cáo.');
+      navigate(`/project/${classId}`);
+
+    }
+    else {
+      navigate(`/createReport/${classId}/${groupId}`);
+    }
+    // Handle create report logic
+
+  };
   // delete project og group
   const handleDeleteProject = async (projectId) => {
     if (!projectId) {
@@ -238,7 +260,7 @@ const GroupList = () => {
           </div>
           {type !== "SV" && (
             <div className='tbc'>
-              <Link to={`/createReport/${classId}/${groupId}`}> <button>Tạo Báo Cáo</button></Link>
+              <button onClick={handleCreateReport}>Tạo Báo Cáo</button>
             </div>)}
         </div>
 
@@ -251,7 +273,10 @@ const GroupList = () => {
                   <div className='memberGroup'>
                     <div className='containItemMember'>
                       <p>{index + 1}. {member.memberName}</p>
-                      <button className="btn btn-outline-thamgianhom" onClick={() => handleDeleteSVOutGroup(member.accountId)}>Remove</button>
+                      {type !== "SV" && (
+                        <div className='tbc'>
+                          <button className="btn btn-outline-thamgianhom" onClick={() => handleDeleteSVOutGroup(member.accountId)}>Remove</button>
+                        </div>)}
                     </div>
                   </div>
                 </li>

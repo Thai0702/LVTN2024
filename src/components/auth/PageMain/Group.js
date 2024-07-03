@@ -9,7 +9,7 @@ const Group = () => {
     const { classId } = useParams();
     const navigate = useNavigate();
     const numberOfGroup = localStorage.getItem('numberOfGroup');
-    console.log("chao so luong",numberOfGroup)
+    console.log("chao so luong", numberOfGroup)
     const [groupList, setGroupList] = useState([]);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [updateData, setUpdateData] = useState({
@@ -17,7 +17,6 @@ const Group = () => {
         classId: classId,
         groupName: '',
     });
-
     useEffect(() => {
         const token = localStorage.getItem('token');
         fetch(`${BE_URL}/api-gv/classId/group-list/${classId}`, {
@@ -40,7 +39,6 @@ const Group = () => {
             window.alert('Group ID is missing or undefined');
             return;
         }
-
         const token = localStorage.getItem('token');
         if (!token) {
             console.error('No token found');
@@ -129,11 +127,15 @@ const Group = () => {
             [name]: value
         }));
     };
-
+    const nn = groupList.length
+    console.log("chao sô lượng nhom", nn);
     const handleAddGroupClick = () => {
-        if (numberOfGroup === 'null' || numberOfGroup === null || isNaN(numberOfGroup)||numberOfGroup === 'null') {
+        if (numberOfGroup === 'null' || numberOfGroup === null
+            || isNaN(numberOfGroup) || numberOfGroup === 0
+        ) {
             alert('Vui lòng chọn số lượng nhóm');
-        } else if (groupList.length >= numberOfGroup) {
+            navigate(`/methodGroup/${classId}`)
+        } else if (groupList.length >=numberOfGroup) {
             alert('Số lượng nhóm đã đạt giới hạn');
         } else {
             navigate(`/addGroup/${classId}`);

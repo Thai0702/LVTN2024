@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { BE_URL } from '../../../utils/Url_request';
 import Navbar from '../Navbar';
 import DetailClass from '../DetailClass'
 const Project = () => {
+    const navigate = useNavigate();
     const createClassRef = useRef();
     const { classId } = useParams();
     const [error, setError] = useState('');
@@ -49,6 +50,7 @@ const Project = () => {
                 setExpiredDay('');
                 setExpiredTime('');
                 window.alert("Project created successfully !");
+                navigate(`/group/${classId}`);
             }
         } catch (error) {
             window.alert("Add fail !");
@@ -70,6 +72,7 @@ const Project = () => {
             .then(data => {
                 setGroupList(data);
             })
+            
             .catch(error => console.error('Error fetching student list:', error));
     }, [classId]);
     return (

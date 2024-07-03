@@ -27,7 +27,7 @@ const ClassDetailPage = () => {
         setError('Vui lòng nhập một số nguyên dương.');
         return;
       }
-    
+      
       if (groupSize > students.length) {
         setError('Không đủ sinh viên để tạo nhóm.');
         return;

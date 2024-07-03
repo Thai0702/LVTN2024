@@ -53,7 +53,7 @@ const Stream = () => {
                 localStorage.setItem('schoolYear', schoolYear);
                 console.log("số lượng thành viên nhóm:", memberPerGroup)
                 const {numberOfGroup} = classDetailData
-                localStorage.setItem('schoolYear', numberOfGroup);
+                localStorage.setItem('numberOfGroup', numberOfGroup);
                 console.log("số lượng nhóm:", numberOfGroup)
             } catch (error) {
                 console.error('Error:', error);

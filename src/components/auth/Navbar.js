@@ -5,6 +5,7 @@ import menu from './img/menu.png'; // Import the image
 import home from './img/home.png';
 import axios from 'axios';
 import setting from './img/setting.png';
+import arow from './img/arow.png'
 import teach from './img/teach.png';
 import { useParams } from 'react-router-dom';
 import add from './img/add.png';
@@ -102,7 +103,7 @@ function Navbar() {
     fetchClasses();
   }, []);
   const fullName = localStorage.getItem('fullName');
-
+  const subjectName = localStorage.getItem('subjectName');
   //get all class of 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -139,7 +140,11 @@ function Navbar() {
 
   // Chạy lại effect khi classList thay đổi
   const handleLinkClick = (text) => {
-    const newText = `Suport   >  ${text}`;
+    const newText = (
+      <>
+        Suport <img src={arow} alt="Arrow" /> {text}
+      </>
+    );
     setProjectText(newText);
     localStorage.setItem('projectText', newText);
     setIsMenuOpen(true);
@@ -197,7 +202,6 @@ function Navbar() {
         setLoading(false);
         return;
       }
-
       try {
         const response = await fetch(`${BE_URL}/api-gv/class/get/${classId}`, {
           method: 'GET',
@@ -236,12 +240,14 @@ function Navbar() {
   }
   return (
     <header className="header">
-
       <div className="logo" onClick={toggleMenu}>
-        <img src={menu} alt="Menu" /> {projectText} {/* Dynamic project text */}
-      </div>
-
-
+    <img src={menu} alt="Menu" /> 
+    {subjectName ? (
+        <>Suport <img src={arow} alt="Arrow" /> {subjectName}</>
+    ) : (
+        projectText
+    )}
+</div>
       {isMenuOpen && (
         <div className="additional-components">
           <Link to='/' className='link' onClick={() => handleLinkClick('Home')}>
