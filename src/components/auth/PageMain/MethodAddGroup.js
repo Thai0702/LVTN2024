@@ -133,36 +133,51 @@ const MethodAddGroup = () => {
         <div>
             <Navbar />
             <DetailClass />
-            <div className="mehthodGroup">
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        name="numberOfGroup"
-                        value={updateData.numberOfGroup}
-                        onChange={handleInputChange}
-                        placeholder="Số lượng nhóm"
-                    />
-                    <input
-                        type="text"
-                        name="memberPerGroup"
-                        value={updateData.memberPerGroup}
-                        onChange={handleInputChange}
-                        placeholder="Số lượng thành viên trong nhóm"
-                    />
-                    <select                        
-                        name='groupRegisterMethod'
-                        value={updateData.groupRegisterMethod}
-                        onChange={handleInputChange}
-                    >
-                        <option value=''>Chọn phương thức tạo nhóm</option>
-                        <option value='Student'>Sinh viên chọn nhóm</option>
-                        <option value='Teacher'>Giảng viên chọn nhóm</option>
-                        {updateData.groupRegisterMethod !== 'Student' && updateData.groupRegisterMethod !== 'Teacher' && (
-                            <option value='RANDOM'>Random</option>
-                        )}
-                    </select>
-                    <button type="submit">Lưu</button>
-                </form>
+            <div className='container-method'>
+                <div className="update-form">
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-method">
+                            <label>Số lượng nhóm: </label>
+                            <input
+                                type="text"
+                                name="numberOfGroup"
+                                value={updateData.numberOfGroup}
+                                onChange={handleInputChange}
+                                placeholder="Số lượng nhóm"
+                                // style={{marginLeft: '100px'}}
+                            />
+                        </div>
+                        <div className="form-method">
+                            <label style={{marginRight: '100px'}}>Số lượng thành viên:</label>
+                            <input
+                                type="text"
+                                name="memberPerGroup"
+                                value={updateData.memberPerGroup}
+                                onChange={handleInputChange}
+                                placeholder="Số lượng thành viên"
+                                // style={{marginLeft: '0px'}}
+                            />
+                        </div>
+                        <div className="form-method">
+                            <label>Phương thức: </label>
+                            <br></br>
+                            <select
+                                className='input'
+                                name='groupRegisterMethod'
+                                value={updateData.groupRegisterMethod}
+                                onChange={handleInputChange}
+                                style={{marginLeft: '0px'}}
+                            >
+                            <br></br>
+                                <option value=''>Chọn phương thức tạo nhóm</option>
+                                <option value='Student'>Sinh viên chọn nhóm</option>
+                                <option value='Teacher'>Giảng viên chọn nhóm</option>
+                                <option value='RANDOM'>Random</option>
+                            </select>
+                        </div>
+                        <button className='btn-pttn' type="submit">Lưu</button>
+                    </form>
+                </div>
             </div>
         </div>
     );

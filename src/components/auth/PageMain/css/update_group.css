@@ -1,0 +1,20 @@
+.horizontal-form {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* khoảng cách giữa các phần tử */
+  }
+  
+  .form-update-group {
+    display: flex;
+    align-items: center;
+    white-space: nowrap; /* giữ chữ không xuống dòng */
+  }
+  
+  .form-update-group p {
+    margin: 0 5px 0 0; /* khoảng cách giữa nhãn và input */
+  }
+  
+  button {
+    padding: 5px 10px; /* kích thước vừa đủ cho button */
+  }
+  

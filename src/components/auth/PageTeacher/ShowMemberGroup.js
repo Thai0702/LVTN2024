@@ -249,89 +249,109 @@ const GroupList = () => {
     <div>
       <Navbar />
       <DetailClass />
-      <div className='showmember'>
+      <div className="showmember">
         <h1>Group Member</h1>
-        <div className='container-chung'>
-          <div className='tgn'>
-            {type !== "GV" && groupRegisterMethod !== "RANDOM" && groupRegisterMethod !== "Tearch" && (
-              <button onClick={joinGroup} type="thamgianhom" class="btn btn-outline-thamgianhom">Tham Gia Nhóm</button>
+        <div className="container-chung">
+          <div className="tgn">
+            {type !== "GV" &&
+              groupRegisterMethod !== "RANDOM" &&
+              groupRegisterMethod !== "Tearch" && (
+                <button onClick={joinGroup} type="thamgianhom" class="btn btn-outline-thamgianhom">Tham Gia Nhóm</button>
             )}
-            {/* <button onClick={joinGroup}>Tham Gia Nhóm</button> */}
           </div>
           {type !== "SV" && (
-            <div className='tbc'>
-              <button onClick={handleCreateReport}>Tạo Báo Cáo</button>
-            </div>)}
+            <div className="tbc">
+              <Link to={`/createReport/${classId}/${groupId}`}>{" "}
+                <button>Tạo Báo Cáo</button>
+              </Link>
+            </div>
+          )}
         </div>
 
-        <div className='container-rieng'>
-          <div className='left-column'>
-            <p className='listmember'>List Member Group</p>
-            <ul className='member-list'>
+        <div className="container-rieng">
+          <div className="left-column">
+            <p className="listmember">List Member Group</p>
+            <ul className="member-list">
               {members.map((member, index) => (
                 <li key={member.groupId}>
-                  <div className='memberGroup'>
-                    <div className='containItemMember'>
-                      <p>{index + 1}. {member.memberName}</p>
-                      {type !== "SV" && (
-                        <div className='tbc'>
-                          <button className="btn btn-outline-thamgianhom" onClick={() => handleDeleteSVOutGroup(member.accountId)}>Remove</button>
-                        </div>)}
+                  <div className="memberGroup">
+                    <div className="containItemMember">
+                      <p>
+                        {index + 1}. {member.memberName}
+                      </p>
+                    </div>
+                    <div className="containItemMember">
+                      <button
+                        className="btn btn-outline-thamgianhom"
+                        onClick={() => handleDeleteSVOutGroup(member.accountId)}
+                      >
+                        Remove
+                      </button>
                     </div>
                   </div>
                 </li>
               ))}
             </ul>
           </div>
-          {/* <ul> */}
-          <div className='right-column'>
-            <p className='project'>Project Of Group</p>
-            {listProject.map(project => (
+          <div className="right-column">
+            <p className="project">Project Of Group</p>
+            {listProject.map((project) => (
               <li key={project.projectId}>
-                <p>Tên đồ án: {project.projectName}<br /> Ngày hết hạn: {project.expiredDay}<br />Thời gian hết hạn:{project.expiredTime}
-                </p>
-                <div className=''>
-                  <button onClick={() => handleDeleteProject(project.projectId)} >Delete</button>
-                  <button onClick={() => handleUpdate(project)} >Update</button>
-                </div>
-                {showUpdateForm && updateData.projectId === project.projectId && (
-                  <div className="update-form">
-                    <form onSubmit={handleSubmit}>
-                      <input
-                        type="text"
-                        name="projectName"
-                        value={updateData.projectName}
-                        onChange={handleInputChange}
-                        placeholder="Tên đồ án"
-                      />
-                      <input
-                        type="text"
-                        name="projectDescription"
-                        value={updateData.projectDescription}
-                        onChange={handleInputChange}
-                        placeholder="Mô tả"
-                      />
-                      <input
-                        type="date"
-                        name="expiredDay"
-                        value={updateData.expiredDay}
-                        onChange={handleInputChange}
-                        placeholder="Ngày hết hạn"
-                      />
-                      <input
-                        type="time"
-                        name="expiredTime"
-                        value={updateData.expiredTime}
-
-                        onChange={handleInputChange} placeholder="Thời gian hết hạn"
-                      />
-                      <button type="submit">Lưu</button>
-                    </form>
+                <div className="project-container">
+                  <div className="project-detail">
+                    <p>Tên đồ án: {project.projectName}<br/> Ngày hết hạn: {project.expiredDay}<br />Thời gian hết hạn:{project.expiredTime}</p>
                   </div>
-                )}
+                  <div className="project-action">
+                    <button onClick={() => handleDeleteProject(project.projectId)} type="button-delete" class="btn btn-danger">Delete</button>
+                    <button onClick={() => handleUpdate(project)} type="button" class="btn btn-success">Update</button>
+                  </div>
+                </div>
+                {showUpdateForm &&
+                  updateData.projectId === project.projectId && (
+                    <div className="update-form-project">
+                      <form onSubmit={handleSubmit}>
+                        <label>Tên đồ án: </label>
+                        <input
+                          type="text"
+                          name="projectName"
+                          value={updateData.projectName}
+                          onChange={handleInputChange}
+                          placeholder="Tên đồ án"
+                        />
+                        <label>Mô tả: </label>
+                        <input
+                          type="text"
+                          name="projectDescription"
+                          value={updateData.projectDescription}
+                          onChange={handleInputChange}
+                          placeholder="Mô tả"
+                        />
+                        <label>Ngày hết hạn: </label>
+                        <input
+                          type="date"
+                          name="expiredDay"
+                          value={updateData.expiredDay}
+                          onChange={handleInputChange}
+                          placeholder="Ngày hết hạn"
+                        />
+                        <label>Thời gian hết: </label>
+                        <input
+                          type="time"
+                          name="expiredTime"
+                          value={updateData.expiredTime}
+                          onChange={handleInputChange}
+                          placeholder="Thời gian hết hạn"
+                          
+                        />
+                        
+                        <br></br>
+                        <button style={{marginLeft: '200px'}} type="submit">Lưu</button>
+                        
+                      </form>
+                    </div>
+                  )}
               </li>
             ))}
-            {/* </ul> */}
           </div>
         </div>
       </div>

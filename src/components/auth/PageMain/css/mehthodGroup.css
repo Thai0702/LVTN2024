@@ -1,6 +1,54 @@
-.mehthodGroup{
-    background-color: aquamarine;
+.container-method {
+    background-color: rgb(96, 137, 107);
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    position: absolute;
+    top: 4cm; 
+    left: 7cm; 
+    right: 0.5cm; 
+    bottom: 10px; 
+    padding: 20px; 
+    overflow: auto; 
+  }
+
+.update-form {
+    display: flex;
+    width: 100%;
+    max-width: 800px;
+    background-color: #8dd8d3;
+    top: 5cm;
+    left: 12cm;
+    margin-right: 3cm;
     position: relative;
-    height: 300px;
-    width: 300px;
+    align-items: center;
 }
+
+.update-form input, .update-form select {
+    padding: 5px;
+    flex: 1;
+}
+label {
+    font-weight: bold; /* In đậm nhãn */
+    width: 170px; /* Độ rộng cố định cho nhãn */
+}
+.update-form button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 20px; /* Kích thước nút lớn hơn */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-self: center; /* Căn giữa nút */
+    width: 30%; /* Chiều rộng của nút */
+    max-width: 200px; /* Chiều rộng tối đa của nút */
+    font-size: 16px; /* Tăng kích thước chữ */
+    text-align: center; /* Đảm bảo văn bản nằm ở giữa */
+    align-items: center;
+}
+
+.update-form button:hover {
+    background-color: #2980b9;
+}
+  

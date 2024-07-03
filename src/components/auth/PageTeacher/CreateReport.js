@@ -88,68 +88,68 @@ const CreateReport = () => {
    };
    fettListProject();
  },)
-  return (
-    <div>
-      <Navbar/>
-      <DetailClass/>
-      <div ref={createClassRef} className='container-create-project'>
-            <form onSubmit={handleAddReportRequest}>
-              <label>Chọn Project: </label>
-              <select onChange={(e) => setrequestOfProject(e.target.value)} value={requestOfProject} style={{ marginLeft: '100px' }}>
-                <option value=''>Select project</option>
-                {listProject.map((project) => (
-                  <option key={project.projectId} value={project.projectId}>{project.projectName}</option>
-                ))}
-              </select>
-              <br></br>
-              <label>Thời gian hết hạn: </label>
-              <input
-                type='time'
-                placeholder='Thời gian hết hạn'
-                className='input'
-                value={expiredTime}
-                onChange={(e) => setexpiredTime(e.target.value)}
-                style={{ marginLeft: '65px' }}
-              />
-              <br></br>
-              <label>Ngày hết hạn: </label>
-              <input
-                type='date'
-                placeholder='Ngày hết hạn'
-                className='input'
-                value={expiredDate}
-                onChange={(e) => setexpiredDate(e.target.value)}
-                style={{ marginLeft: '100px' }}
-              />
-              <br></br>
-              <label>Chủ đề Report: </label>
-              <input
-                type='text'
-                placeholder='Chủ đề report'
-                className='input'
-                value={requestTile}
-                onChange={(e) => setrequestTile(e.target.value)}
-                style={{ marginLeft: '90px' }}
-              />
-              <br></br>
-              <label>Mô tả: </label>
-              <input
-                type='text'
-                placeholder='Mô tả'
-                className='input'
-                value={requestDescription}
-                onChange={(e) => setrequestDescription(e.target.value)}
-                style={{ marginLeft: '160px' }}
-              />
-              {error && <div className="error">{error}</div>}
-              {successMessage && <div className="success">{successMessage}</div>}
-              <button className='btn btn-primary' type='submit' onClick={handleAddReportRequest}>
-                Add Report
-              </button>
-            </form>
-          </div>
-    </div>
-  )
+ return (
+  <div>
+    <Navbar/>
+    <DetailClass/>
+    <div ref={createClassRef} className='container-create-project'>
+          <form onSubmit={handleAddReportRequest}>
+            <label>Chọn Project: </label>
+            <select onChange={(e) => setrequestOfProject(e.target.value)} value={requestOfProject} style={{ marginLeft: '71px' }}>
+              <option value=''>Select project</option>
+              {listProject.map((project) => (
+                <option key={project.projectId} value={project.projectId}>{project.projectName}</option>
+              ))}
+            </select>
+            <br></br>
+            <label>Thời gian hết hạn: </label>
+            <input
+              type='time'
+              placeholder='Thời gian hết hạn'
+              className='input'
+              value={expiredTime}
+              onChange={(e) => setexpiredTime(e.target.value)}
+              style={{ marginLeft: '70px' }}
+            />
+            <br></br>
+            <label>Ngày hết hạn: </label>
+            <input
+              type='date'
+              placeholder='Ngày hết hạn'
+              className='input'
+              value={expiredDate}
+              onChange={(e) => setexpiredDate(e.target.value)}
+              style={{ marginLeft: '70px' }}
+            />
+            <br></br>
+            <label>Chủ đề Report: </label>
+            <input
+              type='text'
+              placeholder='Chủ đề report'
+              className='input'
+              value={requestTile}
+              onChange={(e) => setrequestTile(e.target.value)}
+              style={{ marginLeft: '70px' }}
+            />
+            <br></br>
+            <label>Mô tả: </label>
+            <input
+              type='text'
+              placeholder='Mô tả'
+              className='input'
+              value={requestDescription}
+              onChange={(e) => setrequestDescription(e.target.value)}
+              style={{ marginLeft: '70px' }}
+            />
+            {error && <div className="error">{error}</div>}
+            {successMessage && <div className="success">{successMessage}</div>}
+            <button className='btn btn-primary' type='submit' onClick={handleAddReportRequest}>
+              Add Report
+            </button>
+          </form>
+        </div>
+  </div>
+)
 }
 
 export default CreateReport

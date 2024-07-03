@@ -79,6 +79,7 @@ const Project = () => {
         <div>
             <Navbar/>
             <DetailClass/>
+            <div className='container-project'>
             <div ref={createClassRef} className='container-create-project'>
                 <form onSubmit={handleAddProject}>
                     <label>Tên đồ án: </label>
@@ -88,12 +89,12 @@ const Project = () => {
                         className='input'
                         value={project_name}
                         onChange={(e) => setProjectName(e.target.value)}
-                        style={{ marginLeft: '100px' }}
+                        style={{ marginLeft: '50px' }}
                     />
                     <br></br>
 
                     <label>Chọn Group: </label>
-                    <select onChange={(e) => setProjectOfGroup(e.target.value)} value={project_of_group} style={{ marginLeft: '83px' }}>
+                    <select onChange={(e) => setProjectOfGroup(e.target.value)} value={project_of_group} style={{ marginLeft: '50px' }}>
                         <option value=''>Select Group</option>
                         {grouptList.map((group) => (
                             <option key={group.groupId} value={group.groupId}>
@@ -109,7 +110,7 @@ const Project = () => {
                         className='input'
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        style={{ marginLeft: '130px' }}
+                        style={{ marginLeft: '50px' }}
                     />
                     <br></br>
 
@@ -120,7 +121,7 @@ const Project = () => {
                         className='input'
                         value={expired_day}
                         onChange={(e) => setExpiredDay(e.target.value)}
-                        style={{ marginLeft: '105px' }}
+                        style={{ marginLeft: '50px' }}
                     />
                     <br></br>
 
@@ -131,7 +132,7 @@ const Project = () => {
                         className='input'
                         value={expired_time}
                         onChange={(e) => setExpiredTime(e.target.value)}
-                        style={{ marginLeft: '40px' }}
+                        style={{ marginLeft: '50px' }}
                     />
                     {error && <div className="error">{error}</div>}
                     {successMessage && <div className="success">{successMessage}</div>}
@@ -139,6 +140,7 @@ const Project = () => {
                         Add project
                     </button>
                 </form>
+            </div>
             </div>
         </div>
     );
