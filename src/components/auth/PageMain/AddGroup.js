@@ -117,29 +117,37 @@ const AddGroup = () => {
         <div>
             <Navbar />
             <DetailClass />
-            <div ref={createClassRef} className='container-create-project'>
-                <form className='addGroup'>
-                    <input
-                        type='number'
-                        placeholder='Mã leader'
-                        className='input'
-                        name='leaderId'
-                        value={groupData.leaderId}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type='text'
-                        placeholder='Tên nhóm'
-                        className='input'
-                        name='groupName'
-                        value={groupData.groupName}
-                        onChange={handleChange}
-                    />
-                    <button className='button-create' onClick={handleCreateGroup}>Create</button>
-                </form>
+            <div ref={createClassRef} >
+                <div className="col-md-6">
+                    <div className="card">
+                        <div className="card-body">
+                            <h2 className="card-title">Tạo đồ án</h2>
+                            <div className="form-group">
+                                <label>Mã leader </label>
+                                <input
+                                    type='number'
+                                    className="form-control"
+                                    name='leaderId'
+                                    value={groupData.leaderId}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Tên nhóm: </label>
+                                <input
+                                    type='text'
+                                    className="form-control"
+                                    name='groupName'
+                                    value={groupData.groupName}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <button className="btn btn-primary" onClick={handleCreateGroup} >Tạo nhóm</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );
 }
-
 export default AddGroup;

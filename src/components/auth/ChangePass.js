@@ -34,12 +34,12 @@ const ChangePass = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post(`${BE_URL}/api/authenticate/change-password`, 
+            const response = await axios.post(`${BE_URL}/api/authenticate/change-password`,
                 {
                     oldPassword: changepass.oldPassword,
                     newPassword: changepass.newPassword,
                     confirmNewPassword: changepass.confirmNewPassword
-                }, 
+                },
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -62,8 +62,46 @@ const ChangePass = () => {
 
     return (
         <div>
-            <Navbar/>
-            <div className='container-change'> 
+            <Navbar />
+            <div className="col-md-6">
+                <div className="card">
+                    <div className="card-body">
+                        <h2 className="card-title">Đổi mật khẩu</h2>
+                        <div className="form-group">
+                            <label>Nhập lại mật khẩu cũ </label>
+                            <input
+                                type='password'
+                                className="form-control"
+                                name='oldPassword'
+                                onChange={handleInputChange}
+                                value={changepass.oldPassword}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Mật khẩu mới </label>
+                            <input
+                                type='password'
+                                className="form-control"
+                                name='newPassword'
+                                onChange={handleInputChange}
+                                value={changepass.newPassword}
+                            />
+                        </div>
+                        <div className="form-group">
+                        <label>Nhập lại mật khẩu mới </label>
+                            <input
+                                type='password'
+                                name='confirmNewPassword'
+                                className="form-control"
+                                onChange={handleInputChange}
+                                value={changepass.confirmNewPassword}
+                            />
+                        </div>
+                        <button className="btn btn-primary" onClick={changePass}>Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+            {/* <div className='container-change'> 
                 <div className='tdmk'>
             <p>Thay đổi mật khẩu</p>
             <div className="form-group">
@@ -93,9 +131,9 @@ const ChangePass = () => {
                 value={changepass.confirmNewPassword}
             />
             </div>
-            <button onClick={changePass}>Change</button>
-        </div>
-        </div>
+            <button onClick={changePass}>Change</button> */}
+            {/* </div>
+        </div> */}
         </div>
     );
 };

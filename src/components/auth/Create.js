@@ -55,9 +55,9 @@ const Create = () => {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token // Thêm token vào header
         },
-        body: JSON.stringify({ ...classData})
+        body: JSON.stringify({ ...classData })
       });
-      
+
       const data = await response.json();
       console.log(data);
 
@@ -102,20 +102,27 @@ const Create = () => {
   return (
     <div>
       <Navbar />
-      <div className='container-create'>
-        <p>Create class!</p>
-        <input type='text' placeholder='Tên lớp môn học' className='input' name='subjectName' value={classData.subjectName} onChange={handleChange}></input>
-        {/* <input type='text' placeholder='Tên giảng viên' className='input' name='fullNameCreate' value={classData.fullNameCreate} onChange={handleChange}></input> */}
-        <input type='text' placeholder='Năm học' className='input' name='schoolYear' value={classData.schoolYear} onChange={handleChange}></input>
-        {/* <input type='text' placeholder='Số lượng nhóm trong lớp' className='input' name='numberOfGroup' value={classData.numberOfGroup} onChange={handleChange}></input>
-        <input type='text' placeholder='Số lượng thành viên nhóm' className='input' name='memberPerGroup' value={classData.memberPerGroup} onChange={handleChange}></input>
-        <select className='input' name='groupRegisterMethod' value={classData.groupRegisterMethod} onChange={handleChange}>
-          <option value=''>Chọn phương thức tạo nhóm</option>
-          <option value='Student'>Sinh viên chọn nhóm</option>
-          <option value='Tearch'>Giảng viên chọn nhóm</option>
-          <option value='RANDOM'>Random</option>
-        </select> */}
-        <button className='button-create' onClick={handleCreate}>Create</button>
+      <div className="col-md-6">
+        <div className="card">
+          <h2>Tạo lớp môn học</h2>
+          <div className="card-body">
+
+            <div className="form-group">
+              <label>Tên lớp môn học: </label>
+              <input type='text'
+                className="form-control" name='subjectName'
+                value={classData.subjectName}
+                onChange={handleChange}></input>
+            </div>
+            <div className="form-group">
+              <label>Năm học </label>
+              <input type='text'
+                className="form-control" name='schoolYear'
+                value={classData.schoolYear} onChange={handleChange}></input>
+            </div>
+            <button className="btn btn-primary" onClick={handleCreate}>Tham gia</button>
+          </div>
+        </div>
       </div>
     </div>
   );

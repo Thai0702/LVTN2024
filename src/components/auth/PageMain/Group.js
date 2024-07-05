@@ -70,7 +70,7 @@ const Group = () => {
             }
         } catch (error) {
             console.error('Error deleting group:', error);
-            window.alert('Xảy ra lỗi khi xóa nhóm.');
+            window.alert('Không thể xóa.');
         }
     };
 
@@ -135,8 +135,12 @@ const Group = () => {
         ) {
             alert('Vui lòng chọn số lượng nhóm');
             navigate(`/methodGroup/${classId}`)
-        } else if (groupList.length >=numberOfGroup) {
+        } else if (groupList.length >numberOfGroup) {
             alert('Số lượng nhóm đã đạt giới hạn');
+            return
+        }
+        else if(numberOfGroup===0){
+            
         } else {
             navigate(`/addGroup/${classId}`);
         }

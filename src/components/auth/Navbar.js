@@ -6,6 +6,7 @@ import home from './img/home.png';
 import axios from 'axios';
 import setting from './img/setting.png';
 import arow from './img/arow.png'
+import iconClass from './img/iconClass.png'
 import teach from './img/teach.png';
 import { useParams } from 'react-router-dom';
 import add from './img/add.png';
@@ -243,7 +244,9 @@ function Navbar() {
       <div className="logo" onClick={toggleMenu}>
     <img src={menu} alt="Menu" /> 
     {subjectName ? (
-        <>Suport <img src={arow} alt="Arrow" /> {subjectName}</>
+        <>
+        Support &gt; {subjectName}
+      </>
     ) : (
         projectText
     )}
@@ -261,8 +264,10 @@ function Navbar() {
           {isTeachingOpen && (
             <div className='class-list-teach'>
               {classList.map((classItem) => (
+              
                 <li key={classItem.id}>
-                  <Link to={`/class/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }} onClick={() => handleLinkClick(classItem.subjectName)}> {classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
+                    <img src={iconClass}/>
+                  <Link to={`/class/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black', fontSize:'15px' }} onClick={() => handleLinkClick(classItem.subjectName)}> {classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
                 </li>
               ))}
             </div>
@@ -290,9 +295,10 @@ function Navbar() {
       <nav className="nav">
         <img src={add} height='40px' onClick={toggleCreate} />
         {isCreate && (
-          <div ref={createClassRef} className="create-class-component">
-            <p> <Link to='/join' style={{ textDecoration: 'none' }}>Join class</Link><br></br></p>
-            <p><Link to='/create' style={{ textDecoration: 'none' }}>Create class</Link></p>
+          <div ref={createClassRef} className="card" style={{ width: '200px'}}>
+            <div></div>
+            <p className='join'> <Link to='/join' style={{ textDecoration: 'none' }}>Join class</Link><br></br></p>
+            <p className='join'><Link to='/create' style={{ textDecoration: 'none' }}>Create class</Link></p>
           </div>
         )}
         <ul className="nav-list">

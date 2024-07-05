@@ -139,42 +139,30 @@ a.navbar-brand {
 
 .header {
   position: fixed;
-  /* Đặt header cố định */
   top: 0;
-  /* Đặt header ở đỉnh trang */
   left: 0;
-  /* Đặt header bắt đầu từ bên trái */
   width: 100%;
-  /* Đặt chiều rộng bằng 100% của trang */
-  background-color: #9bc9b0;
-  /* Màu nền của header */
+  background-color: #939185;
+border-bottom: 1px solid #ccc;
   padding: 10px 20px;
-  /* Khoảng cách nội dung */
   z-index: 1000;
-  /* Đặt z-index cao để đảm bảo header hiển thị trên tất cả các phần tử khác */
   display: flex;
   height: 60px;
 }
-
 /* menu*/
 .additional-components {
   position: absolute;
-  /* Đặt vị trí tuyệt đối */
   top: 100%;
-  /* Hiển thị ở phía dưới của .logo */
   left: 0;
-  width: 250px;
-  height: 630px;
-  margin-top: 3px;
-  margin-bottom: 4px;
-  background-color: #fff;
-  /* Màu nền của dropdown menu */
-  border: 2px solid #ccc;
+  width: 260px;
+  height: 645px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  border-right: 1px solid #ccc;
   color: black;
   font-weight: bold;
   padding: 20px;
   z-index: 999;
-  /* Đảm bảo dropdown menu hiển thị trên tất cả các phần tử khác */
 }
 
 .create-class-component {
@@ -317,9 +305,11 @@ a.navbar-brand {
 
 .class-list-teach li {
   list-style-type: none;
-  background-color: #9bc9b0;
   margin: 20px;
-  border: 2px solid gainsboro;
   color: black;
   /* Loại bỏ dấu chấm */
+}
+.class-list-teach li:hover{
+  background-color: #ccc;
+  border-radius: 10px;
 }

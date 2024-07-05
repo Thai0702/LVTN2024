@@ -46,9 +46,7 @@
 .class-list {
  /* Set the maximum height */
      overflow-y: auto;  
-
     display: grid;
-    background-color: #f3f3f4;
     grid-template-columns: repeat(3, 1fr);
     gap:50px;
     /* background-color: #0e2cd5; */
@@ -114,14 +112,14 @@
 
 .showclass-1 {
     margin-right: 25px;
-    background-color: #b0c1cc;
-    width: 200px;
+    background-color:white;
+    width: 290px;
     text-align: center;
     height: 200px;
-    border: 1px solid black; /* Đường viền xung quanh mỗi mục lớp */
+    border: 1px solid #ccc; /* Đường viền xung quanh mỗi mục lớp */
     margin-bottom: 10px; /* Khoảng cách giữa các mục lớp */
     padding: 10px; /* Padding bên trong mỗi mục lớp */
-}
+  }
 
 .show-class li a {
     text-decoration: none; /* Loại bỏ gạch chân từ danh sách lớp */

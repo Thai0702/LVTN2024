@@ -37,22 +37,22 @@ const Join = () => {
         },
         body: JSON.stringify({ inviteCode: classData.inviteCode }),
       });
-      if(response.ok){
+      if (response.ok) {
         window.alert('Join class success!');
         navigate('/');
       }
-      else{
+      else {
         window.alert('User already in class!');
       }
-    
-        // if(response.status!==200){
-        //   console.log(" xin chao ban");
-         
-        //   // const data = await response.json();
-        //   // console.log(data);
-        //   // setClassList([...classList, data]);         
-        // }
-        // window.location.reload(false);      
+
+      // if(response.status!==200){
+      //   console.log(" xin chao ban");
+
+      //   // const data = await response.json();
+      //   // console.log(data);
+      //   // setClassList([...classList, data]);         
+      // }
+      // window.location.reload(false);      
     } catch (error) {
       console.error('Error:', error);
       window.alert('Failed to join class. Please try again.');
@@ -62,21 +62,29 @@ const Join = () => {
   return (
     <div>
       <Navbar />
-      <div className='container-join'>
-        <p>Enter code class to Join!</p>
-        <input
-          type='text'
-          placeholder='Code class'
-          className='input'
-          name='inviteCode'
-          value={classData.inviteCode}
-          onChange={handleInputChange}
-        />
-        <button className='button-join' onClick={handleJoin}>
-          Join
-        </button>
+        <div className="row justify-content-center">
+          <div className="col-md-6">
+            <div className="card">
+            <h2>Tham gia lớp học !</h2>
+              <div className="card-body">
+                <div className="form-group">
+                 
+                  <input
+                    type='text'
+                    placeholder='Mã lớp'
+                    className="form-control"
+                    name='inviteCode'
+                    value={classData.inviteCode}
+                    onChange={handleInputChange}
+                  />
+                </div>              
+                <button className="btn btn-primary" onClick={handleJoin}>Tham gia</button>             
+              </div>
+            </div>
+          </div>
+        </div>  
       </div>
-    </div>
+
   );
 };
 

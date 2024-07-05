@@ -15,10 +15,38 @@ const MethodAddGroup = () => {
     const [groupList, setGroupList] = useState([]);
     const nagavite = useNavigate()
     const [maxMemberOfGroup, setMaxMemberOfGroup] = useState(0);
-    console.log("Maxxxx la:",maxMemberOfGroup)
+    console.log("Maxxxx la:", maxMemberOfGroup)
+    // danh sách sinh viên của lớp 
+    const [studentList, setStudentList] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const fetchStudentList = async () => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch(`${BE_URL}/api/class/student-list/${classId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            setStudentList(data);
+        } catch (error) {
+            console.error('Error fetching student list:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+        fetchStudentList();
+    }, [classId]);
     // Load group list
-       // Load group list and calculate max members of group
-       useEffect(() => {
+    // Load group list and calculate max members of group
+    useEffect(() => {
         const fetchGroupList = async () => {
             try {
                 const response = await fetch(`${BE_URL}/api-gv/classId/group-list/${classId}`, {
@@ -65,6 +93,20 @@ const MethodAddGroup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('token');
+        if (!updateData.numberOfGroup || !updateData.memberPerGroup || !updateData.groupRegisterMethod) {
+            alert("Vui lòng điền đủ thông tin !!");
+            return;
+          }
+        if (studentList.length === 0 && updateData.groupRegisterMethod === 'RANDOM') {
+            alert("Vui lòng thêm danh sách sinh viên trước khi chọn phương thức RANDOM.");
+            nagavite(`/people/${classId}`)
+            return
+        }
+        console.log("phuong thuc:", groupRegisterMethod);
+        if (groupRegisterMethod === 'RANDOM' && updateData.groupRegisterMethod === 'RANDOM') {
+            alert("Không thể cập nhật với phương thức là " + groupRegisterMethod);
+            return
+        }
         try {
             const response = await fetch(`${BE_URL}/api-gv/class/update/${classId}`, {
                 method: 'PUT',
@@ -81,10 +123,6 @@ const MethodAddGroup = () => {
                 alert("Số lượng thành viên không được nhỏ hơn số lượng thành viên hiện tại!!");
                 return;
             }
-            // }else if (updateData.numberOfGroup < numberOfGroup) {
-            //     alert("Số lượng nhóm không được nhỏ hơn số lượng nhóm hiện tại!!");
-            //     return;
-            // }
             if (response.ok) {
                 setClassList(prevList =>
                     prevList.map(item =>
@@ -102,10 +140,10 @@ const MethodAddGroup = () => {
                     memberPerGroup: memberPerGroup,
                     groupRegisterMethod: groupRegisterMethod
                 });
-                 if(groupRegisterMethod === 'RANDOM'){
+                if (groupRegisterMethod === 'RANDOM') {
                     nagavite(`/people/${classId}`)
                 }
-                else{
+                else {
                     nagavite(`/group/${classId}`)
                 }
 
@@ -127,42 +165,62 @@ const MethodAddGroup = () => {
     const handleUpdate = (classItem) => {
         setUpdateData(classItem);
     };
-    
+
 
     return (
         <div>
             <Navbar />
             <DetailClass />
-            <div className="mehthodGroup">
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        name="numberOfGroup"
-                        value={updateData.numberOfGroup}
-                        onChange={handleInputChange}
-                        placeholder="Số lượng nhóm"
-                    />
-                    <input
-                        type="text"
-                        name="memberPerGroup"
-                        value={updateData.memberPerGroup}
-                        onChange={handleInputChange}
-                        placeholder="Số lượng thành viên trong nhóm"
-                    />
-                    <select                        
-                        name='groupRegisterMethod'
-                        value={updateData.groupRegisterMethod}
-                        onChange={handleInputChange}
-                    >
-                        <option value=''>Chọn phương thức tạo nhóm</option>
-                        <option value='Student'>Sinh viên chọn nhóm</option>
-                        <option value='Teacher'>Giảng viên chọn nhóm</option>
-                        {updateData.groupRegisterMethod !== 'Student' && updateData.groupRegisterMethod !== 'Teacher' && (
-                            <option value='RANDOM'>Random</option>
-                        )}
-                    </select>
-                    <button type="submit">Lưu</button>
-                </form>
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <div className="card">
+                        <div className="card-body">
+                            <h4 className="card-title">Phương thức chọn nhóm</h4><br></br><br></br>
+                            <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label>Số lượng nhóm</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    name="numberOfGroup"
+                                    value={updateData.numberOfGroup}
+                                    onChange={handleInputChange}
+                                    placeholder="Số lượng nhóm"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Số lượng thành viên nhóm </label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    name="memberPerGroup"
+                                    value={updateData.memberPerGroup}
+                                    onChange={handleInputChange}
+                                    placeholder="Số lượng thành viên trong nhóm"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label>Chọn phương thức </label>
+                                <select
+                                    className="form-control"
+                                    name='groupRegisterMethod'
+                                    value={updateData.groupRegisterMethod}
+                                    onChange={handleInputChange}
+                                >
+                                    <option value=''>Chọn phương thức tạo nhóm</option>
+                                    <option value='Student'>Sinh viên chọn nhóm</option>
+                                    <option value='Teacher'>Giảng viên chọn nhóm</option>
+                                    {updateData.groupRegisterMethod !== 'Student' && updateData.groupRegisterMethod !== 'Teacher' && (
+                                        <option value='RANDOM'>Random</option>
+                                    )}
+                                </select>
+                            </div>
+                            <button className="btn btn-primary" type="submit">Lưu</button>
+                            </form>
+                            </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

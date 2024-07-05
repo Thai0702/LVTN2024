@@ -3,7 +3,7 @@ import { BE_URL } from '../../../utils/Url_request';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../Navbar';
 import DetailClass from '../DetailClass';
-
+import tearcherChon from '../PageMain/css/tearcherChon.css'
 const TeacherAddMember = () => {
     const { classId } = useParams();
     const navigate = useNavigate();
@@ -18,8 +18,10 @@ const TeacherAddMember = () => {
     const [currentMembers, setCurrentMembers] = useState(0);
     const [maxMembers, setMaxMembers] = useState(memberPerGroup);
     const [maxMemberOfGroup, setMaxMemberOfGroup] = useState(0);
-   
-
+    const [isupdateNumber, setIsUpdateOpen] = useState(false);
+    const toggleUpdateNumber = () => {
+        setIsUpdateOpen(!isupdateNumber);
+    };
     // lấy danh sách thành viên của groupId
     useEffect(() => {
         const userToken = localStorage.getItem('token');
@@ -42,8 +44,8 @@ const TeacherAddMember = () => {
     }, [classId, groupId]);
 
     // Load group list
-       // Load group list and calculate max members of group
-       useEffect(() => {
+    // Load group list and calculate max members of group
+    useEffect(() => {
         const fetchGroupList = async () => {
             try {
                 const response = await fetch(`${BE_URL}/api-gv/classId/group-list/${classId}`, {
@@ -69,7 +71,7 @@ const TeacherAddMember = () => {
 
                 const maxMemberGroup = memberCounts.reduce((max, group) => group.memberCount > max.memberCount ? group : max, { groupId: null, memberCount: 0 });
                 setMaxMemberOfGroup(maxMemberGroup.memberCount);
-                
+
 
             } catch (error) {
                 console.error('Error fetching group list:', error);
@@ -142,7 +144,7 @@ const TeacherAddMember = () => {
             alert('Số lượng thành viên đã đạt giới hạn');
             window.location.reload(true);
         }
-        
+
 
         const memberList = selectedStudents.map((studentId) => ({
             classId: parseInt(classId),
@@ -200,7 +202,7 @@ const TeacherAddMember = () => {
         groupRegisterMethod: groupRegisterMethod
     });
     const [classList, setClassList] = useState([]);
-    console.log("mã:",maxMemberOfGroup);
+    console.log("mã:", maxMemberOfGroup);
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('token');
@@ -213,7 +215,7 @@ const TeacherAddMember = () => {
                 },
                 body: JSON.stringify(updateData),
             });
-    
+
             if (updateData.numberOfGroup <= 0 || updateData.memberPerGroup <= 0) {
                 alert("Thành viên trong nhóm và số lượng nhóm phải lớn hơn 0");
                 return;
@@ -227,7 +229,7 @@ const TeacherAddMember = () => {
                         item.subjectClassId === classId ? updateData : item
                     )
                 );
-    
+
                 const { numberOfGroup } = updateData;
                 localStorage.setItem('numberOfGroup', numberOfGroup);
                 const { memberPerGroup } = updateData;
@@ -255,8 +257,8 @@ const TeacherAddMember = () => {
             [name]: value
         }));
     };
-  
- 
+
+
 
     if (loading) {
         return <p>Loading...</p>;
@@ -267,27 +269,44 @@ const TeacherAddMember = () => {
             <Navbar />
             <DetailClass />
             <div className='container-people'>
-                <form onSubmit={handleSubmit}>
-                   <p>Số lượng nhóm :</p>
-                    <input
-                        type="text"
-                        name="numberOfGroup"
-                        value={updateData.numberOfGroup}
-                        onChange={handleInputChange}
-                        placeholder="Số lượng nhóm"
-                    />
-                    <p>Số lượng thành viên nhóm :</p>
-                    <input
-                        type="text"
-                        name="memberPerGroup"
-                        value={updateData.memberPerGroup}
-                        onChange={handleInputChange}
-                        placeholder="Số lượng thành viên trong nhóm"
-                    />
-                    <button type="submit">Cập nhật</button>
-                </form>
+                <div className='updateMethod' onClick={toggleUpdateNumber}><button>Đổi số lượng nhóm</button></div>
+                {isupdateNumber && (
+                    <div className="row justify-content-center">
+                        <div className="col-md-6">
+                            <div className="card">
+                                <div className="card-body-1">
+                                    <form onSubmit={handleSubmit}>
+                                        <div className="form-group">
+                                            <label>Số lượng nhóm</label>
+                                            <input
+                                                className="form-control"
+                                                type="text"
+                                                name="numberOfGroup"
+                                                value={updateData.numberOfGroup}
+                                                onChange={handleInputChange}
+                                                placeholder="Số lượng nhóm"
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Số lượng thành viên</label>
+                                            <input
+                                                className="form-control"
+                                                type="text"
+                                                name="memberPerGroup"
+                                                value={updateData.memberPerGroup}
+                                                onChange={handleInputChange}
+                                                placeholder="Số lượng thành viên trong nhóm"
+                                            />
+                                        </div>
+                                        <button type="submit" className="btn btn-primary" >Cập nhật</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}              
                 <div className='listpe'>
-                    <select onChange={(e) => setGroupId(e.target.value)} value={groupId} style={{ marginLeft: '83px' }}>
+                    <select className='chonNhom' onChange={(e) => setGroupId(e.target.value)} value={groupId} >
                         <option value=''>Select Group</option>
                         {groupList.map((group) => (
                             <option key={group.groupId} value={group.groupId}>
@@ -295,7 +314,7 @@ const TeacherAddMember = () => {
                             </option>
                         ))}
                     </select>
-                    <button onClick={handleSave}>Save</button>
+                    <button class="btn btn-danger" onClick={handleSave}>Save</button>
                     <p className='listpeople'>List Students</p>
                     <ul>
                         {displayedStudentList.map((student, index) => (

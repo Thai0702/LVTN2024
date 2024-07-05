@@ -21,17 +21,6 @@ body {
     flex-wrap: wrap;
     justify-content: center;
   }
-  
-  .showclass-1 {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    margin: 10px;
-    width: calc(50.33% - 50px);
-    box-sizing: border-box;
-    transition: box-shadow 0.3s;
-  }
-  
   .showclass-1:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
@@ -106,17 +95,33 @@ body {
       margin-bottom: 10px;
     }
   }
-
   .menu-container{
-    margin-top: -25%;
-    margin-left: 165px;
+    margin-top: -22%;
+    margin-left: 250px;
     cursor: pointer;
   }
   .menu-container span:hover{
     background-color: black;  
   }
-
-  
+  .menu{
+    background-color: #ccc;
+    width: 100px;
+    border-radius: 10px;
+  }
+  .menu button{
+    margin: 30px;
+    width: 50px;
+    display:flow-root;
+    margin-top: 5px;
+  }
+/* .card{
+  width: auto;
+  height: 400px;
+  position: relative;
+  margin-bottom: -1230px;
+  margin-left: -300px;
+}
+   */
 
   
   

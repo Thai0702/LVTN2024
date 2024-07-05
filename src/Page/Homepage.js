@@ -200,12 +200,12 @@ const Home = () => {
                       <span onClick={() => handleMenuToggle(classItem.subjectClassId)}>⋮</span>
                       {showMenu === classItem.subjectClassId && (
                         <div className='menu'>
-                          <button onClick={() => handleDelete(classItem.subjectClassId)}>Xóa</button>
-                          <button onClick={() => handleUpdate(classItem)}>Sửa</button>
+                          <button className="btn btn-primary" onClick={() => handleDelete(classItem.subjectClassId)}>Xóa</button>
+                          <button className="btn btn-primary"onClick={() => handleUpdate(classItem)}>Sửa</button>
                         </div>
                       )}
                     </div>
-                  
+                    
                 </div>
               </li>
             ))}

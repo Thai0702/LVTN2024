@@ -56,18 +56,38 @@
     border-radius: 10px;
 
 }
-/*phan body*/
+/* Base styles for container-header */
 .container-header {
+    margin-left: 0;
     display: flex;
-    justify-content: space-between;
-    align-items: center; /* Vertically center the items */
+    align-items: center;
     font-size: 15px;
     height: 80px;
+    border-bottom: 1px solid #ccc;
     padding: 7px;
     font-weight: bold;
-    border: 1px solid black;
-    width: 100%;
-    background-color: antiquewhite;
+    width: 1275px;
+}
+
+/* Large screens */
+@media (min-width: 1200px) {
+    .container-header {
+        margin-left: 0px;
+    }
+}
+
+/* Medium screens */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .container-header {
+        margin-left: 0px;
+    }
+}
+
+/* Small screens */
+@media (max-width: 767px) {
+    .container-header {
+        margin-left: 20px;
+    }
 }
 
 .header-1 {
@@ -78,8 +98,6 @@
     color: inherit;  */
     
 }
-
-
 .container-main{
     position: absolute; /* Đặt vị trí tuyệt đối */
     top: 9%; /* Hiển thị ở phía dưới của .logo */
@@ -337,15 +355,13 @@
 
 .showclass-1 {
     margin-right: 25px;
-    background-color: #b0c1cc;
-    width: 200px;
+    width: 290px;
     border-radius: 10px;
     text-align: center;
-    height: 200px;
+    height: 290px;
     margin-bottom: 10px; /* Khoảng cách giữa các mục lớp */
     padding: 10px; /* Padding bên trong mỗi mục lớp */
 }
-
 .show-class li a {
     text-decoration: none; /* Loại bỏ gạch chân từ danh sách lớp */
     color: #333; /* Màu văn bản cho các liên kết */
@@ -357,15 +373,14 @@
 }
 .name_class{
     background-color: antiquewhite;
-    height: 50px;
+    height: 70px;
     padding-top: 10px;
-    width: 199px;
+    width: 288px;
     margin-left: -10px;
-    
     margin-top: -10px;
+    border-bottom: 1px solid #ccc;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    
 }
 .button-del
 {
