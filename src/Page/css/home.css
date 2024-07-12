@@ -4,13 +4,14 @@ body {
   }
   
   .home-main {
-    width: 1280px;
+    width: 1100px;
   }
   
   .show-class {
     display: flex;
     width: 1000;
     max-width: 1200px;
+    
   }
   
   .class-list {
@@ -19,12 +20,13 @@ body {
     margin: 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    margin-left: 2.5cm;
+    /* justify-content: center; */
   }
   .showclass-1:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-  
+ 
   .name_class a {
     text-decoration: none;
     font-size: 18px;
@@ -97,23 +99,25 @@ body {
   }
   .menu-container{
     margin-top: -22%;
-    margin-left: 250px;
+    margin-left: 220px;
     cursor: pointer;
   }
   .menu-container span:hover{
     background-color: black;  
   }
   .menu{
-    background-color: #ccc;
-    width: 100px;
+    width: 130px;
     border-radius: 10px;
+    margin-left: -50px;
+    border: 3px solid #ddd;
   }
   .menu button{
     margin: 30px;
-    width: 50px;
+    width: 60px;
     display:flow-root;
     margin-top: 5px;
   }
+
 /* .card{
   width: auto;
   height: 400px;

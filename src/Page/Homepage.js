@@ -5,7 +5,7 @@ import { BE_URL } from '../utils/Url_request';
 import css from './css/showclass.css';
 import home from './css/home.css';
 const Home = () => {
-  const [showMenu, setShowMenu] = useState(null);
+  //const [showMenu, setShowMenu] = useState(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [updateData, setUpdateData] = useState({
     subjectClassId: '',
@@ -181,11 +181,29 @@ const Home = () => {
   };
 
   const handleUpdate = (classItem) => {
-    navigate(`/editclass`, { state: { classItem } }); // Chuyển hướng đến trang chỉnh sửa với dữ liệu lớp học
+    // navigate(`/editclass`, { state: { classItem } }); // Chuyển hướng đến trang chỉnh sửa với dữ liệu lớp học
+    navigate(`/editclass`, { state: { classItem, subjectName: classItem.subjectName } }); 
   };
   const handleMenuToggle = (classId) => {
     setShowMenu(prevState => (prevState === classId ? null : classId));
   };
+
+//dấu 3 chấm
+  const [showMenu, setShowMenu] = useState(null);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Kiểm tra xem click có nằm trong menu hay không
+      if (showMenu && !event.target.closest('.menu-container, .menu')) {
+        setShowMenu(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showMenu]);
+  
+
+
+
   return (
     <div>
       <Navbar />
@@ -199,12 +217,15 @@ const Home = () => {
                   <div className='menu-container'>
                       <span onClick={() => handleMenuToggle(classItem.subjectClassId)}>⋮</span>
                       {showMenu === classItem.subjectClassId && (
+                        
                         <div className='menu'>
+                          
                           <button className="btn btn-primary" onClick={() => handleDelete(classItem.subjectClassId)}>Xóa</button>
                           <button className="btn btn-primary"onClick={() => handleUpdate(classItem)}>Sửa</button>
                         </div>
+                        
                       )}
-                    </div>
+                  </div>
                     
                 </div>
               </li>

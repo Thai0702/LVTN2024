@@ -82,17 +82,19 @@ const Project = () => {
             <DetailClass />
             <div ref={createClassRef} className="row justify-content-center">
                 <div className="col-md-6">
+                    <div className='taobaocao'>
                     <div className="card">
                         <div className="card-body">
+                        <h2 className="card-title">TẠO BÁO CÁO</h2>
                             <div className="form-group">
-                                <label>Tên đồ án: </label>
+                                {/* <label>Tên đồ án: </label> */}
                                 <input className="form-control" 
                                 type='text' value={project_name}
                                     placeholder='Tên đồ án' 
                                     onChange={(e) => setProjectName(e.target.value)}/>
                             </div>                        
                             <div className="form-group">
-                                <label>Mô tả: </label>
+                                {/* <label>Mô tả: </label> */}
                                 <input
                                     type='text'
                                     placeholder='Mô tả'
@@ -101,7 +103,7 @@ const Project = () => {
                                     onChange={(e) => setDescription(e.target.value)}
                                 />
                             </div>
-                            <label>Ngày tạo: </label>
+                            {/* <label>Ngày tạo: </label> */}
                             <div className="form-group">
                                 <input
                                     type='date'
@@ -112,7 +114,7 @@ const Project = () => {
                                 />
                             </div>
                             <div className="form-group">
-                            <label>Thời gian hết hạn: </label>
+                            {/* <label>Thời gian hết hạn: </label> */}
                             <input
                                 type='time'
                                 placeholder='Thời gian hết hạn'
@@ -122,7 +124,7 @@ const Project = () => {
                             />
                              </div>
                              <div className="form-group">
-                                <label>Chọn Group: </label>
+                                {/* <label>Chọn Group: </label> */}
                                 <select className="form-control"
                                     onChange={(e) => setProjectOfGroup(e.target.value)} 
                                     value={project_of_group} >
@@ -136,6 +138,7 @@ const Project = () => {
                             </div>
                             <button className="btn btn-primary" type='submit' onClick={handleAddProject}>Thêm</button>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>

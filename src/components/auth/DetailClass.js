@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import './Login.css';
 
@@ -7,9 +7,7 @@ const ClassDetailPage = () => {
   const { classId } = useParams(); // Lấy classId từ URL
   const groupRegisterMethod = localStorage.getItem('groupRegisterMethod');
   const type = localStorage.getItem('type');
-
-  console.log('helo method:', groupRegisterMethod);
-  console.log('type:', type);
+  const location = useLocation();
 
   const isGroupRegisterMethodValid = groupRegisterMethod !== "RANDOM" &&
     groupRegisterMethod !== "Student" &&
@@ -18,6 +16,27 @@ const ClassDetailPage = () => {
     groupRegisterMethod !== undefined &&
     groupRegisterMethod !== "";
 
+  const [activeTab, setActiveTab] = useState('stream'); // Mặc định là 'stream' khi không phù hợp với các điều kiện dưới
+
+  useEffect(() => {
+    // Lấy phần đầu của path (ví dụ: '/stream/:classId' -> 'stream')
+    const currentTab = location.pathname.split('/')[1];
+    // Đặt giá trị mặc định cho activeTab dựa trên currentTab
+    switch (currentTab) {
+      case 'stream':
+      case 'people':
+      case 'methodGroup':
+      case 'group':
+      case 'tearchAdd':
+      case 'project':
+        setActiveTab(currentTab);
+        break;
+      default:
+        setActiveTab('stream'); // Nếu không phù hợp với bất kỳ tab nào thì mặc định là 'stream'
+        break;
+    }
+  }, [location.pathname]);
+
   return (
     <div>
       <Navbar />
@@ -25,46 +44,82 @@ const ClassDetailPage = () => {
         <div className='container-header'>
           {type === "GV" ? (
             <>
-              <Link className='link' to={`/stream/${classId}`}>
-                <div className='header-1'>Chi tiết</div>
+              <Link 
+                className='link' 
+                to={`/stream/${classId}`}
+                onClick={() => setActiveTab('stream')}
+              >
+                <div className={`header-1 ${activeTab === 'stream' ? 'active' : ''}`}>Chi tiết</div>
               </Link>
-              <Link className='link' to={`/people/${classId}`}>
-                <div className='header-1'>Thành viên</div>
+              
+              <Link 
+                className='link' 
+                to={`/people/${classId}`}
+                onClick={() => setActiveTab('people')}
+              >
+                <div className={`header-1 ${activeTab === 'people' ? 'active' : ''}`}>Thành viên</div>
               </Link>
-              <Link className='link' to={`/methodGroup/${classId}`}>
-                <div className='header-1'>Chọn phương thức tạo nhóm</div>
+              
+              <Link 
+                className='link' 
+                to={`/methodGroup/${classId}`}
+                onClick={() => setActiveTab('methodGroup')}
+              >
+                <div className={`header-1 ${activeTab === 'methodGroup' ? 'active' : ''}`}>Chọn phương thức tạo nhóm</div>
               </Link>
-              <Link className='link' to={`/group/${classId}`}>
-                <div className='header-1'>Tạo nhóm</div>
+              
+              <Link 
+                className='link' 
+                to={`/group/${classId}`}
+                onClick={() => setActiveTab('group')}
+              >
+                <div className={`header-1 ${activeTab === 'group' ? 'active' : ''}`}>Tạo nhóm</div>
               </Link>
+              
               {isGroupRegisterMethodValid && (
-                <Link className='link' to={`/tearchAdd/${classId}`}>
-                  <div className='header-1'>
+                <Link 
+                  className='link' 
+                  to={`/tearchAdd/${classId}`}
+                  onClick={() => setActiveTab('tearchAdd')}
+                >
+                  <div className={`header-1 ${activeTab === 'tearchAdd' ? 'active' : ''}`}>
                     {groupRegisterMethod ? 'Giáo viên thêm thành viên vào nhóm' : 'Default Text'}
                   </div>
                 </Link>
               )}
-              {/* {isGroupRegisterMethodValid && (
-                <Link className='link' to={`/tearchAdd/${classId}`}>
-                  <div className='header-1'>
-                    {groupRegisterMethod+ " thêm thành viên vào nhóm"}
-                  </div>
-                </Link>
-              )} */}
-               <Link className='link' to={`/project/${classId}`}>
-                <div className='header-1'>Tạo dự án</div>
+              
+              <Link 
+                className='link' 
+                to={`/project/${classId}`}
+                onClick={() => setActiveTab('project')}
+              >
+                <div className={`header-1 ${activeTab === 'project' ? 'active' : ''}`}>Tạo dự án</div>
               </Link>
             </>
           ) : (
             <>
-              <Link className='link' to={`/stream/${classId}`}>
-                <div className='header-1'>Stream</div>
+              <Link 
+                className='link' 
+                to={`/stream/${classId}`}
+                onClick={() => setActiveTab('stream')}
+              >
+                <div className={`header-1 ${activeTab === 'stream' ? 'active' : ''}`}>Stream</div>
               </Link>
-              <Link className='link' to={`/people/${classId}`}>
-                <div className='header-1'>People</div>
+              
+              <Link 
+                className='link' 
+                to={`/people/${classId}`}
+                onClick={() => setActiveTab('people')}
+              >
+                <div className={`header-1 ${activeTab === 'people' ? 'active' : ''}`}>People</div>
               </Link>
-              <Link className='link' to={`/group/${classId}`}>
-                <div className='header-1'>Group</div>
+              
+              <Link 
+                className='link' 
+                to={`/group/${classId}`}
+                onClick={() => setActiveTab('group')}
+              >
+                <div className={`header-1 ${activeTab === 'group' ? 'active' : ''}`}>Group</div>
               </Link>
             </>
           )}

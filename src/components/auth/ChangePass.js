@@ -63,7 +63,8 @@ const ChangePass = () => {
     return (
         <div>
             <Navbar />
-            <div className="col-md-6">
+            <div className="col-md-10">
+                <div className='changepass'>
                 <div className="card">
                     <div className="card-body">
                         <h2 className="card-title">Đổi mật khẩu</h2>
@@ -99,6 +100,7 @@ const ChangePass = () => {
                         </div>
                         <button className="btn btn-primary" onClick={changePass}>Xác nhận</button>
                     </div>
+                </div>
                 </div>
             </div>
             {/* <div className='container-change'> 

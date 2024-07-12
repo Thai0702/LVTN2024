@@ -57,7 +57,7 @@
 
 }
 /* Base styles for container-header */
-.container-header {
+/* .container-header {
     margin-left: 0;
     display: flex;
     align-items: center;
@@ -66,8 +66,28 @@
     border-bottom: 1px solid #ccc;
     padding: 7px;
     font-weight: bold;
-    width: 1275px;
-}
+    width: 1220px;
+} */
+
+.container-header .header-1 {
+    display: inline-block; 
+    margin: 15px 22px; 
+    padding: 10px; 
+    text-decoration: none; 
+    color: #000; 
+    transition: all 0.3s ease; 
+  }
+  .container-header .header-1:hover {
+    text-decoration: underline; 
+    color: #007bff; 
+  }
+  
+  .container-header .header-1.active {
+    text-decoration: underline; 
+    color: #007bff;
+    
+  }
+
 
 /* Large screens */
 @media (min-width: 1200px) {
@@ -96,8 +116,12 @@
     padding: 0 10px; 
     /* text-decoration: none;
     color: inherit;  */
-    
 }
+
+.header-1.active {
+    border-bottom: 2px solid #e91717; 
+  }
+
 .container-main{
     position: absolute; /* Đặt vị trí tuyệt đối */
     top: 9%; /* Hiển thị ở phía dưới của .logo */
@@ -355,10 +379,10 @@
 
 .showclass-1 {
     margin-right: 25px;
-    width: 290px;
+    width: 270px;
     border-radius: 10px;
     text-align: center;
-    height: 290px;
+    height: 270px;
     margin-bottom: 10px; /* Khoảng cách giữa các mục lớp */
     padding: 10px; /* Padding bên trong mỗi mục lớp */
 }
@@ -375,12 +399,13 @@
     background-color: antiquewhite;
     height: 70px;
     padding-top: 10px;
-    width: 288px;
+    width: 268px;
     margin-left: -10px;
     margin-top: -10px;
     border-bottom: 1px solid #ccc;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    padding: 20px;
 }
 .button-del
 {
@@ -438,3 +463,18 @@ span {
 .addGroup {
     text-align: center;
 }
+
+
+/* .additional-components {
+    position: relative;
+  } */
+/*   
+  .menu_1.setting {
+    position: absolute;
+    bottom: 0;
+  }
+  
+  .additional-components.open .menu_1.setting {
+    position: static;
+  }
+   */

@@ -41,6 +41,9 @@ import TearchAddMember from "./components/auth/PageMain/TearchAddMember.js";
 
 import EditClass from "./Page/EditClass.js";
 import MethodAddGroup from "./components/auth/PageMain/MethodAddGroup.js";
+import Home from "./Page/Homepage.js";
+
+import Upload from "./components/auth/PageMain/Upload.js"
 
 const App = () => {
   return (
@@ -103,6 +106,9 @@ const App = () => {
 
           <Route path="/editclass" element={<EditClass />} />
 
+
+          <Route path="/upload/:classId" element={<Upload />} />
+          
 
         </Routes>
 

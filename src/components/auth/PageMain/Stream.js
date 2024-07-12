@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { BE_URL } from '../../../utils/Url_request';
 import Navbar from '../Navbar';
 import DetailClass from '../DetailClass'
@@ -241,9 +241,17 @@ const Stream = () => {
                         <ul>
                             {reportList.map((report) => (
                                 <li key={report.requestId}>
-                                    <span>{report.requestTile} -  Ngày và giờ hết hạn : {report.expiredDate}/{report.expiredTime}</span>
-                                    <button onClick={() => handleDeleteReport(report.requestId)}>Delete</button>
-                                    
+                                    <div className='rp'>
+
+  <div className='report-content'>
+    <p>{report.requestTile} - Ngày và giờ hết hạn : {report.expiredDate}/{report.expiredTime}</p>
+    <div className='btndelete-report'>
+      {/* <button onClick={() => handleDeleteReport(report.requestId)} className="btn btn-danger" type="delete">DELETE</button> */}
+      <button  className="submit" type="delete"><Link to={`/upload/${classId}`}>SUBMIT</Link></button>
+    </div>
+  </div>
+</div>
+
                                     {/* <button onClick={() => handleUpdate(report)}>Sửa</button> */}
                                     {showUpdateForm && updateData.requestId === report.requestId && (
                                         <div className="update-form">

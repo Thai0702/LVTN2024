@@ -120,7 +120,7 @@ const Create = () => {
                 className="form-control" name='schoolYear'
                 value={classData.schoolYear} onChange={handleChange}></input>
             </div>
-            <button className="btn btn-primary" onClick={handleCreate}>Tham gia</button>
+            <button className="btn btn-primary" onClick={handleCreate}>Tạo</button>
           </div>
         </div>
       </div>
