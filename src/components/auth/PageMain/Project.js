@@ -85,7 +85,7 @@ const Project = () => {
                     <div className='taobaocao'>
                     <div className="card">
                         <div className="card-body">
-                        <h2 className="card-title">TẠO BÁO CÁO</h2>
+                        <h2 className="card-title">TẠO ĐỒ ÁN</h2>
                             <div className="form-group">
                                 {/* <label>Tên đồ án: </label> */}
                                 <input className="form-control" 

@@ -42,7 +42,7 @@ const Stream = () => {
                 }
                 const classDetailData = await response.json();
                 setClassDetail(classDetailData);
-                console.log("chao:",classDetailData );
+                console.log("chao:", classDetailData);
                 const { memberPerGroup } = classDetailData
                 localStorage.setItem('memberPerGroup', memberPerGroup);
                 const { groupRegisterMethod } = classDetailData
@@ -52,7 +52,7 @@ const Stream = () => {
                 const { schoolYear } = classDetailData
                 localStorage.setItem('schoolYear', schoolYear);
                 console.log("số lượng thành viên nhóm:", memberPerGroup)
-                const {numberOfGroup} = classDetailData
+                const { numberOfGroup } = classDetailData
                 localStorage.setItem('numberOfGroup', numberOfGroup);
                 console.log("số lượng nhóm:", numberOfGroup)
             } catch (error) {
@@ -81,7 +81,7 @@ const Stream = () => {
                         'Authorization': 'Bearer ' + token
                     }
                 });
-
+  
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -208,7 +208,7 @@ const Stream = () => {
         setShowUpdateForm(true); // Hiển thị form cập nhật khi nhấp vào "Cập nhật"
     };
     // add sinh vien bang ma sinh vien
-    
+
 
     if (loading) {
         return <p>Loading...</p>;
@@ -224,7 +224,7 @@ const Stream = () => {
     return (
         <div>
             <Navbar />
-            <DetailClass/>
+            <DetailClass />
             <div className='container-stream'>
                 <div className='body-1'>
                     {/* <span>Tên giảng viên :{classDetail.fullNameCreate}</span> */}
@@ -242,16 +242,16 @@ const Stream = () => {
                             {reportList.map((report) => (
                                 <li key={report.requestId}>
                                     <div className='rp'>
-
-  <div className='report-content'>
-    <p>{report.requestTile} - Ngày và giờ hết hạn : {report.expiredDate}/{report.expiredTime}</p>
-    <div className='btndelete-report'>
-      {/* <button onClick={() => handleDeleteReport(report.requestId)} className="btn btn-danger" type="delete">DELETE</button> */}
-      <button  className="submit" type="delete"><Link to={`/upload/${classId}`}>SUBMIT</Link></button>
-    </div>
-  </div>
-</div>
-
+                                    <Link to={`/upload/${classId}/${report.requestId}`}>
+                                        <div className='report-content'>
+                                            <p>{report.requestTile} - Ngày và giờ hết hạn : {report.expiredDate}/{report.expiredTime}</p>
+                                            <div className='btndelete-report'>
+                                                {/* <button onClick={() => handleDeleteReport(report.requestId)} className="btn btn-danger" type="delete">DELETE</button> */}
+                                                <button className="submit" type="delete">Xem chi tiết</button>
+                                            </div>
+                                        </div>
+                                        </Link>
+                                    </div>
                                     {/* <button onClick={() => handleUpdate(report)}>Sửa</button> */}
                                     {showUpdateForm && updateData.requestId === report.requestId && (
                                         <div className="update-form">

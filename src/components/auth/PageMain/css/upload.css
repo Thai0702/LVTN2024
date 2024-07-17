@@ -1,0 +1,22 @@
+.showRequest {
+    margin-top: 100px;
+}
+
+.formSubmit {
+
+}
+
+.formSubmit input {
+    margin: 10px 0; /* Khoảng cách trên và dưới, không bên trái và phải */
+    width: 100%; /* Đảm bảo ô input co giãn theo chiều ngang */
+    padding: 10px; /* Thêm padding cho input */
+    box-sizing: border-box; /* Bao gồm padding trong kích thước tổng thể */
+}
+
+.showsubmit {
+    background-color: antiquewhite;
+    margin-top: 10px;
+}
+.showsubmit img{
+    cursor: pointer;
+}

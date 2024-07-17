@@ -267,7 +267,6 @@ function Navbar() {
                 <Link className='link' onClick={() => handleLinkClick('Setting')}>
     <div className='menu_1 setting' onClick={togglesetting}><img src={setting} />Setting</div>
               </Link>
-
               {isSetting && (
                 <Link to={`/change_pass`} className='link' onClick={() => handleLinkClick('Change password')}>
                   <div className='class-list-teach1'>

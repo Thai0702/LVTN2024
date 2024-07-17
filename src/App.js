@@ -107,7 +107,7 @@ const App = () => {
           <Route path="/editclass" element={<EditClass />} />
 
 
-          <Route path="/upload/:classId" element={<Upload />} />
+          <Route path="/upload/:classId/:requestId" element={<Upload />} />
           
 
         </Routes>

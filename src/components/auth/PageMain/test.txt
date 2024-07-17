@@ -1,0 +1,157 @@
+import React, { useRef, useState } from "react";
+import useDrivePicker from 'react-google-drive-picker';
+import Navbar from '../Navbar';
+import axios from "axios";
+import { BE_URL } from "../../../utils/Url_request";
+import { useParams } from "react-router-dom";
+
+const GoogleDriverPicker = () => {
+    // const [openPicker, authResponse] = useDrivePicker();
+    // const { requestId } = useParams();
+    // const [selectedFiles, setSelectedFiles] = useState([]);
+    const [reportTitle, setReportTitle] = useState('');
+    const [reportDescription, setReportDescription] = useState('');
+
+    // const handleOpenPicker = () => {
+    //     openPicker({
+    //         clientId: "295331828447-t2qfu6ibjilh2e6oavg80meqqc1sk5am.apps.googleusercontent.com",
+    //         developerKey: "AIzaSyAk4Hm8ZryXAfuKs2tyEHEY2mv2BsTK61s",
+    //         viewId: "DOCS",
+    //         showUploadView: true,
+    //         showUploadFolders: true,
+    //         supportDrives: true,
+    //         multiselect: true,
+    //         callbackFunction: (data) => {
+    //             if (data.action === 'cancel') {
+    //                 console.log('User clicked cancel/close button');
+    //             } else if (data.action === 'picked') {
+    //                 console.log(data);
+    //                 setSelectedFiles(data.docs);
+    //             }
+    //         },
+    //     });
+    // };
+
+    // const handleSubmitReport = async () => {
+    //     const token = localStorage.getItem('token');
+    //     const accountId = localStorage.getItem('accountId');
+
+    //     if (!selectedFiles.length) {
+    //         window.alert('Please select at least one file.');
+    //         return;
+    //     }
+
+    //     const formData = new FormData();
+    //     formData.append('submitBy', accountId);
+    //     formData.append('reportOfRequest', requestId);
+    //     formData.append('reportTitle', reportTitle);
+    //     formData.append('reportDescription', reportDescription);
+
+    //     const file = selectedFiles[0];
+    //     try {
+    //         const response = await fetch(file.url);
+    //         if (!response.ok) {
+    //             throw new Error(`Error fetching file: ${response.status}`);
+    //         }
+    //         const blob = await response.blob();
+    //         formData.append('attachment', new File([blob], file.name));
+
+    //         const submitResponse = await axios.post(`${BE_URL}/api/report/submit`, formData, {
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data',
+    //                 Authorization: `Bearer ${token}`,
+    //             },
+    //         });
+    //         window.alert('File submitted successfully!');
+    //         window.location.reload(false);
+    //     } catch (error) {
+    //         console.error('Error submitting the report:', error);
+    //         if (error.response) {
+    //             window.alert(`File submission failed! Status: ${error.response.status} - ${error.response.data}`);
+    //         } else if (error.request) {
+    //             window.alert('File submission failed! No response received.');
+    //         } else {
+    //             window.alert(`File submission failed! Error: ${error.message}`);
+    //         }
+    //     }
+    // };
+    const fileInputRef = useRef(null);
+    const handleFileSubmit = async () => {
+        const token = localStorage.getItem('token');
+        const file = fileInputRef.current.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            try {
+                await axios.post(`${BE_URL}/api/report/submit`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+                window.alert('File uploaded successfully!');
+                // Load lại trang sau khi thêm thành công
+                window.location.reload(false);
+            } catch (error) {
+                window.alert('File uploaded fail!');
+            }
+        } else {
+            console.error('No file selected or class not selected');
+            window.alert('No file selected or class not selected!');
+        }
+    };
+
+    return (
+        <div>
+            <Navbar />
+            {/* <div>
+                <button onClick={handleOpenPicker}>Choose file</button>
+            </div>
+            <div>
+                <h3>Selected Files:</h3>
+                <ul>
+                    {selectedFiles.map(file => (
+                        <li key={file.id}>
+                            <a href={file.url} target="_blank" rel="noopener noreferrer">{file.name}</a>
+                        </li>
+                    ))}
+                </ul>
+                <input
+                    type='text'
+                    placeholder='Report Title'
+                    className="form-control"
+                    value={reportTitle}
+                    onChange={(e) => setReportTitle(e.target.value)}
+                />
+                <input
+                    type='text'
+                    placeholder='Report Description'
+                    className="form-control"
+                    value={reportDescription}
+                    onChange={(e) => setReportDescription(e.target.value)}
+                />
+                <button onClick={handleSubmitReport}>Submit</button>
+            </div> */}
+            <div className='import-people'>
+                <input type='file' ref={fileInputRef} />
+                <button onClick={handleFileSubmit}>Add</button>
+            </div>
+            <input
+                type='text'
+                placeholder='Report Title'
+                className="form-control"
+                value={reportTitle}
+                onChange={(e) => setReportTitle(e.target.value)}
+            />
+            <input
+                type='text'
+                placeholder='Report Description'
+                className="form-control"
+                value={reportDescription}
+                onChange={(e) => setReportDescription(e.target.value)}
+            />
+        </div>
+    );
+}
+
+export default GoogleDriverPicker;
