@@ -76,7 +76,6 @@ const ListAccount = () => {
                         <li key={account.userId}>
                             <span>{index + 1}. Tên : {account.fullName}  -  Email : {account.email}</span>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <button class="btn btn-warning me-md-2" type="edit">EDIT</button>
                                 <button class="btn btn-danger" type="delete">DELETE</button>
                             </div>
                         </li>

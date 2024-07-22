@@ -40,17 +40,24 @@ const ForgotPass = () => {
     };
 
     return (
-        <div>
-            <div>
-                <div>Forgot Password</div>
-                <input
-                    type='text'
-                    placeholder='Email here'
-                    name='username'
-                    value={resetPass.username}
-                    onChange={handInputChange}
-                />
-                <button onClick={handleReset}>Submit</button>
+        <div className="row justify-content-center">
+            <div className="col-md-6">
+                <div className="card">
+                    <div className="card-body">
+                        <h3 className="card-title">Nhập email xác nhận !</h3>
+                        <div className="form-group">
+                        <input
+                            type='text'
+                            placeholder='Email here'
+                            name='username'
+                            className="form-control"
+                            value={resetPass.username}
+                            onChange={handInputChange}
+                        />
+                        </div>
+                        <button className="btn btn-primary"  onClick={handleReset}>Submit</button>
+                    </div>
+                </div>
             </div>
         </div>
     );

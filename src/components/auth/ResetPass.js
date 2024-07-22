@@ -62,29 +62,45 @@ const ResetPass = () => {
     };
 
     return (
-        <div>
-            <input
-                type='text'
-                placeholder='Email here'
-                name='username'
-                value={changePass.username}
-                onChange={handleInputChange}
-            />
-            <input
-                type='text'
-                placeholder='Otp'
-                name='otp'
-                value={changePass.otp}
-                onChange={handleInputChange}
-            />
-            <input
-                type='password'
-                placeholder='New Password'
-                name='newPassword'
-                value={changePass.newPassword}
-                onChange={handleInputChange}
-            />
-            <button onClick={handleChangePass}>Reset Password</button>
+        <div className="row justify-content-center">
+            <div className="col-md-6">
+                <div className="card">
+                    <div className="card-body">
+                        <h3 className="card-title">Đổi mật khẩu !</h3>
+                        <div className="form-group">
+                            <label>Email xác nhận :</label>
+                            <input
+                                type='text'
+                                className="form-control"
+                                name='username'
+                                value={changePass.username}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Nhập OTP:</label>
+                            <input
+                                type='text'
+                                name='otp'
+                                className="form-control"
+                                value={changePass.otp}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Mật khẩu mới:</label>
+                            <input
+                                type='password'
+                                className="form-control"
+                                name='newPassword'
+                                value={changePass.newPassword}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <button className="btn btn-primary" onClick={handleChangePass}>Submit</button>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

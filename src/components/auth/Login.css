@@ -295,7 +295,7 @@ border-bottom: 1px solid #ccc;
 }
 
 .class-list-teach {
-  height: 300px;
+  height: auto;
   padding-left: 20px;
   overflow: hidden;
   /* Ẩn phần bị tràn */

@@ -238,7 +238,7 @@ const MethodAddGroup = () => {
                       value={updateData.groupRegisterMethod}
                       onChange={handleInputChange}
                     >
-                      <option value="">Chọn phương thức tạo nhóm</option>
+                      <option value="" disabled >Chọn phương thức</option>
                       <option value="Student">Sinh viên chọn nhóm</option>
                       <option value="Teacher">Giảng viên chọn nhóm</option>
                       {updateData.groupRegisterMethod !== "Student" &&

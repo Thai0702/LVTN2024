@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BE_URL } from "../../../utils/Url_request"; // Make sure this URL is correct
 import Navbar from '../Navbar';
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import DetailClass from "../DetailClass";
 import './css/upload.css';
 import cancel from "../img/cancel.png";
@@ -170,7 +170,7 @@ const GoogleDriverPicker = () => {
                 setFeedabckData({
                     feedbackOfRequestId: requestId,
                     contentFeedback: "",
-                    score:0
+                    score: 0
                 });
             } else {
                 window.alert("feedback failed!");
@@ -196,7 +196,7 @@ const GoogleDriverPicker = () => {
     }, [requestId]);
     const handleChange = (e) => {
         setFeedabckData({ ...feedbackData, [e.target.name]: e.target.value });
-      };
+    };
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -217,93 +217,86 @@ const GoogleDriverPicker = () => {
                 <p>Ngày giờ hết hạn : {reportDetail.expiredDate}/ {reportDetail.expiredTime}</p>
                 <p>Mô tả : {reportDetail.requestDescription}</p>
             </div>
-            {reports.length > 0 && (
-                <div className="showsubmit">
-                    {reports.map(report => (
-                        <div key={report.id}>
-                            {report.attachment_URL.split(', ').map((url, index) => {
-                                // Lấy tên file từ URL
-                                const fileName = url.split('?').pop(); // Lấy phần cuối cùng của URL
-                                return (
-                                    <div key={index} className="report-item">
-                                        <a href={url} target="_blank" rel="noopener noreferrer">
-                                            {fileName} {/* Hiển thị tên file */}
-                                        </a>
-                                        <span onClick={() => handleDeleteSubmit(report.submitId)}>
-                                            <img src={cancel} />
-                                        </span>
+            <div className="containSubmit">
+                <div className="submitRequest">
+                    <div className="row justify-content-center">
+                        <div className="col-md-6">
+                            <div className="card">
+                                {reports.length > 0 && (
+                                    <div >
+                                        {reports.map(report => (
+                                            <div key={report.id}>
+                                                {report.attachment_URL.split(', ').map((url, index) => {
+                                                    // Lấy tên file từ URL
+                                                    const fileName = url.split('?').pop(); // Lấy phần cuối cùng của URL
+                                                    return (
+                                                        <div key={index} className="report-item">
+                                                            <a href={url} target="_blank" rel="noopener noreferrer">
+                                                                {fileName} {/* Hiển thị tên file */}
+                                                            </a>
+                                                            <span onClick={() => handleDeleteSubmit(report.submitId)}>
+                                                                <img src={cancel} />
+                                                            </span>
+                                                        </div>
+                                                    );
+                                                })}
+
+                                            </div>
+                                        ))}
                                     </div>
-                                );
-                            })}
-
-                        </div>
-                    ))}
-                </div>
-            )}
-            {isSubmit && (
-                <div className="formSubmit">
-                    <form onSubmit={handleSubmit}>
-                        <input
-                            type="text"
-                            className="form-control"
-                            value={reportTitle}
-                            onChange={(e) => setReportTitle(e.target.value)}
-                            placeholder="Report Title"
-
-                        />
-                        <input
-                            value={reportDescription}
-                            className="form-control"
-                            onChange={(e) => setReportDescription(e.target.value)}
-                            placeholder="Report Description"
-
-                        />
-                        <input
-                            type="file"
-                            className="form-control"
-                            id="fileInput"
-                            onChange={handleFileChange}
-                            multiple // Allow multiple file selection
-                            required
-                        />
-                        <button className="btn btn-primary" type="submit">Nộp</button>
-                    </form>
-                    {isSubmitted && (
-                        <p>Bài nộp đã được gửi. Nhấn "Cancel" để hủy.</p>
-                    )}
-                    {message && <p>{message}</p>}
-                </div>
-            )}
-            {!isClick && <button onClick={toggleSubmit}>Thêm báo cáo</button>}  <br></br>
-            {reports.length > 0 && (
-                <button onClick={handleDeleteAllSubmit}>Hủy nộp</button>
-            )}
-            <div>
-                <h4>Nhận xét !!</h4>
-                {feedback.length > 0 && (
-                    <div>
-                        {feedback.map(feedback => (
-                            <div key={feedback.id}>
-                                {feedback.email.split('@')[0]}: {feedback.contentFeedback}
+                                )}
+                                {!isClick && 
+                                <Link to={`/submit/${classId}/${requestId}`}><button class="btn btn-danger">Thêm báo cáo</button></Link> 
+                                } 
+                                 <br></br>
+                                {reports.length > 0 && (
+                                    <button class="btn btn-danger" onClick={handleDeleteAllSubmit}>Hủy nộp</button>
+                                )}
                             </div>
-                        ))}
+                        </div>
                     </div>
-                )}
-                <textarea
-                    type="text"
-                    className="form-control"
-                    name="contentFeedback"
-                    value={feedbackData.contentFeedback}
-                    onChange={handleChange}
-                />
-                <input
-                    type="text"
-                    className="form-control"
-                    name="score"
-                    value={feedbackData.score}
-                    onChange={handleChange}
-                />
-                <button onClick={handleFeedback}>Gửi</button>
+                </div>
+                <div className="feedback">
+                    <div className="row justify-content-center">
+                        <div className="col-md-6">
+                            <div className="card">
+                                <div className="card-body">
+                                    <div>
+                                        <h4>Nhận xét bài báo cáo nhóm !!</h4>
+                                        {feedback.length > 0 && (
+                                            <div>
+                                                {feedback.map(feedback => (
+                                                    <div key={feedback.id}>
+                                                        {feedback.email.split('@')[0]}: {feedback.contentFeedback}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        <textarea
+                                            type="text"
+                                            className="form-control"
+                                            name="contentFeedback"
+                                            value={feedbackData.contentFeedback}
+                                            onChange={handleChange}
+                                            placeholder="Nhận xét"
+                                        />
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="score"
+                                            placeholder="Điểm "
+                                            value={feedbackData.score}
+                                            onChange={handleChange}
+                                        />
+                                        <button class="btn btn-danger" onClick={handleFeedback}>Gửi</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     );

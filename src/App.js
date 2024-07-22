@@ -44,6 +44,8 @@ import MethodAddGroup from "./components/auth/PageMain/MethodAddGroup.js";
 import Home from "./Page/Homepage.js";
 
 import Upload from "./components/auth/PageMain/Upload.js"
+import Submit from "./components/auth/PageMain/Submit.js";
+import Request from "./components/auth/PageMain/Request.js";
 
 const App = () => {
   return (
@@ -102,18 +104,11 @@ const App = () => {
 
           {/* Page tearcher */}
           <Route path="/updateReport/:classId/:requestId" element={<UpdateReport />} />
-
-
           <Route path="/editclass" element={<EditClass />} />
-
-
           <Route path="/upload/:classId/:requestId" element={<Upload />} />
-          
-
+          <Route path="/submit/:classId/:requestId" element={<Submit/>}/>
+          <Route path="/showrequest/:groupId/:projectId" element={<Request/>}/>
         </Routes>
-
-
-
       </div>
     </Router>
   );

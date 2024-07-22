@@ -42,13 +42,13 @@ const GroupList = () => {
       window.alert("Nhóm đã đủ thành viên");
       return;
     }
-    
+
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('No token found');
       return;
     }
-    
+
     try {
       const response = await fetch(`${BE_URL}/api/class/${classId}/group/${groupId}/join-group`, {
         method: 'POST',
@@ -57,7 +57,7 @@ const GroupList = () => {
           'Authorization': 'Bearer ' + token
         }
       });
-  
+
       if (response.status === 200) {
         window.alert("Tham gia nhóm thành công!");
         window.location.reload(false);
@@ -80,7 +80,7 @@ const GroupList = () => {
       window.alert("Tham gia nhóm thất bại !!");
     }
   };
-  
+
   // get list project of group
   const [listProject, setListProject] = useState([]);
   useEffect(() => {
@@ -257,9 +257,10 @@ const GroupList = () => {
               groupRegisterMethod !== "RANDOM" &&
               groupRegisterMethod !== "Tearch" && (
                 <div className="tbc">
-                  <button onClick={joinGroup}  class="btn btn-outline">Tham Gia Nhóm</button>
+                  <button onClick={joinGroup} class="btn btn-outline">Tham Gia Nhóm</button>
+                  <Link to={`/showrequest/${groupId}/${projectId}`}> <button class="btn btn-outline">Xem báo cáo</button></Link>
                 </div>
-            )}
+              )}
           </div>
           {type !== "SV" && (
             <div className="tbc">
@@ -283,13 +284,13 @@ const GroupList = () => {
                       </p>
                     </div>
                     <div className="containItemMember">
-                    {type !== "SV" &&
-              groupRegisterMethod !== "RANDOM" &&
-              groupRegisterMethod !== "Tearch" && (
-                <div className="tbc">
-                  <button onClick={() => handleDeleteSVOutGroup(member.accountId)}  class="btn btn-outline"> Remove</button>
-                </div>
-            )}
+                      {type !== "SV" &&
+                        groupRegisterMethod !== "RANDOM" &&
+                        groupRegisterMethod !== "Tearch" && (
+                          <div>
+                            <button onClick={() => handleDeleteSVOutGroup(member.accountId)} class="btn btn-danger"> Remove</button>
+                          </div>
+                        )}
                     </div>
                   </div>
                 </li>
@@ -302,7 +303,7 @@ const GroupList = () => {
               <li key={project.projectId}>
                 <div className="project-container">
                   <div className="project-detail">
-                    <p>Tên đồ án: {project.projectName}<br/> Ngày hết hạn: {project.expiredDay}<br />Thời gian hết hạn:{project.expiredTime}</p>
+                    <p>Tên đồ án: {project.projectName}<br /> Ngày hết hạn: {project.expiredDay}<br />Thời gian hết hạn:{project.expiredTime}</p>
                   </div>
                   <div className="project-action">
                     <button onClick={() => handleDeleteProject(project.projectId)} type="button-delete" class="btn btn-danger">Delete</button>
@@ -344,12 +345,12 @@ const GroupList = () => {
                           value={updateData.expiredTime}
                           onChange={handleInputChange}
                           placeholder="Thời gian hết hạn"
-                          
+
                         />
-                        
+
                         <br></br>
-                        <button style={{marginLeft: '200px'}} type="submit">Lưu</button>
-                        
+                        <button style={{ marginLeft: '200px' }} type="submit">Lưu</button>
+
                       </form>
                     </div>
                   )}

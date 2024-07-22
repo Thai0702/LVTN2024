@@ -71,7 +71,6 @@ const Stream = () => {
     const [reportList, setreportList] = useState([]);
     useEffect(() => {
         const token = localStorage.getItem('token');
-
         const fetchReportList = async () => {
             try {
                 const response = await fetch(`${BE_URL}/api-gv/report-request/${classId}`, {
@@ -81,7 +80,7 @@ const Stream = () => {
                         'Authorization': 'Bearer ' + token
                     }
                 });
-  
+
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -96,6 +95,34 @@ const Stream = () => {
         };
         fetchReportList();
     }, [classId]);
+    ////lấy danh sách report of class id
+    const [reportSv, setreportSv] = useState([]);
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const fetchReporSv = async () => {
+            try {
+                const response = await fetch(`${BE_URL}/report-requests`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                setreportSv(data);
+            } catch (error) {
+                console.error('Error fetching report SV:', error);
+            } finally {
+                setLoading(false); // Set loading to false after data is fetched or an error occurs
+            }
+        };
+        fetchReporSv();
+    }, []);
     // delete report
     const [listReport, setListReport] = useState([]);
 
@@ -237,71 +264,94 @@ const Stream = () => {
                             <p>{classDetail.inviteCode}</p>
                         </div>
                     )}
-                    <div className='works'>
-                        <ul>
-                            {reportList.map((report) => (
-                                <li key={report.requestId}>
-                                    <div className='rp'>
-                                    <Link to={`/upload/${classId}/${report.requestId}`}>
-                                        <div className='report-content'>
-                                            <p>{report.requestTile} - Ngày và giờ hết hạn : {report.expiredDate}/{report.expiredTime}</p>
-                                            <div className='btndelete-report'>
-                                                {/* <button onClick={() => handleDeleteReport(report.requestId)} className="btn btn-danger" type="delete">DELETE</button> */}
-                                                <button className="submit" type="delete">Xem chi tiết</button>
+                    {type === "GV" ?
+                        (
+                            <div className='works'>
+                                <ul>
+                                    {reportList.map((report) => (
+                                        <li key={report.requestId}>
+                                            <div className='rp'>
+                                                <Link to={`/upload/${classId}/${report.requestId}`}>
+                                                    <div className='report-content'>
+                                                        <p>{report.requestTile} - Ngày và giờ hết hạn : {report.expiredDate}/{report.expiredTime}</p>
+                                                        <div className='btndelete-report'>
+                                                            {/* <button onClick={() => handleDeleteReport(report.requestId)} className="btn btn-danger" type="delete">DELETE</button> */}
+                                                            <button className="submit" type="delete">Xem chi tiết</button>
+                                                        </div>
+                                                    </div>
+                                                </Link>
                                             </div>
-                                        </div>
-                                        </Link>
-                                    </div>
-                                    {/* <button onClick={() => handleUpdate(report)}>Sửa</button> */}
-                                    {showUpdateForm && updateData.requestId === report.requestId && (
-                                        <div className="update-form">
-                                            <form onSubmit={handleSubmit}>
-                                                <input
-                                                    type="text"
-                                                    name="requestOfProject"
-                                                    value={updateData.requestOfProject}
-                                                    onChange={handleInputChange}
-                                                    placeholder="Report của group"
-                                                    readOnly
-                                                />
-                                                <input
-                                                    type="time"
-                                                    name="expiredTime"
-                                                    value={updateData.expiredTime}
-                                                    onChange={handleInputChange}
-                                                    placeholder="Thời gian hết hạn"
-                                                />
-                                                <input
-                                                    type="date"
-                                                    name="expiredDate"
-                                                    value={updateData.expiredDate}
-                                                    onChange={handleInputChange}
-                                                    placeholder="Ngày hết hạn"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    name="requestTile"
-                                                    value={updateData.requestTile}
-                                                    onChange={handleInputChange}
-                                                    placeholder="Chủ đề"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    name="requestDescription"
-                                                    value={updateData.requestDescription}
-                                                    onChange={handleInputChange}
-                                                    placeholder="Mô tả"
-                                                />
+                                            {/* <button onClick={() => handleUpdate(report)}>Sửa</button> */}
+                                            {showUpdateForm && updateData.requestId === report.requestId && (
+                                                <div className="update-form">
+                                                    <form onSubmit={handleSubmit}>
+                                                        <input
+                                                            type="text"
+                                                            name="requestOfProject"
+                                                            value={updateData.requestOfProject}
+                                                            onChange={handleInputChange}
+                                                            placeholder="Report của group"
+                                                            readOnly
+                                                        />
+                                                        <input
+                                                            type="time"
+                                                            name="expiredTime"
+                                                            value={updateData.expiredTime}
+                                                            onChange={handleInputChange}
+                                                            placeholder="Thời gian hết hạn"
+                                                        />
+                                                        <input
+                                                            type="date"
+                                                            name="expiredDate"
+                                                            value={updateData.expiredDate}
+                                                            onChange={handleInputChange}
+                                                            placeholder="Ngày hết hạn"
+                                                        />
+                                                        <input
+                                                            type="text"
+                                                            name="requestTile"
+                                                            value={updateData.requestTile}
+                                                            onChange={handleInputChange}
+                                                            placeholder="Chủ đề"
+                                                        />
+                                                        <input
+                                                            type="text"
+                                                            name="requestDescription"
+                                                            value={updateData.requestDescription}
+                                                            onChange={handleInputChange}
+                                                            placeholder="Mô tả"
+                                                        />
 
-                                                <button type="submit">Lưu</button>
-                                            </form>
-                                        </div>
-                                    )}
-                                </li>
+                                                        <button type="submit">Lưu</button>
+                                                    </form>
+                                                </div>
+                                            )}
+                                        </li>
 
-                            ))}
-                        </ul>
-                    </div>
+                                    ))}
+                                </ul>
+                            </div>
+                        ) : (
+                            <div className='works'>
+                                <ul>
+                                    {reportSv.map((reportsv) => (
+                                        <li key={reportsv.requestId}>
+                                            <div className='rp'>
+                                                <Link to={`/upload/${classId}/${reportsv.requestId}`}>
+                                                    <div className='report-content'>
+                                                        <p>{reportsv.requestTile} - Ngày và giờ hết hạn : {reportsv.expiredDate}/{reportsv.expiredTime}</p>
+                                                        <div className='btndelete-report'>
+                                                            <button className="submit" type="delete">Xem chi tiết</button>
+                                                        </div>
+                                                    </div>
+                                                </Link>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                        )}
                 </div>
             </div>
         </div>

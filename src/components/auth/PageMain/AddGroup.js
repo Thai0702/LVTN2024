@@ -125,7 +125,7 @@ const AddGroup = () => {
           <div className="adgroup">
             <div className="card">
               <div className="card-body">
-                <h2 className="card-title">Tạo đồ án</h2>
+                <h2 className="card-title">Tạo nhóm</h2>
                 <div className="form-group">
                   <label>Mã leader </label>
                   <input

@@ -17,7 +17,7 @@ import group from './imgAdmin/group.png'
 import project from './imgAdmin/project.png'
 function NavbarAdmin() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
-  const [projectText, setProjectText] = useState('Project'); // State variable for project text
+  const [projectText, setProjectText] = useState('Support'); // State variable for project text
   const [isSetting, setIsSetting] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Trạng thái đăng nhập
   const [username, setUsername] = useState(''); // Tên người dùng
@@ -81,16 +81,7 @@ function NavbarAdmin() {
           <Link className='link' onClick={() => handleLinkClick('Account')} to='/listAccount'>
             <div className='menu_1' ><img src={account} /> Account </div>
           </Link>
-          {isTeachingOpen && (
-            <div className='class-list-teach'>
-              {classList.map((classItem) => (
-                <li key={classItem.id}>
-                  <Link to={`/class/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
-                </li>
-              ))}
-            </div>
-          )}
-          <Link className='link' onClick={() => handleLinkClick('Class')} to='/listClass'>
+          {/* <Link className='link' onClick={() => handleLinkClick('Class')} to='/listClass'>
             <div className='menu_1'><img src={classAdmin} /> Class</div>
           </Link>
           <Link className='link' onClick={() => handleLinkClick('Group')} to='/listGroup'>
@@ -101,7 +92,7 @@ function NavbarAdmin() {
           </Link>
           <Link className='link' onClick={() => handleLinkClick('Report')} to='/listReport'>
             <div className='menu_1'><img src={report} />Report</div>
-          </Link>
+          </Link> */}
           <Link className='link' onClick={() => handleLinkClick('Setting')}>
             <div className='menu_1' onClick={togglesetting}><img src={setting} />Setting</div>
           </Link>
