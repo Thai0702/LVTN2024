@@ -43,3 +43,21 @@
     background-color: aliceblue;
     border-radius: 10px ;
 }
+
+.chonNhom {
+    width: 80%; /* Đảm bảo dropdown chiếm toàn bộ chiều rộng của container */
+  }
+  
+  .btn-danger {
+    min-width: 80px; /* Đảm bảo nút có độ rộng tối thiểu để tránh tự động thay đổi kích thước */
+    width: 10%;
+  }
+  
+  .custom-table {
+    border: 1px solid #000; 
+  }
+  
+  .custom-table th, .custom-table td {
+    border: 1px solid #000; 
+  }
+  

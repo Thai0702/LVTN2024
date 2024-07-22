@@ -15,7 +15,7 @@
     margin-bottom: 20px;
 }
 
-.listpe {
+/* .listpe {
     margin-top: 30px;
     margin-left: 1px;
     margin-right: 0px;
@@ -23,7 +23,7 @@
     background-color: #c9dddc;
     padding: 20px;
     border-radius: 10px;
-}
+} */
 
 .listpeople {
     text-align: center;
@@ -54,7 +54,7 @@
 }
 
 .btnPeople {
-    background-color: #ff4d4d;
+    background-color: #c09a9a;
     color: white;
     border: none;
     border-radius: 5px;
@@ -66,3 +66,29 @@
 .btnPeople:hover {
     background-color: #ff1a1a;
 }
+
+
+.container-p {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+.custom-width {
+    width: 100%; 
+    margin: 0 auto;
+  }
+
+
+  .custom-table {
+    border: 1px solid #000;
+  }
+  
+  .custom-table th, .custom-table td {
+    border: 1px solid #000;
+  }
+  
+
+
+
+

@@ -90,7 +90,7 @@ function NavbarAdmin() {
               ))}
             </div>
           )}
-          <Link className='link' onClick={() => handleLinkClick('Class')} to='/listClass'>
+          {/* <Link className='link' onClick={() => handleLinkClick('Class')} to='/listClass'>
             <div className='menu_1'><img src={classAdmin} /> Class</div>
           </Link>
           <Link className='link' onClick={() => handleLinkClick('Group')} to='/listGroup'>
@@ -101,7 +101,7 @@ function NavbarAdmin() {
           </Link>
           <Link className='link' onClick={() => handleLinkClick('Report')} to='/listReport'>
             <div className='menu_1'><img src={report} />Report</div>
-          </Link>
+          </Link> */}
           <Link className='link' onClick={() => handleLinkClick('Setting')}>
             <div className='menu_1' onClick={togglesetting}><img src={setting} />Setting</div>
           </Link>

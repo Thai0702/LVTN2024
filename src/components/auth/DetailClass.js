@@ -38,7 +38,7 @@ const ClassDetailPage = () => {
   }, [location.pathname]);
 
   return (
-    <div>
+    <div> 
       <Navbar />
       <div className='container-main'>
         <div className='container-header'>

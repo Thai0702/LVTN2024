@@ -13,6 +13,7 @@ import iconClass from "./img/iconClass.png";
 import { useNavigate } from "react-router-dom";
 import { BE_URL } from "../../utils/Url_request";
 import arrow from "../auth/pageAdmin/imgAdmin/arrow.png";
+
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const [projectText, setProjectText] = useState("Project"); // State variable for project text
@@ -46,16 +47,28 @@ function Navbar() {
 
   const [classListStudent, setClassListStudent] = useState([]);
 
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     try {
+  //       const response = await fetch(`${BE_URL}/api/account`);
+  //       const userData = await response.json();
+  //       setUsers(userData);
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //     }
+  //   };
+  //   fetchUsers();
+  // }, []);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch(`${BE_URL}/api/account`);
-        const userData = await response.json();
-        setUsers(userData);
+        const response = await axios.get(`${BE_URL}/api/account`);
+        setUsers(response.data);
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error fetching users:", error.message);
       }
     };
+
     fetchUsers();
   }, []);
   // lay userId by account
@@ -230,83 +243,157 @@ function Navbar() {
   const togglesetting = () => {
     setIsSetting(!isSetting);
   };
+  
   return (
-        <header className="header">
-
-          <div className="logo" onClick={toggleMenu}>
-            <img src={menu} alt="Menu" /> {projectText} {/* Dynamic project text */}
+    <header className="header">
+      <div className="container-fluid">
+        <div className="row align-items-center">
+          <div className="col-auto logo" onClick={toggleMenu}>
+            <img src={menu} alt="Menu" /> {projectText}
           </div>
-
-          {isMenuOpen && (
-            <div className="additional-components">
-              <Link to='/' className='link' onClick={() => handleLinkClick('Home')}>
-                <div className='menu_1'><img src={home} /> Home</div>
-              </Link>
-              {type === "GV" ? <Link className='link' onClick={() => handleLinkClick('Teaching')}>
-                <div className='menu_1' onClick={toggleTeaching}> <img src={teach} /> Class Created </div>
-              </Link> : <Link className='link' onClick={() => handleLinkClick('Student')}>
-                <div className='menu_1' onClick={toggleStedent}> <img src={student} /> Class Joined</div>
-              </Link>}
-              {isTeachingOpen && (
-                <div className='class-list-teach'>
-                  {classList.map((classItem) => (
-                    <li key={classItem.id}onClick={() => handleLinkClick('Teaching >'+classItem.subjectName)}>
-                     <img src={iconClass}/> <Link to={`/class/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
-                    </li>
-                  ))}
+          <div className="col">
+            <nav className="nav d-flex justify-content-end">
+              <img src={add} height="40px" onClick={toggleCreate} />
+              {isCreate && (
+                <div ref={createClassRef} className="create-class-component">
+                  <p>
+                    {' '}
+                    <Link to="/join" style={{ textDecoration: 'none' }}>
+                      Join class
+                    </Link>
+                    <br></br>
+                  </p>
+                  <p>
+                    <Link to="/create" style={{ textDecoration: 'none' }}>
+                      Create class
+                    </Link>
+                  </p>
                 </div>
               )}
-              {isStudentOpen && (
-                <div className='class-list-teach'>
-                  {classListStudent.map((classItem) => (
-                    <li key={classItem.id}>
-                     <img src={iconClass}/> <Link to={`/class/${classItem.subjectClassId}`} style={{ textDecoration: 'none', color: 'black' }}>{classItem.subjectName}</Link> {/* Sử dụng id của lớp */}
+              <ul className="nav-list d-flex">
+                {isLoggedIn ? (
+                  <>
+                    <li>
+                      <span>Hi ! {fullName}</span>
                     </li>
-                  ))}
-                </div>)}
-                <Link className='link' onClick={() => handleLinkClick('Setting')}>
-    <div className='menu_1 setting' onClick={togglesetting}><img src={setting} />Setting</div>
-              </Link>
-
-              {isSetting && (
-                <Link to={`/change_pass`} className='link' onClick={() => handleLinkClick('Change password')}>
-                  <div className='class-list-teach1'>
-                    <img src={arrow} /> Change password
-                  </div></Link>
-              )}
-            </div>
-          )}
-
-          <nav className="nav">
-            <img src={add} height='40px' onClick={toggleCreate} />
-            {isCreate && (
-              <div ref={createClassRef} className="create-class-component">
-                <p> <Link to='/join' style={{ textDecoration: 'none' }}>Join class</Link><br></br></p>
-                <p><Link to='/create' style={{ textDecoration: 'none' }}>Create class</Link></p>
-              </div>
-            )}
-            <ul className="nav-list">
-              {isLoggedIn ? (
-                <>
+                    <li>
+                      <Link
+                        to="/login"
+                        onClick={handleLogout}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        Logout
+                      </Link>
+                    </li>
+                  </>
+                ) : (
                   <li>
-                    <span>Hi ! {fullName}</span>
-                  </li>
-                  <li>
-                    <Link to='/login' onClick={handleLogout} style={{ textDecoration: 'none' }}>
-                      Logout
+                    <Link
+                      to="/login"
+                      style={{ textDecoration: 'none' }}
+                    >
+                      Login
                     </Link>
                   </li>
-                </>
-              ) : (
-                <li>
-                  <Link to='/login' style={{ textDecoration: 'none' }}>
-                    Logout
+                )}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      {isMenuOpen && (
+        <div className="additional-components">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12">
+                <Link
+                  to="/"
+                  className="link"
+                  onClick={() => handleLinkClick('Home')}
+                >
+                  <div className="menu_1">
+                    <img src={home} /> Home
+                  </div>
+                </Link>
+                {type === 'GV' ? (
+  <Link className="link" onClick={() => handleLinkClick('Teaching')}>
+    <div className="menu_1" onClick={toggleTeaching}>
+      <img src={teach} alt="Teaching" /> Class Created
+    </div>
+  </Link>
+) : (
+  <Link className="link" onClick={() => handleLinkClick('Student')}>
+    <div className="menu_1" onClick={toggleStedent}>
+      <img src={student} alt="Student" /> Class Joined
+    </div>
+  </Link>
+)}
+{isTeachingOpen && (
+  <div className="class-list-teach">
+    <ul>
+      {classList.map((classItem) => (
+        <li
+          key={classItem.id}
+          onClick={() => handleLinkClick('Teaching >' + classItem.subjectName)}
+        >
+          <img src={iconClass} alt="Class" />
+          <Link
+            to={`/class/${classItem.subjectClassId}`}
+            style={{ textDecoration: 'none', color: 'black' }}
+          >
+            <span className="class-name">{classItem.subjectName}</span>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+{isStudentOpen && (
+  <div className="class-list-teach">
+    <ul>
+      {classListStudent.map((classItem) => (
+        <li key={classItem.id}>
+          <img src={iconClass} alt="Class" />
+          <Link
+            to={`/class/${classItem.subjectClassId}`}
+            style={{ textDecoration: 'none', color: 'black' }}
+          >
+            <span className="class-name">{classItem.subjectName}</span>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+
+                <Link
+                  className="link"
+                  onClick={() => handleLinkClick('Setting')}
+                >
+                  <div className="menu_1 setting" onClick={togglesetting}>
+                    <img src={setting} /> Setting
+                  </div>
+                </Link>
+
+                {isSetting && (
+                  <Link
+                    to={`/change_pass`}
+                    className="link"
+                    onClick={() => handleLinkClick('Change password')}
+                  >
+                    <div className="class-list-teach1">
+                      <img src={arrow} /> Change password
+                    </div>
                   </Link>
-                </li>
-              )}
-            </ul>
-          </nav>
-        </header>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
   );
 }
 export default Navbar;

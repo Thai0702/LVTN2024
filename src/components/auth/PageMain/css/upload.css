@@ -1,0 +1,79 @@
+.container-upload {
+    background-color: rgb(225, 235, 227);
+    display: flex;
+    flex-direction: column; 
+    position: absolute;
+    top: 4cm; 
+    left: 7cm; 
+    right: 0.5cm; 
+    bottom: 10px; 
+    padding: 20px; 
+    overflow: auto; 
+}
+
+.no-underline {
+    text-decoration: none;
+  }
+
+  @media (max-width: 576px) {
+    .table td {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+  
+
+/* .card-upload-1 {
+  margin-top: -15cm;
+  width: 1000px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+} */
+.card-upload-2 {
+
+    /* width: 450px; */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+/* .showRequest {
+    margin-top: 60px;
+} */
+
+/* .formSubmit {
+
+} */
+/* .formSubmit input {
+    margin: 10px 0; 
+    width: 100%; 
+    padding: 10px; 
+    box-sizing: border-box; 
+} */
+/* .showsubmit {
+    background-color: antiquewhite;
+    margin-top: 10px;
+    margin-left: -100px;
+} */
+/* .showsubmit img{
+    cursor: pointer;
+} */
+/* .report-item{
+    height: 55px;
+    background-color: aliceblue;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    margin:10px;
+} */
+/* .containSubmit{
+    display: flex;
+} */
+
+/* .submitRequest{
+    margin-left: -100px;
+    margin-right: 250px;
+} */
+/* .feedback{
+    margin-top: 50px;
+} */

@@ -37,7 +37,7 @@ const CreateReport = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `${BE_URL}/api-gv/report-request`,
+        `${BE_URL}/api-gv/create/request`,
         {
           subjectClass: classId,
           requestOfProject: requestOfProject,
@@ -98,6 +98,10 @@ const CreateReport = () => {
     };
     fettListProject();
   });
+
+
+
+
   return (
     <div>
       <Navbar />
@@ -186,6 +190,10 @@ const CreateReport = () => {
       </div>
     </div>
   );
+
+
+
+  
 };
 
 export default CreateReport;

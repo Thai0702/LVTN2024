@@ -44,6 +44,8 @@ import MethodAddGroup from "./components/auth/PageMain/MethodAddGroup.js";
 import Home from "./Page/Homepage.js";
 
 import Upload from "./components/auth/PageMain/Upload.js"
+import Submit from "./components/auth/PageMain/Submit.js";
+
 
 const App = () => {
   return (
@@ -107,8 +109,11 @@ const App = () => {
           <Route path="/editclass" element={<EditClass />} />
 
 
-          <Route path="/upload/:classId" element={<Upload />} />
+          <Route path="/upload/:classId/:requestId" element={<Upload />} />
           
+
+
+          <Route path="/submit/:classId/:requestId" element={<Submit/>}/>
 
         </Routes>
 

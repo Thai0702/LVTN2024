@@ -76,74 +76,85 @@ const Project = () => {
 
             .catch(error => console.error('Error fetching student list:', error));
     }, [classId]);
+
+
+
     return (
         <div>
-            <Navbar />
-            <DetailClass />
-            <div ref={createClassRef} className="row justify-content-center">
-                <div className="col-md-6">
-                    <div className='taobaocao'>
-                    <div className="card">
-                        <div className="card-body">
-                        <h2 className="card-title">TẠO BÁO CÁO</h2>
-                            <div className="form-group">
-                                {/* <label>Tên đồ án: </label> */}
-                                <input className="form-control" 
-                                type='text' value={project_name}
-                                    placeholder='Tên đồ án' 
-                                    onChange={(e) => setProjectName(e.target.value)}/>
-                            </div>                        
-                            <div className="form-group">
-                                {/* <label>Mô tả: </label> */}
-                                <input
-                                    type='text'
-                                    placeholder='Mô tả'
-                                    className="form-control"
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                />
-                            </div>
-                            {/* <label>Ngày tạo: </label> */}
-                            <div className="form-group">
-                                <input
-                                    type='date'
-                                    placeholder='CreateDay'
-                                    className="form-control"
-                                    value={expired_day}
-                                    onChange={(e) => setExpiredDay(e.target.value)}
-                                />
-                            </div>
-                            <div className="form-group">
-                            {/* <label>Thời gian hết hạn: </label> */}
-                            <input
-                                type='time'
-                                placeholder='Thời gian hết hạn'
-                                className="form-control"
-                                value={expired_time}
-                                onChange={(e) => setExpiredTime(e.target.value)}                     
-                            />
-                             </div>
-                             <div className="form-group">
-                                {/* <label>Chọn Group: </label> */}
-                                <select className="form-control"
-                                    onChange={(e) => setProjectOfGroup(e.target.value)} 
-                                    value={project_of_group} >
-                                    <option>Select Group</option>
-                                    {grouptList.map((group) => (
-                                        <option key={group.groupId} value={group.groupId}>
-                                            {group.groupName}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <button className="btn btn-primary" type='submit' onClick={handleAddProject}>Thêm</button>
-                        </div>
+          <Navbar />
+          <DetailClass />
+          <div ref={createClassRef} className="container-fluid">
+            <div className="row justify-content-center">
+              <div className="col-12 col-md-6">
+                <div className='taobaocao'>
+                  <div className="card">
+                    <div className="card-body">
+                      <h2 className="card-title">TẠO DỰ ÁN</h2>
+                      <div className="mb-3">
+                        <input
+                          type='text'
+                          className="form-control"
+                          value={project_name}
+                          placeholder='Tên đồ án'
+                          onChange={(e) => setProjectName(e.target.value)}
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <input
+                          type='text'
+                          className="form-control"
+                          placeholder='Mô tả'
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <input
+                          type='date'
+                          className="form-control"
+                          placeholder='Ngày tạo'
+                          value={expired_day}
+                          onChange={(e) => setExpiredDay(e.target.value)}
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <input
+                          type='time'
+                          className="form-control"
+                          placeholder='Thời gian hết hạn'
+                          value={expired_time}
+                          onChange={(e) => setExpiredTime(e.target.value)}
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <select
+                          className="form-control"
+                          onChange={(e) => setProjectOfGroup(e.target.value)}
+                          value={project_of_group}
+                        >
+                          <option value="">Chọn nhóm</option>
+                          {grouptList.map((group) => (
+                            <option key={group.groupId} value={group.groupId}>
+                              {group.groupName}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <button className="btn btn-primary" type='submit' onClick={handleAddProject}>
+                        Thêm
+                      </button>
                     </div>
-                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    );
+      );
+      
+      
+
+    
 }
 
 export default Project;
