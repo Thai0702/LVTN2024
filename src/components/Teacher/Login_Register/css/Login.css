@@ -1,0 +1,400 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+}
+
+p.mt-3 {
+  display: flex;
+  width: 400px;
+  font-weight: bold;
+}
+
+#navbarNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: chocolate;
+}
+
+a.navbar-brand {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: chocolate;
+}
+
+.navbar {
+  background-color: chocolate;
+}
+
+.navbar-brand {
+  color: white;
+  /* Màu chữ cho navbar brand */
+}
+
+.navbar-nav .nav-link {
+  color: white;
+  /* Màu chữ cho các liên kết */
+}
+
+#navbarNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: chocolate;
+  padding-right: 50px;
+}
+
+.container {
+  max-width: 1200px;
+  /* Để giữ navbar ở giữa trang */
+}
+
+.navbar-toggler {
+  border-color: white;
+  /* Màu viền cho toggle button */
+}
+
+.navbar-toggler-icon {
+  background-color: white;
+  /* Màu của biểu tượng toggle */
+}
+
+/* Để tạo màu hover khi di chuột qua các liên kết */
+.navbar-nav .nav-link:hover {
+  color: #ffd700;
+  /* Màu chữ khi di chuột qua */
+}
+
+/* Để tạo màu khi liên kết đang được chọn */
+.navbar-nav .nav-item.active .nav-link {
+  color: #ffd700;
+  /* Màu chữ khi liên kết được chọn */
+}
+
+.navbar-brand {
+  color: white;
+  /* Màu chữ cho navbar brand */
+  margin-right: 15px;
+  /* Tăng khoảng cách giữa chữ và toggle button */
+}
+
+.container {
+  width: 500px;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #939185;
+border-bottom: 1px solid #ccc;
+  padding: 10px 20px;
+  z-index: 1000;
+  display: flex;
+  height: 60px;
+}
+/* menu*/
+.additional-components {
+  position: absolute;
+  /* position: relative; */
+  /* display: inline-block; */
+  top: 100%;
+  left: 0;
+  width: 260px;
+  height: 645px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  border-right: 1px solid #ccc;
+  color: black;
+  font-weight: bold;
+  padding: 20px;
+  z-index: 999;
+  /* overflow-y: auto;  */
+}
+
+/* .create-class-component {
+  position: absolute;
+  top: 100%;
+  width: 180px;
+  background-color: #eee9e9;
+  border: 2px solid #080707;
+  color: black;
+  font-weight: bold;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 50px;
+  margin-left: -10cm;
+} */
+
+.create-class-component {
+  position: absolute;
+  top: 100%;
+  /* right: 200px; */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 1000;
+  margin-right: 7cm;
+  /* text-align: center; */
+
+}
+.create-class-component p{
+  margin-right: 1cm;
+}
+
+.create-class-component p :hover {
+  color: rgb(72, 0, 255);
+}
+
+.menu_1 {
+  padding: 20px;
+}
+
+.additional-components img {
+  height: 30px;
+  padding-right: 20px;
+}
+
+.logo {
+  position: relative;
+  /* Đặt vị trí của .logo là tương đối để xác định vị trí của dropdown menu */
+  z-index: 1000;
+  /* Đảm bảo .logo hiển thị trên tất cả các phần tử khác */
+  cursor: pointer;
+  font-weight: bold;
+
+}
+
+.logo img {
+  height: 30px;
+  padding-right: 30px;
+}
+
+
+.nav {
+  margin-left: auto;
+  /* Di chuyển phần danh sách nav sang bên phải */
+  font-weight: bold;
+  padding-left: 10px;
+}
+
+.nav :hover {
+  color: #f2e9ec;
+}
+
+.nav-list {
+  list-style-type: none;
+  /* Loại bỏ dấu đầu dòng của danh sách */
+  padding: 0;
+  margin: 0;
+}
+
+.nav-list li {
+  display: inline;
+  /* Hiển thị các mục danh sách liền kề nhau */
+  margin-right: 20px;
+  /* Khoảng cách giữa các mục danh sách */
+}
+
+.add-button {
+  padding: 10px 10px;
+  background-color: #007bff;
+  /* Màu nền của nút */
+  color: #fff;
+  /* Màu chữ của nút */
+  border: none;
+  /* Loại bỏ viền */
+  border-radius: 50px;
+  /* Bo tròn góc */
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  /* Biến con trỏ thành pointer khi di chuột qua nút */
+}
+
+.nav a {
+  padding-left: 40px;
+  color: black;
+}
+
+.nav img {
+  cursor: pointer;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+}
+
+.class {
+  display: inline-block;
+  padding-right: 100px;
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+.components-class {
+  position: absolute;
+  /* Đặt vị trí tuyệt đối */
+  top: 100%;
+  /* Hiển thị ở phía dưới của .logo */
+  width: 100%;
+  left: 230px;
+  height: 50px;
+  /* Màu nền của dropdown menu */
+  border: 2px solid #271818;
+  color: black;
+  font-weight: bold;
+  z-index: 999;
+  cursor: pointer;
+  /* Đảm bảo dropdown menu hiển thị trên tất cả các phần tử khác */
+}
+
+.additional-components img {
+  height: 25px;
+}
+
+.class-list-teach {
+  height: auto;
+  padding-left: 20px;
+}
+
+.class-list-teach li {
+  list-style-type: none;
+  margin: 20px;
+  color: black;
+  /* Loại bỏ dấu chấm */
+}
+.class-list-teach li:hover{
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+
+
+
+
+.header {
+  background-color: #f8f9fa;
+  padding: 10px 20px;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.logo img {
+  margin-right: 10px;
+}
+
+.additional-components {
+  margin-top: 10px;
+}
+
+.nav img {
+  cursor: pointer;
+}
+
+.create-class-component {
+  top: 50px;
+  right: 10px;
+  z-index: 1000;
+}
+
+.class-list-teach,
+.class-list-teach1 {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.class-list-teach li,
+.class-list-teach1 li {
+  padding: 5px 0;
+}
+
+.setting {
+  margin-top: 10px;
+}
+
+
+
+
+
+
+/* 
+.additional-components {
+  transform: translateX(-300px); 
+  transition: transform 0.3s ease-in-out;
+}
+
+.additional-components.menu-open {
+  transform: translateX(0); 
+}
+
+.class-list-teach {
+  transform: translateX(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+.class-list-teach.menu-open {
+  transform: translateX(-200px);
+} */

@@ -1,0 +1,88 @@
+.container-people {
+    background-color: rgb(220, 239, 225);
+    display: flex;
+    flex-direction: column; 
+    position: absolute;
+    top: 4cm; 
+    left: 7cm; 
+    right: 0.5cm; 
+    bottom: 10px; 
+    padding: 20px; 
+    overflow: auto; 
+}
+
+.import-people {
+    margin-bottom: 20px;
+}
+
+
+.listpeople {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.listpe ul {
+    padding: 0;
+}
+
+.listpe li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f0f4f4;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    list-style-type: none;
+    transition: background-color 0.3s ease;
+}
+
+.listpe li:hover {
+    background-color: #6b796b;
+}
+
+.btnPeople {
+    background-color: #c09a9a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btnPeople:hover {
+    background-color: #ff1a1a;
+}
+
+
+.container-p {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+.custom-width {
+    width: 100%; 
+    margin: 0 auto;
+  }
+
+
+  .custom-table {
+    border: 1px solid #000;
+  }
+  
+  .custom-table th, .custom-table td {
+    border: 1px solid #000;
+  }
+  
+.table-responsive{
+    height: 500px;
+    overflow-y: auto;
+}
+
+
+

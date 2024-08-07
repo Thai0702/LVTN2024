@@ -1,0 +1,10 @@
+.link {
+    color: inherit; /* Sử dụng màu kế thừa từ phần tử cha */
+    text-decoration: none;
+    /* background-color: blueviolet; */
+  }
+  
+  .link:active {
+    color: inherit; /* Đảm bảo màu chữ không thay đổi khi nhấp vào */
+  }
+  

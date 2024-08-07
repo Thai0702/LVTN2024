@@ -1,0 +1,81 @@
+.container-stream {
+    display: flex;
+    flex-direction: column; 
+    position: absolute;
+    top: 4cm; 
+    left: 7cm; 
+    right: 0.5cm; 
+    bottom: 10px; 
+    padding: 20px; 
+    overflow: auto;  
+    border-radius: 10px ;
+}
+
+/* .body-1{
+    background-color:rgb(138, 4, 4);
+    width: 100%;
+    height: 100px;
+    border: 1px solid rgb(196, 193, 193);
+} */
+.body-stream {
+  background-color: aliceblue;
+  width: 100%;
+    height: 100px;
+    border: 1px solid rgb(196, 193, 193);
+}
+.body-stream p{
+  padding-left: 500px;
+  font-size: 20px;
+  padding-top: 40px;
+}
+.works {
+    background-color:white;
+    width: 100%;
+    height: 400px;
+    max-height: 550px; /* Thay đổi height thành max-height để khi nội dung không đầy, không có thanh cuộn xuất hiện */
+    overflow-y: auto;
+    border: 1px solid rgb(196, 193, 193);
+    padding-left: 20px;
+    padding-right: 20px; /* Thêm padding phải để tránh việc nút xóa bị tràn ra ngoài */
+    overflow: auto;
+    border-radius: 10px ;
+    
+  }
+  .works li {
+    border-radius: 10px;
+    background-color: white;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; 
+  }
+
+.body-code{
+    border: 1px solid rgb(196, 193, 193);
+}
+
+.rp .report-content {
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: space-between; /* Đẩy các phần tử ra hai đầu */
+  }
+  
+  .rp p {
+    margin: 0; /* Đảm bảo rằng đoạn văn bản không có khoảng cách thừa */
+
+  }
+  
+  .btndelete-report {
+    margin-left: 20px; /* Khoảng cách giữa văn bản và nút */
+  }
+  
+
+  .custom-table {
+    border: 1px solid #000;
+  }
+  
+  .custom-table th, .custom-table td {
+    border: 1px solid #000;
+  }
+  .name{
+    top: -10px;
+  }
+  

@@ -1,0 +1,102 @@
+/*home show class*/
+.home-main {
+    position: absolute;
+    top: 9%;
+    left: 240px;
+    margin-left: 10px;
+    color: black;
+    font-weight: bold;
+    padding: 20px;
+    z-index: 999;
+   
+}
+.show-class{
+    position: absolute;
+    flex-wrap: wrap; /* Cho phép tự động xuống hàng khi không đủ không gian */
+}
+
+/* Container chứa tất cả các lớp học */ 
+.class-list {
+ /* Set the maximum height */
+     overflow-y: auto;  
+
+    display: grid;
+    background-color: #f3f3f4;
+    grid-template-columns: repeat(3, 1fr);
+    gap:50px;
+    /* background-color: #0e2cd5; */
+    /* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); */
+    
+}
+
+.show-class ul {
+    display: flex;
+    
+    list-style: none; /* Loại bỏ dấu đầu dòng của danh sách */
+    padding: 0; /* Xóa padding mặc định của danh sách */
+}
+
+.showclass-1 {
+    margin-right: 25px;
+    width: 200px;
+    text-align: center;
+    height: 200px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px; 
+}
+
+.class-list p{
+    margin-top: 130px;
+    margin-right: 10px;
+}
+.name_class{
+    background-color: gray;
+    height: 50px;
+    padding-top: 10px;
+    width: 290px;
+    margin-left: -10px;
+    margin-top: -10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    
+}
+.button-del
+{
+    display: flex;
+    margin-left: 90px;
+   
+}
+
+.btnxoasua{
+    display: flex;
+    margin-right: 10px;
+    margin-right: -10px;
+}
+.btnxoasua button:hover{
+    background-color: red;
+}
+.btnxoasua button{
+    margin-right: 10px;
+    background-color: antiquewhite;
+    border-radius: 10px;
+    margin-top: -15px;
+}
+
+.menu-icon {
+    display: inline-block;
+    width: 30px; 
+    height: 30px;
+    border-radius: 50%;
+    background-color: antiquewhite; 
+    text-align: center;
+    line-height: 30px; 
+    cursor: pointer;
+    transition: background-color 0.3s; 
+    margin-top: 0cm;
+  }
+  
+  .menu-icon:active {
+    background-color: white; 
+  }
+  

@@ -1,0 +1,132 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .home-main {
+    width: 1100px;
+  }
+  
+  .show-class {
+    display: flex;
+    width: 1000;
+    max-width: 1200px;
+    
+  }
+  
+  .class-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 2.5cm;
+    /* justify-content: center; */
+    overflow: hidden;
+  }
+  .showclass-1:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+ 
+  .name_class a {
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .button-del {
+    margin-top: 10px;
+  }
+  
+  .btnxoasua button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .btnxoasua button:hover {
+    background-color: #0056b3;
+  }
+  
+  .update-form {
+    margin-top: 20px;
+  }
+  
+  .update-form input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .update-form button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .update-form button:hover {
+    background-color: #218838;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 1200px) {
+    .showclass-1 {
+      width: calc(50% - 40px);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .showclass-1 {
+      width: calc(100% - 40px);
+    }
+  
+    .btnxoasua button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+  .menu-container{
+    margin-top: -22%;
+    margin-left: 220px;
+    cursor: pointer;
+  }
+  .menu-container span:hover{
+    background-color: black;  
+  }
+  .menu{
+    width: 130px;
+    border-radius: 10px;
+    margin-left: -50px;
+    border: 3px solid #ddd;
+  }
+  .menu button{
+    margin: 30px;
+    width: 60px;
+    display:flow-root;
+    margin-top: 5px;
+  }
+
+/* .card{
+  width: auto;
+  height: 400px;
+  position: relative;
+  margin-bottom: -1230px;
+  margin-left: -300px;
+}
+   */
+
+  
+  

@@ -1,0 +1,64 @@
+.chonNhom {
+    margin-right: 20px;
+    border-radius: 10px;
+}
+
+/* Base styles for .updateMethod */
+/* .updateMethod {
+    margin-right: 5cm;
+    
+} */
+
+/* Large screens */
+@media (min-width: 1200px) {
+    .updateMethod {
+        margin-left: 800px;
+    }
+
+    .chonNhom {
+        margin-right: 40px;
+    }
+}
+
+/* Medium screens */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .updateMethod {
+        margin-left: 100px;
+    }
+    .chonNhom {
+        margin-right: 30px;
+    }
+}
+
+/* Small screens */
+@media (max-width: 767px) {
+    .updateMethod {
+        margin-left: 20px;
+    }
+    .chonNhom {
+        margin-right: 10px;
+    }
+}
+.card1{
+    height: 200px;
+    background-color: aliceblue;
+    border-radius: 10px ;
+}
+
+.chonNhom {
+    width: 80%; /* Đảm bảo dropdown chiếm toàn bộ chiều rộng của container */
+  }
+  
+  .btn-danger {
+    min-width: 80px; /* Đảm bảo nút có độ rộng tối thiểu để tránh tự động thay đổi kích thước */
+    width: 10%;
+  }
+  
+  .custom-table {
+    border: 1px solid #000; 
+  }
+  
+  .custom-table th, .custom-table td {
+    border: 1px solid #000; 
+  }
+  

@@ -1,0 +1,509 @@
+.container-join {
+    background: #b0c1cc;
+    width: 450px;
+    height: 150px;
+    font-size: 25px;
+    padding: 20px;
+    border-radius: 20px;
+    border: 2px solid black;
+}
+.container-join img{
+    cursor: pointer;
+}
+.input{
+    margin: 5px 20px 10px 40px;
+    border-radius: 5px;
+    font-size: 20px;
+}
+.container-join button{
+    border-radius: 20px;
+    font-size: 20px;
+}
+.container-create {
+    display: flex;
+    flex-direction: column;
+    background: #b0c1cc;
+    height: auto;
+    width: 500px;
+    padding: 20px;
+    border-radius: 20px;
+    color:black;
+    font-weight: bold;
+    border: 2px solid black;
+    
+}
+.input{
+    font-size: 15px;
+    margin-top: 10px;
+}
+.container-create button {
+    margin-top: 10px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 190px;
+    border-radius: 20px;
+}
+.button-create:active {
+    background-color: #4c44ee;
+}
+.button-join:active{
+    background-color: #4c44ee;
+}
+.button-create{
+    width: 100px;
+    margin-left: 200px;
+    border-radius: 10px;
+
+}
+/* Base styles for container-header */
+.container-header {
+    
+}
+
+.container-header .header-1 {
+    display: inline-block; 
+    margin: 15px 22px; 
+    padding: 10px; 
+    text-decoration: none; 
+    color: #000; 
+    transition: all 0.3s ease; 
+  }
+  .container-header .header-1:hover {
+    text-decoration: underline; 
+    color: #007bff; 
+  }
+  
+  .container-header .header-1.active {
+    text-decoration: underline; 
+    color: #007bff;
+    
+  }
+
+
+/* Large screens */
+@media (min-width: 1200px) {
+    .container-header {
+        margin-left: 0px;
+    }
+}
+
+/* Medium screens */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .container-header {
+        margin-left: 0px;
+    }
+}
+
+/* Small screens */
+@media (max-width: 767px) {
+    .container-header {
+        margin-left: 20px;
+    }
+}
+
+
+.container-header {
+    
+    padding: -5px; 
+    margin: 0px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 16px rgba(224, 13, 13, 0.1);
+    transition: box-shadow 0.3s ease-in-out; 
+    background-color: #f2e8e8;
+  }
+
+  
+.header-1 {
+    flex: 1; 
+    text-align: center; 
+    padding: 0 10px; 
+    /* text-decoration: none;
+    color: inherit;  */
+}
+
+.header-1.active {
+    border-bottom: 2px solid #e91717; 
+  }
+
+.container-main{
+    position: absolute; /* Đặt vị trí tuyệt đối */
+    top: 9%; /* Hiển thị ở phía dưới của .logo */
+    width:auto  ;
+    height: auto;
+    color: black;
+    font-weight: bold;
+    left: 260px;
+   
+}
+.header-1{
+    padding-left:50px ;
+    justify-content: center;
+    align-items: center;
+    padding-right: 50px;
+    cursor: pointer;
+}
+.header-1:hover{
+    background-color: rgb(215, 215, 204);
+    border-radius: 2px;
+}
+/*body*/
+.container-body img{
+    margin-left: 230px;
+    margin-top: 10px;
+    padding-bottom: 7px;
+    padding-right: 15px;
+}
+.container-body p{
+    margin-top: 10px;
+}
+.create-work{
+    cursor: pointer;
+    
+}
+.works {
+    background-color: aqua;
+    width: 100%;
+    height: 400px;
+    max-height: 550px; /* Thay đổi height thành max-height để khi nội dung không đầy, không có thanh cuộn xuất hiện */
+    overflow-y: auto;
+    border: 1px solid black;
+    padding-left: 20px;
+    padding-right: 20px; /* Thêm padding phải để tránh việc nút xóa bị tràn ra ngoài */
+  }
+  
+  .works li {
+    list-style-type: none;
+    background: #b0c1cc;
+    margin-bottom: 20px; /* Thay margin thành margin-bottom để tạo khoảng cách dưới mỗi mục */
+    padding: 10px; /* Thêm padding để tạo khoảng cách giữa nội dung và viền */
+    border: 2px solid gainsboro;
+    margin-top: 10px;
+    position: relative; /* Để có thể điều chỉnh vị trí của nút xóa */
+  }
+  
+ .btnGroup {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: none;
+  border-radius: 6px; /* Giảm border-radius để nút trở nên nhỏ hơn */
+  padding: 2px 6px; /* Giảm padding để nút trở nên nhỏ hơn */
+  cursor: pointer;
+  margin-top: 1px;
+}
+.btnGroup button{
+    margin-left: 20px;
+    background-color: white;
+    color: black;
+}
+.btnGroup button:hover{
+
+    background-color: rgb(35, 100, 157);
+}
+
+.btnPeople{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border: none;
+    border-radius: 6px; /* Giảm border-radius để nút trở nên nhỏ hơn */
+    padding: 2px 6px; /* Giảm padding để nút trở nên nhỏ hơn */
+    cursor: pointer;
+    margin-top: 1px;
+} 
+.btnPeople button{
+    margin-left: 20px;
+    background-color: white;
+    color: black;
+} 
+.btnPeople button:hover{
+    background-color: rgb(35, 100, 157);
+
+}
+.create-work{
+    display: flex;
+    background-color: aquamarine;
+    border: 1px solid black;
+}
+.body-1{
+    background-color: aqua;
+    width: 100%;
+    height: 150px;
+    border: 1px solid black;
+}
+.body-1 p{
+    padding-left: 500px;
+    font-size: 20px;
+    padding-top: 40px;
+}
+.body-2{
+    display: flex;
+    margin-top: 10px;
+}
+.body-code{
+    background-color: antiquewhite;
+    width: 150px;
+    height: 100px;
+    border: 1px solid black;
+    margin-right: 10px;
+}
+.body-code p{
+    text-align: center;
+}
+.body-homework{
+    background-color: antiquewhite;
+    width: 1000px;
+    height: 100px;
+    border-radius: 20px;
+    border: 1px solid black; 
+}
+/*people*/
+.import-people{
+    background-color: #b0c1cc;
+    border: 1px solid black;
+    height: 40px;
+}
+.import-people input{
+    margin-top: 4px;
+    margin-left: 50px;
+    margin-right: 2px;
+}
+.import-people button{
+    border-radius: 10px;
+    margin-left: 50px;
+}
+.import-people button:active{
+    background: #4c44ee;
+}
+/*home show class*/
+.home-main {
+    position: absolute;
+    top: 9%;
+    left: 240px;
+    margin-left: 10px;
+    color: black;
+    font-weight: bold;
+    padding: 20px;
+    z-index: 999;
+   
+}
+.show-class{
+    position: absolute;
+    flex-wrap: wrap; /* Cho phép tự động xuống hàng khi không đủ không gian */
+}
+
+.class{
+    display: flex;
+    height: 200px;
+    margin: 20px;
+    width: 200px;
+    border: 1px solid black;
+    background-color: antiquewhite;
+    cursor: pointer;
+}
+.class-link
+{
+    text-decoration: none;
+}
+.menu_1{
+    margin-right: -1cm;
+    cursor: pointer;
+    overflow: auto;
+}
+.class-item{
+    padding-left: 90px;
+    cursor: pointer;
+}
+/* Container chứa tất cả các lớp học */
+.class-list-show {
+    display: flex;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Số lớp học trên mỗi hàng, mỗi ô có chiều rộng tối thiểu 300px */
+    gap: 20px; /* Khoảng cách giữa các ô */
+    
+  }
+  .class-list {
+ /* Set the maximum height */
+    /*overflow-y: auto;*/ /* Add vertical scrollbar when content exceeds the height */
+}
+
+  /* Style cho mỗi lớp học */
+  .class-item-show {
+    background-color: #b3b7cd;
+    padding: 20px;
+    width: 250px;
+    height: 100px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Title của lớp học */
+  .class-item-show h3 {
+    margin-top: 0;
+  }
+  /* Mô tả của lớp học */
+  .class-item-show p {
+    margin-bottom: 0;
+  }
+  .container-show{
+    height: 300px;
+    background-color:white;
+    border-radius: 10px;
+    border: 1px solid black;
+  }
+  .container-create-project{
+    display: flex;
+    flex-direction: column;
+    background: #b0c1cc;
+    height: auto;
+    margin-left: 250px;
+    width: 500px;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    color:black;
+    font-weight: bold;
+    border: 2px solid black;
+  }
+/* xuong dong*/
+  .class-list-show {
+    display: flex;
+    
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    justify-content: flex-start; /* Align items to the start of the flex container */
+    gap: 20px; /* Add spacing between items */
+}
+.show-class ul {
+    display: flex;
+    list-style: none; /* Loại bỏ dấu đầu dòng của danh sách */
+    padding: 0; /* Xóa padding mặc định của danh sách */
+}
+
+.showclass-1 {
+    margin-right: 25px;
+    width: 270px;
+    border-radius: 10px;
+    text-align: center;
+    height: 270px;
+    margin-bottom: 10px; /* Khoảng cách giữa các mục lớp */
+    padding: 10px; /* Padding bên trong mỗi mục lớp */
+}
+.show-class li a {
+    text-decoration: none; /* Loại bỏ gạch chân từ danh sách lớp */
+    color: #333; /* Màu văn bản cho các liên kết */
+    font-weight: bold; /* Đậm cho văn bản các liên kết */
+}
+.class-list p{
+    margin-top: 130px;
+    margin-right: 10px;
+}
+.name_class{
+    background-color: antiquewhite;
+    height: 70px;
+    padding-top: 10px;
+    width: 268px;
+    margin-left: -10px;
+    margin-top: -10px;
+    border-bottom: 1px solid #ccc;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 20px;
+}
+.button-del
+{
+    display: flex;
+    margin-left: 90px;
+   
+}
+.sua{
+    height: 29px;
+    margin-top: 130px;
+}
+.btnxoasua{
+    display: flex;
+    margin-right: 10px;
+
+
+
+
+    margin-right: -10px;
+}
+.btnxoasua button:hover{
+    background-color: red;
+}
+.btnxoasua button{
+    margin-right: 10px;
+    background-color: antiquewhite;
+    border-radius: 10px;
+    margin-top: -15px;
+}
+.show_sinhvien{
+    display: flex;
+}
+.dsshow{
+    text-align: center;
+}
+.error{
+    text-align:center ;
+}
+.nav img{
+    margin-right: 20px;
+}
+.nav-list
+{
+    padding-top: 8px;
+}
+.container-main {
+    width: 80%;
+}
+span {
+    margin-right: 20px;
+}
+.addMember{
+    margin-right: 20px;
+}
+.addGroup {
+    text-align: center;
+}
+
+
+/* .additional-components {
+    position: relative;
+  } */
+/*   
+  .menu_1.setting {
+    position: absolute;
+    bottom: 0;
+  }
+  
+  .additional-components.open .menu_1.setting {
+    position: static;
+  }
+   */
+
+
+.class-list-teach li{
+    margin-left: -1cm;
+    white-space: nowrap; /* Không xuống dòng */
+  overflow: hidden; /* Ẩn phần nội dung vượt quá kích thước khung */
+  text-overflow: ellipsis; /* Thêm dấu ba chấm khi nội dung bị cắt */
+  max-width: 180px; /* Đặt chiều rộng tối đa để áp dụng hiệu ứng */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.show-class li a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+    display: inline-block;
+  vertical-align: middle;
+}
+
+
+
+

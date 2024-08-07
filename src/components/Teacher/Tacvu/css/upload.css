@@ -1,0 +1,55 @@
+.container-upload {
+    background-color: rgb(225, 235, 227);
+    display: flex;
+    flex-direction: column; 
+    position: absolute;
+    top: 4cm; 
+    left: 7cm; 
+    right: 0.5cm; 
+    bottom: 10px; 
+    padding: 20px; 
+    overflow: auto; 
+}
+
+.no-underline {
+    text-decoration: none;
+  }
+
+  @media (max-width: 576px) {
+    .table td {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+.card-upload-2 {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+/* .btn-tbc {
+  margin-top: -10cm;
+  margin-bottom: 10cm;
+} */
+
+.btn-hn {
+  width: auto;
+}
+
+.table-responsive{
+  margin-bottom: -10cm;
+}
+
+.cancel {
+  margin-left: 40px;
+}
+
+.drive {
+  margin-right: 10px;
+}
+
+/* Add this CSS to your styles */
+.btn:disabled {
+  opacity: 0.5; /* Make the button look faded */
+  cursor: not-allowed; /* Change cursor to indicate the button is not clickable */
+}

@@ -1,0 +1,13 @@
+.taobaocao {
+    margin-top: 4cm;
+}
+
+.card{
+    height: auto;
+    /* margin-top: auto; */
+    border: 2px solid rgb(254, 248, 248);
+}
+.card-body{
+    height: auto;
+    overflow-y: auto;
+}

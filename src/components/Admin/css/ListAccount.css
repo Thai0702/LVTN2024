@@ -1,0 +1,57 @@
+.container-admin-account {
+    display: flex;
+    flex-direction: column; 
+    background-color: rgb(236, 220, 220);
+    position: absolute;
+    top: 1.7cm; 
+    left: 7cm; 
+    right: 10px; 
+    bottom: 10px; 
+    padding: 20px; 
+    overflow: auto; 
+}
+
+.custom-table {
+    border: 1px solid #000;
+  }
+  
+  .custom-table th, .custom-table td {
+    border: 1px solid #000;
+  }
+  
+/* .listac {
+    position: absolute;
+    margin-top: -18%;
+    margin-left: -30%;
+    margin-right: 200px;
+    width: 1200px;
+    height: 600px;
+    overflow-y: auto;
+    background-color: #8dd8d3;
+} */
+
+.listaccount {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+/* 
+.listac li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #b7e9e9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    width: 1100px;
+    margin-bottom: 10px;
+    list-style-type: none;
+    transition: background-color 0.3s ease;
+    
+  } */
+  /* .listac input{
+    margin-left: 30px;
+    margin-bottom: 20px;
+  } */
