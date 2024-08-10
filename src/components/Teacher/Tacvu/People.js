@@ -5,7 +5,8 @@ import { BE_URL } from "../../../utils/Url_request";
 import Navbar from "../Home/Navbar";
 import DetailClass from "../Class/DetailClass";
 import peoplecss from "./css/people.css";
-// import { Modal } from "bootstrap";
+import { fetchStudentList, deleteStudent, uploadFile, addStudent } from "../../../services/apiPeople";
+
 
 const People = () => {
   const { classId } = useParams();
@@ -16,34 +17,62 @@ const People = () => {
   const type = localStorage.getItem("type");
   const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
-  const fetchStudentList = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await fetch(
-        `${BE_URL}/api/class/student-list/${classId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+  const [studentId, setStudentId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [students, setStudents] = useState([]);
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+  //them danh sach sinh vien
+  // const fetchStudentList = async () => {
+  //   const token = localStorage.getItem("token");
+  //   try {
+  //     const response = await fetch(
+  //       `${BE_URL}/api/class/student-list/${classId}`,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       }
+  //     );
+
+  //     if (!response.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
+
+  //     const data = await response.json();
+  //     setStudentList(data);
+  //   } catch (error) {
+  //     console.error("Error fetching student list:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchStudentList();
+  // }, [classId]);
+
+  const token = localStorage.getItem("token");
+  const loadStudentList = async () => {
+      setLoading(true);
+      try {
+          const data = await fetchStudentList(classId, token);
+          setStudentList(data);
+      } catch (error) {
+          console.error("Error loading student list:", error);
+      } finally {
+          setLoading(false);
       }
-
-      const data = await response.json();
-      setStudentList(data);
-    } catch (error) {
-      console.error("Error fetching student list:", error);
-    } finally {
-      setLoading(false);
-    }
   };
+
   useEffect(() => {
-    fetchStudentList();
+      if (classId) {
+          loadStudentList();
+      }
   }, [classId]);
+
+
+ 
+//xoa sinh vien
 
   const handleDeleteSV = async (id) => {
     const token = localStorage.getItem("token");
@@ -77,69 +106,117 @@ const People = () => {
       window.alert("Đã xảy ra lỗi khi xóa sinh viên!");
     }
   };
+
+  
+
   // upload file
   const handleFileUpload = async () => {
     const token = localStorage.getItem("token");
     const file = fileInputRef.current.files[0];
+    
     if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
-      setLoading(true);
-      try {
-        await axios.post(`${BE_URL}/api-gv/class/excel/${classId}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + token,
-          },
-        });
-        window.alert("Dữ liệu đã được tải lên thành công!!!");
-        navigate(`/methodGroup/${classId}`)
-        // Load lại trang sau khi thêm thành công
-        window.location.reload(false);
-      } catch (error) {
-        window.alert("Dữ liệu đã được tải lên thất bại!!!");
-      }finally {
-        setLoading(false);
-      }
+        setLoading(true);
+        try {
+            await uploadFile(classId, token, file);
+            window.alert("Dữ liệu đã được tải lên thành công!!!");
+            navigate(`/methodGroup/${classId}`);
+            // Load lại trang sau khi thêm thành công
+            window.location.reload(false);
+        } catch (error) {
+            window.alert("Dữ liệu đã được tải lên thất bại!!!");
+        } finally {
+            setLoading(false);
+        }
     } else {
-      console.error("Chưa chọn tệp hoặc chưa chọn lớp!!!");
-      window.alert("Chưa chọn tệp hoặc chưa chọn lớp!!!");
+        console.error("Chưa chọn tệp hoặc chưa chọn lớp!!!");
+        window.alert("Chưa chọn tệp hoặc chưa chọn lớp!!!");
     }
-  };
-  const [studentId, setStudentId] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [students, setStudents] = useState([]);
+};
+  // const handleFileUpload = async () => {
+  //   const token = localStorage.getItem("token");
+  //   const file = fileInputRef.current.files[0];
+  //   if (file) {
+  //     const formData = new FormData();
+  //     formData.append("file", file);
+  //     setLoading(true);
+  //     try {
+  //       await axios.post(`${BE_URL}/api-gv/class/excel/${classId}`, formData, {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       });
+  //       window.alert("Dữ liệu đã được tải lên thành công!!!");
+  //       navigate(`/methodGroup/${classId}`)
+  //       // Load lại trang sau khi thêm thành công
+  //       window.location.reload(false);
+  //     } catch (error) {
+  //       window.alert("Dữ liệu đã được tải lên thất bại!!!");
+  //     }finally {
+  //       setLoading(false);
+  //     }
+  //   } else {
+  //     console.error("Chưa chọn tệp hoặc chưa chọn lớp!!!");
+  //     window.alert("Chưa chọn tệp hoặc chưa chọn lớp!!!");
+  //   }
+  // };
 
-  const handleAddStudent = async (e) => {
-    e.preventDefault();
-    if (!studentId) {
+
+//them SV bang ma
+const handleAddStudent = async (e) => {
+  e.preventDefault();
+  if (!studentId) {
       window.alert("Vui lòng điền đủ thông tin.");
       return;
-    }
-    try {
+  }
+
+  setLoading(true);
+  try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${BE_URL}/api-gv/add-student/class/${classId}`,
-        { studentId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      const response = await addStudent(classId, studentId, token);
       if (response.status === 200) {
-        setStudentId("");
-        window.alert("Thêm sinh viên thành công!!!");
-        fetchStudentList(); // Fetch the updated list of students
+          setStudentId("");
+          window.alert("Thêm sinh viên thành công!!!");
+          fetchStudentList(); // Gọi hàm để cập nhật danh sách sinh viên
       }
-    } catch (error) {
+  } catch (error) {
       window.alert("Thêm sinh viên thất bại!!!");
-      setStudentId("");
-    } finally {
+  } finally {
       setLoading(false);
-    }
-  };
+  }
+};
+  // const handleAddStudent = async (e) => {
+  //   e.preventDefault();
+  //   if (!studentId) {
+  //     window.alert("Vui lòng điền đủ thông tin.");
+  //     return;
+  //   }
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const response = await axios.post(
+  //       `${BE_URL}/api-gv/add-student/class/${classId}`,
+  //       { studentId },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       }
+  //     );
+  //     if (response.status === 200) {
+  //       setStudentId("");
+  //       window.alert("Thêm sinh viên thành công!!!");
+  //       fetchStudentList(); // Fetch the updated list of students
+  //     }
+  //   } catch (error) {
+  //     window.alert("Thêm sinh viên thất bại!!!");
+  //     setStudentId("");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -149,7 +226,8 @@ const People = () => {
       <Navbar />
       <DetailClass />
       <div className="container-people">
-      {/* File hướng dẫn: <Link>https://docs.google.com/spreadsheets/d/1eqbVrt93ZJmFtpkQ68cvG3jLpFPykVG6/edit?usp=drive_link&ouid=105753820574402795694&rtpof=true&sd=true</Link> */}
+      File hướng dẫn: <a href="https://docs.google.com/spreadsheets/d/1eqbVrt93ZJmFtpkQ68cvG3jLpFPykVG6/edit?usp=
+      drive_link&ouid=105753820574402795694&rtpof=true&sd=true">Tài liệu hướng dẫn</a>
         {type==="GV"&&(
           <div className="container-p mt-3 custom-width">
             

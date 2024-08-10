@@ -4,6 +4,7 @@ import DetailClass from "../Class/DetailClass";
 import { useNavigate, useParams } from "react-router-dom";
 import { BE_URL } from "../../../utils/Url_request";
 import mehthodGroup from "./css/mehthodGroup.css";
+import { fetchGroupListAPI, fetchStudentListAPI } from "../../../services/apiMethod";
 const MethodAddGroup = () => {
   const { classId } = useParams();
   const subjectName = localStorage.getItem("subjectName");
@@ -20,83 +21,111 @@ const MethodAddGroup = () => {
   // danh sách sinh viên của lớp
   const [studentList, setStudentList] = useState([]);
   const [loading, setLoading] = useState(true);
+
+
+  // const fetchStudentList = async () => {
+  //   const token = localStorage.getItem("token");
+  //   try {
+  //     const response = await fetch(
+  //       `${BE_URL}/api/class/student-list/${classId}`,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       }
+  //     );
+
+  //     if (!response.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
+
+  //     const data = await response.json();
+  //     setStudentList(data);
+  //   } catch (error) {
+  //     console.error("Error fetching student list:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const fetchStudentList = async () => {
     const token = localStorage.getItem("token");
+    setLoading(true);
     try {
-      const response = await fetch(
-        `${BE_URL}/api/class/student-list/${classId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-      setStudentList(data);
+        const data = await fetchStudentListAPI(classId, token);
+        setStudentList(data);
     } catch (error) {
-      console.error("Error fetching student list:", error);
+        // Xử lý lỗi đã được log trong API
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
   useEffect(() => {
     fetchStudentList();
   }, [classId]);
+
   // Load group list
   // Load group list and calculate max members of group
   useEffect(() => {
     const fetchGroupList = async () => {
-      try {
-        const response = await fetch(
-          `${BE_URL}/api-gv/classId/group-list/${classId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-        const data = await response.json();
-        setGroupList(data);
-
-        // Calculate max members of group
-        const memberCounts = await Promise.all(
-          data.map((group) =>
-            fetch(
-              `${BE_URL}/api/class/${classId}/group/${group.groupId}/students`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            )
-              .then((response) => response.json())
-              .then((groupMembers) => ({
-                groupId: group.groupId,
-                memberCount: groupMembers.length,
-              }))
-          )
-        );
-
-        const maxMemberGroup = memberCounts.reduce(
-          (max, group) => (group.memberCount > max.memberCount ? group : max),
-          { groupId: null, memberCount: 0 }
-        );
-        setMaxMemberOfGroup(maxMemberGroup.memberCount);
-      } catch (error) {
-        console.error("Error fetching group list:", error);
-      }
+        try {
+            const { groupList, maxMemberCount } = await fetchGroupListAPI(classId, token);
+            setGroupList(groupList);
+            setMaxMemberOfGroup(maxMemberCount);
+        } catch (error) {
+            // Xử lý lỗi đã được log trong API
+        }
     };
 
     fetchGroupList();
-  }, [classId, token]);
+}, [classId, token]);
+  // useEffect(() => {
+  //   const fetchGroupList = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `${BE_URL}/api-gv/classId/group-list/${classId}`,
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: "Bearer " + token,
+  //           },
+  //         }
+  //       );
+  //       const data = await response.json();
+  //       setGroupList(data);
+
+  //       // Calculate max members of group
+  //       const memberCounts = await Promise.all(
+  //         data.map((group) =>
+  //           fetch(
+  //             `${BE_URL}/api/class/${classId}/group/${group.groupId}/students`,
+  //             {
+  //               headers: {
+  //                 Authorization: `Bearer ${token}`,
+  //               },
+  //             }
+  //           )
+  //             .then((response) => response.json())
+  //             .then((groupMembers) => ({
+  //               groupId: group.groupId,
+  //               memberCount: groupMembers.length,
+  //             }))
+  //         )
+  //       );
+
+  //       const maxMemberGroup = memberCounts.reduce(
+  //         (max, group) => (group.memberCount > max.memberCount ? group : max),
+  //         { groupId: null, memberCount: 0 }
+  //       );
+  //       setMaxMemberOfGroup(maxMemberGroup.memberCount);
+  //     } catch (error) {
+  //       console.error("Error fetching group list:", error);
+  //     }
+  //   };
+
+  //   fetchGroupList();
+  // }, [classId, token]);
 
   const [updateData, setUpdateData] = useState({
     subjectName: subjectName,

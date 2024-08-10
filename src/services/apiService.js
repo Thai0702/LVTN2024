@@ -67,4 +67,28 @@ export const getAllFeedbackBySubmitId = async (requestId) => {
     return response.data;
 };
 
+export const getAllDocumentByClass = async (classId) => {
+    const token = localStorage.getItem('token'); // Lấy token nếu cần
+    const response = await axios.get(`${BE_URL}/api/upload/resource/document/${classId}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`, // Thêm header nếu cần
+        },
+    });
+    return response.data;
+};
 
+
+
+//xoa document
+export const deleteResourceById = async (resourceId) => {
+    const token = localStorage.getItem('token'); // Lấy token nếu cần
+    const url = `${BE_URL}/api/upload/resource/delete/${resourceId}`;
+        const response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+        });
+        return response.data;
+};

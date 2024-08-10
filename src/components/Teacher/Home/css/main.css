@@ -310,7 +310,7 @@
 .menu_1{
     margin-right: -1cm;
     cursor: pointer;
-    overflow: auto;
+    /* overflow: auto; */
 }
 .class-item{
     padding-left: 90px;
@@ -487,10 +487,10 @@ span {
 
 .class-list-teach li{
     margin-left: -1cm;
-    white-space: nowrap; /* Không xuống dòng */
-  overflow: hidden; /* Ẩn phần nội dung vượt quá kích thước khung */
-  text-overflow: ellipsis; /* Thêm dấu ba chấm khi nội dung bị cắt */
-  max-width: 180px; /* Đặt chiều rộng tối đa để áp dụng hiệu ứng */
+    white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  max-width: 100px; 
   display: inline-block;
   vertical-align: middle;
 }

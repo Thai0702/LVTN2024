@@ -160,8 +160,8 @@ function Navbar() {
         !createClassRef.current.contains(event.target)
       ) {
         setIsCreate(false);
-        setClassListStudent(false);
-        setIsTeachingOpen(false);
+        setClassListStudent(true);
+        setIsTeachingOpen(true);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -337,17 +337,24 @@ function Navbar() {
                 )}
                 {isTeachingOpen && (
                   <div className="class-list-teach" style={{ maxHeight: '400px', overflowY: 'auto' }}>
-                    <ul>
+                    <ul >
                       {classList.map((classItem) => (
-                      
                         <li
                           key={classItem.id}
                            onClick={() => handleLinkClick('Teaching >' + classItem.subjectName)}
+                           style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}
                         >
                           <img src={iconClass} alt="Class" />
                           <Link
                             to={`/class/${classItem.subjectClassId}`}
-                            style={{ textDecoration: 'none', color: 'black' }}
+                            style={{ 
+                              textDecoration: 'none', 
+                              color: 'black', 
+                              whiteSpace: 'nowrap', 
+                              overflow: 'hidden', 
+                              textOverflow: 'ellipsis', 
+                              flex: 1 
+                            }}
                           >
                             <span className="class-name">{classItem.subjectName}</span>
                           </Link>
@@ -358,6 +365,7 @@ function Navbar() {
                 )}
                 {isStudentOpen && (
                   <div className="class-list-teach">
+                    {classListStudent.length > 0 && (
                     <ul>
                       {classListStudent.map((classItem) => (
                         <li key={classItem.id}
@@ -373,6 +381,7 @@ function Navbar() {
                         </li>
                       ))}
                     </ul>
+                    )}
                   </div>
                 )}
                 <Link

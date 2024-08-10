@@ -4,6 +4,8 @@ import Navbar from "../Home/Navbar";
 import DetailClass from "../Class/DetailClass";
 import { BE_URL } from "../../../utils/Url_request";
 import "./css/group.css";
+import { deleteGroup } from "../../../services/apiGroup";
+
 
 const Group = () => {
   const { classId } = useParams();
@@ -18,6 +20,7 @@ const Group = () => {
     classId: classId,
     groupName: "",
   });
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     fetch(`${BE_URL}/api-gv/classId/group-list/${classId}`, {
@@ -34,49 +37,81 @@ const Group = () => {
       .catch((error) => console.error("Error fetching group list:", error));
   }, [classId]);
 
+
+//xoa group
+  // const handleDeleteGroup = async (groupId) => {
+  //   if (!groupId) {
+  //     console.error("Group ID is missing or undefined");
+  //     window.alert("Group ID is missing or undefined");
+  //     return;
+  //   }
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     console.error("No token found");
+  //     window.alert("No token found");
+  //     return;
+  //   }
+
+  //   const confirmed = window.confirm("Bạn có chắc muốn xóa nhóm này không?");
+  //   if (!confirmed) {
+  //     return;
+  //   }
+
+  //   try {
+  //     const responseDelete = await fetch(
+  //       `${BE_URL}/api/group/delete/${groupId}`,
+  //       {
+  //         method: "DELETE",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       }
+  //     );
+
+  //     if (responseDelete.ok) {
+  //       setGroupList(groupList.filter((group) => group.groupId !== groupId));
+  //       window.alert("Xóa nhóm thành công.");
+  //     } else {
+  //       const errorData = await responseDelete.json();
+  //       console.error("Error deleting group:", errorData.message);
+  //       window.alert("Xảy ra lỗi khi xóa nhóm: " + errorData.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting group:", error);
+  //     window.alert("Không thể xóa.");
+  //   }
+  // };
   const handleDeleteGroup = async (groupId) => {
     if (!groupId) {
-      console.error("Group ID is missing or undefined");
-      window.alert("Group ID is missing or undefined");
-      return;
-    }
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("No token found");
-      window.alert("No token found");
+      console.error('Group ID is missing or undefined');
+      window.alert('Group ID is missing or undefined');
       return;
     }
 
-    const confirmed = window.confirm("Bạn có chắc muốn xóa nhóm này không?");
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found');
+      window.alert('No token found');
+      return;
+    }
+
+    const confirmed = window.confirm('Bạn có chắc muốn xóa nhóm này không?');
     if (!confirmed) {
       return;
     }
 
     try {
-      const responseDelete = await fetch(
-        `${BE_URL}/api/group/delete/${groupId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      if (responseDelete.ok) {
-        setGroupList(groupList.filter((group) => group.groupId !== groupId));
-        window.alert("Xóa nhóm thành công.");
-      } else {
-        const errorData = await responseDelete.json();
-        console.error("Error deleting group:", errorData.message);
-        window.alert("Xảy ra lỗi khi xóa nhóm: " + errorData.message);
-      }
+      await deleteGroup(groupId, token);
+      setGroupList(groupList.filter(group => group.groupId !== groupId));
+      window.alert('Xóa nhóm thành công.');
     } catch (error) {
-      console.error("Error deleting group:", error);
-      window.alert("Không thể xóa.");
+      console.error('Error deleting group:', error);
+      window.alert('Xảy ra lỗi khi xóa nhóm: ' + error.message);
     }
   };
+
+
 
   const handleUpdate = (groupItem) => {
     setUpdateData(groupItem);
@@ -134,6 +169,7 @@ const Group = () => {
       [name]: value,
     }));
   };
+
   const nn = groupList.length;
   console.log("chao sô lượng nhom", nn);
   const handleAddGroupClick = () => {
@@ -155,6 +191,10 @@ const Group = () => {
     }
   };
   const isDisabled = groupList.length >= numberOfGroup;
+
+
+ 
+
 
   return (
     <div>

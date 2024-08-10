@@ -6,7 +6,7 @@
 }
 
 .card {
-  width: 400px;
+  width: 425px;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -24,7 +24,7 @@
 }
 
 .form-control {
-  width: 100%;
+  width: 94%;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -32,7 +32,7 @@
 }
 
 .btn-primary {
-  width: 100%;
+  width: 95%;
   padding: 10px;
   font-size: 16px;
   border: none;

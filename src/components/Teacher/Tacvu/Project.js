@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { BE_URL } from '../../../utils/Url_request';
 import Navbar from "../Home/Navbar";
 import DetailClass from "../Class/DetailClass";
-import "./css/project.css";
+import project from '../Tacvu/css/project.css';
 
 const Project = () => {
     const navigate = useNavigate();
@@ -12,30 +12,31 @@ const Project = () => {
     const { classId } = useParams();
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    /*add project */
+
     const [project_name, setProjectName] = useState('');
     const [project_of_group, setProjectOfGroup] = useState('');
     const [description, setDescription] = useState('');
-    const [expired_day, setExpiredDay] = useState('');
-    const [expired_time, setExpiredTime] = useState('');
+    const [expiredDate, setExpiredDate] = useState('');
+    const [expiredTime, setExpiredTime] = useState('');
     const [dateError, setDateError] = useState('');
     const groupRegisterMethod = localStorage.getItem('groupRegisterMethod');
 
     const handleAddProject = async (e) => {
         e.preventDefault();
-        // Kiểm tra không được bỏ trống các trường
-        if (!project_name || !project_of_group || !description || !expired_day || !expired_time) {
+
+        if (!project_name || !project_of_group || !description || !expiredDate || !expiredTime) {
             window.alert('Vui lòng điền đủ thông tin.');
             return;
         }
 
-        // Kiểm tra ngày và giờ hết hạn không được nhỏ hơn ngày và giờ hiện tại
         const currentDate = new Date();
-        const selectedDate = new Date(`${expired_day}T${expired_time}`);
+        const selectedDate = new Date(`${expiredDate}T${expiredTime}`);
 
         if (selectedDate <= currentDate) {
-            window.alert('Ngày tháng năm không hợp lệ, vui lòng chọn ngày tháng năm khác.');
+            setDateError("Ngày và giờ hết hạn không được nhỏ hơn ngày và giờ hiện tại.");
             return;
+        } else {
+            setDateError("");
         }
 
         try {
@@ -46,22 +47,21 @@ const Project = () => {
                     projectName: project_name,
                     projectOfGroup: project_of_group,
                     projectDescription: description,
-                    expiredDay: expired_day,
-                    expiredTime: expired_time
+                    expiredDay: expiredDate,
+                    expiredTime: expiredTime
                 },
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: 'Bearer ' + token // Thêm token vào header
+                        Authorization: 'Bearer ' + token
                     }
                 }
             );
             if (response.status === 200) {
-                // Đặt lại các trường nhập
                 setProjectName('');
                 setProjectOfGroup('');
                 setDescription('');
-                setExpiredDay('');
+                setExpiredDate('');
                 setExpiredTime('');
                 window.alert("Tạo đồ án thành công!!!");
                 if (groupRegisterMethod === 'Teacher') {
@@ -75,34 +75,29 @@ const Project = () => {
         }
     };
 
+    const handleExpiredDateChange = (e) => {
+        setExpiredDate(e.target.value);
+        validateDateTime(e.target.value, expiredTime);
+    };
 
-    const handleExpiredDayChange = (e) => {
-      setExpiredDay(e.target.value);
-      validateDateTime(e.target.value, expired_time);
-  };
+    const handleExpiredTimeChange = (e) => {
+        setExpiredTime(e.target.value);
+        validateDateTime(expiredDate, e.target.value);
+    };
 
-  const handleExpiredTimeChange = (e) => {
-      setExpiredTime(e.target.value);
-      validateDateTime(expired_day, e.target.value);
-  };
+    const validateDateTime = (date, time) => {
+        const currentDate = new Date();
+        const selectedDate = new Date(`${date}T${time}`);
 
-  const validateDateTime = (day, time) => {
-      const currentDate = new Date();
-      const selectedDate = new Date(`${day}T${time}`);
+        if (selectedDate <= currentDate) {
+            setDateError("Ngày và giờ hết hạn không được nhỏ hơn ngày và giờ hiện tại.");
+        } else {
+            setDateError("");
+        }
+    };
 
-      if (selectedDate <= currentDate) {
-          // setDateError('Ngày và giờ hết hạn không được nhỏ hơn ngày và giờ hiện tại.');
-          setDateError('Ngày không được nhỏ hơn ngày hiện tại');
-      } else {
-          setDateError('');
-      }
-  };
-
-
-    // hiển thị group của lớp
     const [grouptList, setGroupList] = useState([]);
     useEffect(() => {
-        // Fetch the list of students
         const token = localStorage.getItem('token');
         fetch(`${BE_URL}/api-gv/classId/group-list/${classId}`, {
             method: 'GET',
@@ -152,23 +147,19 @@ const Project = () => {
                                             type='date'
                                             className="form-control"
                                             placeholder='Ngày tạo'
-                                            value={expired_day}
-                                            // onChange={(e) => setExpiredDay(e.target.value)}
-                                            onChange={handleExpiredDayChange}
+                                            value={expiredDate}
+                                            onChange={handleExpiredDateChange}
                                         />
                                     </div>
-                                    
                                     <div className="mb-3">
                                         <input
                                             type='time'
                                             className="form-control"
                                             placeholder='Thời gian hết hạn'
-                                            value={expired_time}
-                                            // onChange={(e) => setExpiredTime(e.target.value)}
+                                            value={expiredTime}
                                             onChange={handleExpiredTimeChange}
                                         />
                                     </div>
-                                    
                                     <div className="mb-3">
                                         <select
                                             className="form-control"
@@ -184,7 +175,7 @@ const Project = () => {
                                         </select>
                                     </div>
                                     {dateError && <div className="alert alert-danger">{dateError}</div>}
-                                    <button className="btn btn-primary" type='submit' onClick={handleAddProject}>
+                                    <button className="btn btn-primary add-project" type='submit' onClick={handleAddProject} disabled={!!dateError}>
                                         Thêm
                                     </button>
                                 </div>

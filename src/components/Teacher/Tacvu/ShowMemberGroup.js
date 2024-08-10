@@ -5,6 +5,7 @@ import axios from "axios";
 import Navbar from "../Home/Navbar";
 import DetailClass from "../Class/DetailClass";
 import css from "./css/showmember.css";
+import { fetchGroupMembers, fetchListProject, joinGroup } from "../../../services/apiShowmember";
 
 const GroupList = () => {
   const { classId, groupId, projectId } = useParams();
@@ -22,34 +23,63 @@ const GroupList = () => {
   const [scores, setScores] = useState({}); // Trạng thái để lưu điểm
 
   
+  // useEffect(() => {
+  //   const userToken = localStorage.getItem("token");
+  //   if (!userToken) {
+  //     console.error("No token found");
+  //     return;
+  //   }
+  //   fetch(`${BE_URL}/api/class/${classId}/group/${groupId}/students`, {
+  //     headers: {
+  //       Authorization: `Bearer ${userToken}`,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setMembers(data);
+  //       setCurrentMembers(data.length);
+  //       setMaxMembers(memberPerGroup);
+
+  //       // Khởi tạo điểm cho mỗi sinh viên
+  //       const initialScores = data.reduce((acc, member) => {
+  //         acc[member.accountId] = member.score || ""; // Giả sử mỗi thành viên có thuộc tính điểm
+  //         return acc;
+  //       }, {});
+  //       setScores(initialScores);
+  //     })
+
+
+  //     .catch((error) => console.error("Error fetching members:", error));
+  // }, [classId, groupId, memberPerGroup]);
   useEffect(() => {
-    const userToken = localStorage.getItem("token");
-    if (!userToken) {
-      console.error("No token found");
-      return;
-    }
-    fetch(`${BE_URL}/api/class/${classId}/group/${groupId}/students`, {
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setMembers(data);
-        setCurrentMembers(data.length);
-        setMaxMembers(memberPerGroup);
+    const fetchData = async () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("No token found");
+            return;
+        }
 
-        // Khởi tạo điểm cho mỗi sinh viên
-        const initialScores = data.reduce((acc, member) => {
-          acc[member.accountId] = member.score || ""; // Giả sử mỗi thành viên có thuộc tính điểm
-          return acc;
-        }, {});
-        setScores(initialScores);
-      })
+        try {
+            const data = await fetchGroupMembers(classId, groupId, token);
+            setMembers(data);
+            setCurrentMembers(data.length);
+            setMaxMembers(memberPerGroup);
+
+            // Khởi tạo điểm cho mỗi sinh viên
+            const initialScores = data.reduce((acc, member) => {
+                acc[member.accountId] = member.score || ""; // Giả sử mỗi thành viên có thuộc tính điểm
+                return acc;
+            }, {});
+            setScores(initialScores);
+        } catch (error) {
+            console.error("Error fetching members:", error);
+        }
+    };
+
+    fetchData();
+}, [classId, groupId, memberPerGroup]);
 
 
-      .catch((error) => console.error("Error fetching members:", error));
-  }, [classId, groupId, memberPerGroup]);
 
   const handleScoreChange = (studentId, score) => {
     // Cập nhật điểm trong trạng thái
@@ -80,86 +110,148 @@ if (userToken) {
 };
 
 
-  const joinGroup = async () => {
-    if (currentMembers > maxMembers) {
-      window.alert("Nhóm đã đủ thành viên");
-      return;
-    }
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("No token found");
-      return;
-    }
+  // const joinGroup = async () => {
+  //   if (currentMembers > maxMembers) {
+  //     window.alert("Nhóm đã đủ thành viên");
+  //     return;
+  //   }
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     console.error("No token found");
+  //     return;
+  //   }
 
-    try {
-      const response = await fetch(
-        `${BE_URL}/api/class/${classId}/group/${groupId}/join-group`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+  //   try {
+  //     const response = await fetch(
+  //       `${BE_URL}/api/class/${classId}/group/${groupId}/join-group`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       }
+  //     );
 
-      if (response.status === 200) {
-        window.alert("Tham gia nhóm thành công!");
-        window.location.reload(false);
-      } else if (response.status === 400) {
-        const errorData = await response.json();
-        if (
-          errorData.message ===
-          "Student already exists in a group for this class"
-        ) {
-          window.alert("Sinh viên đã có trong nhóm.");
-        } else if (errorData.message === "GROUP FULL") {
-          window.alert("Nhóm đã đủ thành viên.");
-        } else {
-          window.alert("Tham gia nhóm thất bại: " + errorData.message);
-        }
-      } else {
-        const errorData = await response.json();
-        console.error("Error:", errorData.message);
-        window.alert("Tham gia nhóm thất bại: " + errorData.message);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      window.alert("Tham gia nhóm thất bại !!");
-    }
-  };
+  //     if (response.status === 200) {
+  //       window.alert("Tham gia nhóm thành công!");
+  //       window.location.reload(false);
+  //     } else if (response.status === 400) {
+  //       const errorData = await response.json();
+  //       if (
+  //         errorData.message ===
+  //         "Student already exists in a group for this class"
+  //       ) {
+  //         window.alert("Sinh viên đã có trong nhóm.");
+  //       } else if (errorData.message === "GROUP FULL") {
+  //         window.alert("Nhóm đã đủ thành viên.");
+  //       } else {
+  //         window.alert("Tham gia nhóm thất bại: " + errorData.message);
+  //       }
+  //     } else {
+  //       const errorData = await response.json();
+  //       console.error("Error:", errorData.message);
+  //       window.alert("Tham gia nhóm thất bại: " + errorData.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     window.alert("Tham gia nhóm thất bại !!");
+  //   }
+  // };
 
   // get list project of group
+  const handleJoinGroup = async () => {
+    if (currentMembers > maxMembers) {
+        window.alert("Nhóm đã đủ thành viên");
+        return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+        console.error("No token found");
+        return;
+    }
+
+    try {
+        const response = await joinGroup(classId, groupId, token);
+
+        if (response.status === 200) {
+            window.alert("Tham gia nhóm thành công!");
+            window.location.reload(false);
+        } else if (response.status === 400) {
+            const errorData = response.data;
+            if (errorData.message === "Student already exists in a group for this class") {
+                window.alert("Sinh viên đã có trong nhóm.");
+            } else if (errorData.message === "GROUP FULL") {
+                window.alert("Nhóm đã đủ thành viên.");
+            } else {
+                window.alert("Tham gia nhóm thất bại: " + errorData.message);
+            }
+        } else {
+            const errorData = response.data;
+            console.error("Error:", errorData.message);
+            window.alert("Tham gia nhóm thất bại: " + errorData.message);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        window.alert("Tham gia nhóm thất bại !!");
+    }
+};
+  
+  
+
+
   const [listProject, setListProject] = useState([]);
   // Fetch danh sách dự án của nhóm
-  const fetchListProject = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await fetch(
-        `${BE_URL}/api-gv/group/projects/${groupId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Network response not ok");
-      }
-      const data = await response.json();
-      setListProject(data);
-      setCanCreateReport(data.length > 0); // Update canCreateReport state
-    } catch (error) {
-      console.log("Error fetching projects:", error);
-    }
-  };
+  // const fetchListProject = async () => {
+  //   const token = localStorage.getItem("token");
+  //   try {
+  //     const response = await fetch(
+  //       `${BE_URL}/api-gv/group/projects/${groupId}`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       }
+  //     );
+  //     if (!response.ok) {
+  //       throw new Error("Network response not ok");
+  //     }
+  //     const data = await response.json();
+  //     setListProject(data);
+  //     setCanCreateReport(data.length > 0); // Update canCreateReport state
+  //   } catch (error) {
+  //     console.log("Error fetching projects:", error);
+  //   }
+  // };
 
-  // Gọi fetchListProject khi component mount hoặc groupId thay đổi
+  // useEffect(() => {
+  //   fetchListProject();
+  // }, [groupId]);
+
   useEffect(() => {
-    fetchListProject();
-  }, [groupId]);
+    const getProjects = async () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("No token found");
+            return;
+        }
+        try {
+            const data = await fetchListProject(groupId, token);
+            setListProject(data);
+            setCanCreateReport(data.length > 0);
+        } catch (error) {
+            console.error("Error fetching projects:", error);
+        }
+    };
+
+    getProjects();
+}, [groupId]);
+
+
+
   const handleCreateReport = () => {
     if (!canCreateReport) {
       window.alert("Vui lòng tạo ít nhất một project trước khi tạo báo cáo.");
@@ -364,7 +456,7 @@ if (userToken) {
                     <th>Tên sinh viên</th>
                     <th>Mã số sinh viên</th>
                     <th>Hành động</th>
-                    <th>Chấm điểm</th>
+                    {/* <th>Chấm điểm</th> */}
                     {/* <th>Đồ án</th> */}
                   </tr>
                 </thead>
@@ -393,8 +485,8 @@ if (userToken) {
                           </button>
                         </Link>
                       </td>
-                      <td className="text-center">
-                        {/* Thêm một ô nhập điểm */}
+                      {/* <td className="text-center">
+                        
                         <input
                           type="number"
                           min="0"
@@ -406,7 +498,7 @@ if (userToken) {
                             handleScoreChange(member.accountId, e.target.value)
                           }
                         />
-                      </td>
+                      </td> */}
                       {/* <td>
                         <Link to={`/showproject/${classId}/${groupId}`}>
                           <button className="btn btn-outline-success btn-sm">

@@ -5,6 +5,8 @@ import Navbar from "../Home/Navbar";
 import DetailClass from "./DetailClass";
 import css from "./css/Stream.css";
 import axios from "axios";
+import { deleteReportRequest, fetchClassDetail, fetchReportList } from "../../../services/apiStream";
+
 const Stream = () => {
   const { classId } = useParams(); // Lấy classId từ URL
   // hiển thị hi tiết lớp môn học
@@ -13,58 +15,63 @@ const Stream = () => {
   const [error, setError] = useState("");
   const fullName = localStorage.getItem("fullName");
   const type = localStorage.getItem("type");
+  // useEffect(() => {
+  //   const fetchClassDetail = async () => {
+  //     const token = localStorage.getItem("token");
+  //     if (!token) {
+  //       setError("No token found");
+  //       setLoading(false);
+  //       return;
+  //     }
+
+  //     if (!classId) {
+  //       setError("Class ID is required");
+  //       setLoading(false);
+  //       return;
+  //     }
+
+  //     try {
+  //       const response = await fetch(`${BE_URL}/api-gv/class/get/${classId}`, {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token, // Add token to header
+  //         },
+  //       });
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       const classDetailData = await response.json();
+  //       setClassDetail(classDetailData);
+  //       console.log("chao:", classDetailData);
+  //       const { memberPerGroup } = classDetailData;
+  //       localStorage.setItem("memberPerGroup", memberPerGroup);
+  //       const { groupRegisterMethod } = classDetailData;
+  //       localStorage.setItem("groupRegisterMethod", groupRegisterMethod);
+  //       const { subjectName } = classDetailData;
+  //       localStorage.setItem("subjectName", subjectName);
+  //       const { schoolYear } = classDetailData;
+  //       localStorage.setItem("schoolYear", schoolYear);
+  //       console.log("số lượng thành viên nhóm:", memberPerGroup);
+  //       const { numberOfGroup } = classDetailData;
+  //       localStorage.setItem("numberOfGroup", numberOfGroup);
+  //       console.log("số lượng nhóm:", numberOfGroup);
+  //       const { description } = classDetailData;
+  //       localStorage.setItem("description", description);
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //       setError("Failed to fetch class detail");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchClassDetail();
+  // }, [classId]);
+
   useEffect(() => {
-    const fetchClassDetail = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setError("No token found");
-        setLoading(false);
-        return;
-      }
-
-      if (!classId) {
-        setError("Class ID is required");
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await fetch(`${BE_URL}/api-gv/class/get/${classId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token, // Add token to header
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const classDetailData = await response.json();
-        setClassDetail(classDetailData);
-        console.log("chao:", classDetailData);
-        const { memberPerGroup } = classDetailData;
-        localStorage.setItem("memberPerGroup", memberPerGroup);
-        const { groupRegisterMethod } = classDetailData;
-        localStorage.setItem("groupRegisterMethod", groupRegisterMethod);
-        const { subjectName } = classDetailData;
-        localStorage.setItem("subjectName", subjectName);
-        const { schoolYear } = classDetailData;
-        localStorage.setItem("schoolYear", schoolYear);
-        console.log("số lượng thành viên nhóm:", memberPerGroup);
-        const { numberOfGroup } = classDetailData;
-        localStorage.setItem("numberOfGroup", numberOfGroup);
-        console.log("số lượng nhóm:", numberOfGroup);
-        const { description } = classDetailData;
-        localStorage.setItem("description", description);
-      } catch (error) {
-        console.error("Error:", error);
-        setError("Failed to fetch class detail");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchClassDetail();
+    fetchClassDetail(classId, setClassDetail, setLoading, setError);
   }, [classId]);
+
 
   //   hiển thị danh sách report
   //lấy danh sách report of class id
@@ -72,93 +79,164 @@ const Stream = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    const fetchReportList = async () => {
-      try {
-        const response = await fetch(
-          `${BE_URL}/api-gv/report-request/${classId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+    const loadReportList = async () => {
+        try {
+            const data = await fetchReportList(classId, token);
+            setreportList(data);
+        } catch (error) {
+            console.error("Error loading report list:", error);
+        } finally {
+            setLoading(false);
         }
-
-        const data = await response.json();
-        setreportList(data);
-      } catch (error) {
-        console.error("Error fetching report list:", error);
-      } finally {
-        setLoading(false); // Set loading to false after data is fetched or an error occurs
-      }
     };
-    fetchReportList();
-  }, [classId]);
-  // delete report
+
+    if (classId) {
+        loadReportList();
+    }
+}, [classId]);
+
+  // useEffect(() => {
+
+  //   const token = localStorage.getItem("token");
+
+  //   const fetchReportList = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `${BE_URL}/api-gv/report-request/${classId}`,
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: "Bearer " + token,
+  //           },
+  //         }
+  //       );
+
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+
+  //       const data = await response.json();
+  //       setreportList(data);
+  //     } catch (error) {
+  //       console.error("Error fetching report list:", error);
+  //     } finally {
+  //       setLoading(false); 
+  //     }
+  //   };
+  //   fetchReportList();
+  // }, [classId]);
+
+
+
+
+
+
+
   const [listReport, setListReport] = useState([]);
+//xoa report
+
+  // const handleDeleteReport = async (requestId) => {
+  //   if (!requestId) {
+  //     console.error("request ID is missing or undefined");
+  //     window.alert("request ID is missing or undefined");
+  //     return;
+  //   }
+
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     console.error("No token found");
+  //     window.alert("No token found");
+  //     return;
+  //   }
+
+  //   const confirmed = window.confirm("Bạn có chắc muốn xóa request này không?");
+  //   if (!confirmed) {
+  //     // Do not delete if user does not confirm
+  //     return;
+  //   }
+
+  //   try {
+  //     const responseDelete = await fetch(
+  //       `${BE_URL}/api-gv/report-request/delete/${requestId}`,
+  //       {
+  //         method: "DELETE",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       }
+  //     );
+
+  //     if (responseDelete.ok) {
+  //       // Remove project from list if deletion is successful
+  //       setListReport((prevListReport) =>
+  //         prevListReport.filter((project) => project.requestId !== requestId)
+  //       );
+  //       window.alert("Xóa project thành công.");
+  //       window.location.reload(true);
+  //     } else {
+  //       const errorData = await responseDelete.json();
+  //       console.error(
+  //         "Error deleting project:",
+  //         errorData.message || responseDelete.statusText
+  //       );
+  //       window.alert(
+  //         "Xảy ra lỗi khi xóa project: " +
+  //           (errorData.message || responseDelete.statusText)
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting request:", error);
+  //     window.alert("Xảy ra lỗi khi xóa request.");
+  //   }
+  // };
 
   const handleDeleteReport = async (requestId) => {
     if (!requestId) {
-      console.error("request ID is missing or undefined");
-      window.alert("request ID is missing or undefined");
-      return;
+        console.error("request ID is missing or undefined");
+        window.alert("request ID is missing or undefined");
+        return;
     }
 
     const token = localStorage.getItem("token");
     if (!token) {
-      console.error("No token found");
-      window.alert("No token found");
-      return;
+        console.error("No token found");
+        window.alert("No token found");
+        return;
     }
 
     const confirmed = window.confirm("Bạn có chắc muốn xóa request này không?");
     if (!confirmed) {
-      // Do not delete if user does not confirm
-      return;
+        return;
     }
 
     try {
-      const responseDelete = await fetch(
-        `${BE_URL}/api-gv/report-request/delete/${requestId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+        const responseDelete = await deleteReportRequest(requestId, token);
 
-      if (responseDelete.ok) {
-        // Remove project from list if deletion is successful
-        setListReport((prevListReport) =>
-          prevListReport.filter((project) => project.requestId !== requestId)
-        );
-        window.alert("Xóa project thành công.");
-        window.location.reload(true);
-      } else {
-        const errorData = await responseDelete.json();
-        console.error(
-          "Error deleting project:",
-          errorData.message || responseDelete.statusText
-        );
-        window.alert(
-          "Xảy ra lỗi khi xóa project: " +
-            (errorData.message || responseDelete.statusText)
-        );
-      }
+        if (responseDelete.status === 200) {
+            setListReport((prevListReport) =>
+                prevListReport.filter((project) => project.requestId !== requestId)
+            );
+            window.alert("Xóa request thành công.");
+            window.location.reload(true);
+        } else {
+            console.error(
+                "Error deleting request:",
+                responseDelete.statusText
+            );
+            window.alert("Xảy ra lỗi khi xóa request.");
+        }
     } catch (error) {
-      console.error("Error deleting request:", error);
-      window.alert("Xảy ra lỗi khi xóa request.");
+        console.error("Error deleting request:", error);
+        window.alert("Xảy ra lỗi khi xóa request.");
     }
-  };
-  // update
+};
+
+
   const [showUpdateForm, setShowUpdateForm] = useState(false);
+  
+  // update
   const [updateData, setUpdateData] = useState({
     requestOfProject: "",
     expiredTime: "",

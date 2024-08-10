@@ -145,15 +145,16 @@
     }
   }
 
-  /* .add-group-text {
-    padding: 15px 20px;
+  .add-group-text {
+    /* padding: 15px 20px;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
     border-radius: 5px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease; */
+    width: 100%;
   }
-   */
+  
   /* .add-group-text:hover {
     background-color: #0056b3;
   }
