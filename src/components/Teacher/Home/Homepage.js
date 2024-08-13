@@ -7,12 +7,6 @@ import home from './css/home.css';
 import "./css/main.css"
 const Home = () => {
   //const [showMenu, setShowMenu] = useState(null);
-  const [showUpdateForm, setShowUpdateForm] = useState(false);
-  const [updateData, setUpdateData] = useState({
-    subjectClassId: '',
-    subjectName: '',
-    schoolYear: '',
-  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,39 +17,6 @@ const Home = () => {
     }
     console.log("hello",token);
   }, []);
-
-  const handleSubmit = async (e) => {
-    const token = localStorage.getItem('token');
-    e.preventDefault();
-    try {
-      const response = await fetch(`${BE_URL}/api-gv/class/update/${updateData.subjectClassId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        },
-        body: JSON.stringify(updateData),
-      });
-      if (response.ok) {
-        // Cập nhật trực tiếp danh sách lớp sau khi cập nhật thành công
-        setClassList(prevList =>
-          prevList.map(item =>
-            item.subjectClassId === updateData.subjectClassId ? updateData : item
-          )
-        );
-        setUpdateData({
-          subjectClassId: '',
-          subjectName: '',
-          schoolYear: '',
-        });
-        setShowUpdateForm(false); // Ẩn form cập nhật sau khi cập nhật thành công
-      } else {
-        console.error('Failed to update class');
-      }
-    } catch (error) {
-      console.error('Error updating class:', error);
-    }
-  };
 
   const [classList, setClassList] = useState([]);
   const [classListStudent, setClassListStudent] = useState([]);
@@ -131,15 +92,7 @@ const Home = () => {
   const handleDelete = async (classId) => {
     const token = localStorage.getItem('token');
     try {
-      // Kiểm tra xem lớp đã thêm nhóm hay chưa
-      const response = await fetch(`${BE_URL}/api-gv/classId/group-list/${classId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        }
-      });
-      const dataGroup = await response.json();
+      
       //kiem tra them sinh vien vào class
       const responseSV = await fetch(`${BE_URL}/api/class/student-list/${classId}`, {
         method: 'GET',
@@ -150,10 +103,7 @@ const Home = () => {
       });
       const dataSV = await responseSV.json(); 
       // Nếu lớp đã thêm nhóm, hiển thị thông báo và không xóa
-      if (dataGroup.length > 0) {
-        alert("Không thể xóa lớp này vì đã thêm nhóm.");
-      }
-      else if (dataSV.length > 0) {
+      if (dataSV.length > 0) {
         alert("Không thể xóa vì đã thêm sinh viên vào lớp");
       } else {
         // Nếu lớp chưa thêm nhóm, tiến hành xóa
@@ -171,14 +121,6 @@ const Home = () => {
     } catch (error) {
       console.error('Error deleting class:', error);
     }   
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUpdateData(prevData => ({
-      ...prevData,
-      [name]: value
-    }));
   };
 
   const handleUpdate = (classItem) => {
@@ -202,9 +144,6 @@ const Home = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showMenu]);
   
-
-
-
   return (
     <div>
       <Navbar />
@@ -220,7 +159,6 @@ const Home = () => {
                       {showMenu === classItem.subjectClassId && (
                         
                         <div className='menu'>
-                          
                           <button className="btn btn-primary" onClick={() => handleDelete(classItem.subjectClassId)}>Xóa</button>
                           <button className="btn btn-primary"onClick={() => handleUpdate(classItem)}>Sửa</button>
                         </div>
@@ -232,7 +170,7 @@ const Home = () => {
               </li>
             ))}
           </ul>
-          {/* <ul className="class-list">
+          <ul className="class-list">
             {classListStudent.map((classItem) => (
               <li key={classItem.id} className='showclass-1'>
                 <div>
@@ -240,7 +178,7 @@ const Home = () => {
                 </div>    
               </li>  
             ))}
-          </ul> */}
+          </ul>
         </div>
       </div>
     </div>

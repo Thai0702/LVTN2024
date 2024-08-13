@@ -4,8 +4,11 @@ import axios from "axios";
 import { BE_URL } from "../../../utils/Url_request";
 import Navbar from "../Home/Navbar";
 import DetailClass from "../Class/DetailClass";
-import './css/createreport.css'; // Import the CSS file
-import { addReportRequest, fetchListProject } from "../../../services/apiReport";
+import "./css/createreport.css"; // Import the CSS file
+import {
+  addReportRequest,
+  fetchListProject,
+} from "../../../services/apiReport";
 
 const CreateReport = () => {
   const { classId, groupId } = useParams();
@@ -21,16 +24,10 @@ const CreateReport = () => {
   const [subjectClass, setsubjectClass] = useState("");
   const navigate = useNavigate();
 
-
   const handleAddReportRequest = async (e) => {
     e.preventDefault();
     // Kiểm tra không được bỏ trống các trường
-    if (
-      !expiredTime ||
-      !expiredDate ||
-      !requestTile ||
-      !requestDescription
-    ) {
+    if (!expiredTime || !expiredDate || !requestTile || !requestDescription) {
       window.alert("Vui lòng điền đầy đủ thông tin.");
       return;
     }
@@ -40,12 +37,12 @@ const CreateReport = () => {
         `${BE_URL}/api-gv/create/request`,
         {
           subjectClass: classId,
-          requestOfProject: requestOfProject,
+          // requestOfProject: requestOfProject,
           expiredTime: expiredTime,
           expiredDate: expiredDate,
           expiredAction: 2,
           requestTile: requestTile,
-          requestOfGroup:groupId,
+          requestOfGroup: groupId,
           requestDescription: requestDescription,
         },
         {
@@ -57,7 +54,7 @@ const CreateReport = () => {
       );
       if (response.status !== 200) {
         setsubjectClass("");
-        setrequestOfProject("");
+        // setrequestOfProject("");
         setexpiredTime("");
         setexpiredDate("");
         // setexpiredAction('');
@@ -174,7 +171,6 @@ const CreateReport = () => {
   //   fetchListProject();
   // }, [groupId]);
 
-
   // const handleAddReportRequest = async (e) => {
   //   e.preventDefault();
   //   if ( !expiredTime || !expiredDate || !requestTile || !requestDescription) {
@@ -237,7 +233,9 @@ const CreateReport = () => {
     const selectedDate = new Date(`${date}T${time}`);
 
     if (selectedDate <= currentDate) {
-      setDateError("Ngày và giờ hết hạn không được nhỏ hơn ngày và giờ hiện tại.");
+      setDateError(
+        "Ngày và giờ hết hạn không được nhỏ hơn ngày và giờ hiện tại."
+      );
     } else {
       setDateError("");
     }
@@ -262,14 +260,12 @@ const CreateReport = () => {
     }
   }, [groupId]);
 
-
-
-// Set dự án ngay khi component được mount
-useEffect(() => {
-  if (project) {
-    setrequestOfProject(project.projectId);
-  }
-}, [project, setrequestOfProject]);
+  // Set dự án ngay khi component được mount
+  useEffect(() => {
+    if (project) {
+      setrequestOfProject(project.projectId);
+    }
+  }, [project, setrequestOfProject]);
 
   return (
     <div>
@@ -285,7 +281,7 @@ useEffect(() => {
                     <div className="row">
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label>Chủ đề Report: </label>
+                          <label>Chủ đề báo cáo: </label>
                           <input
                             type="text"
                             placeholder="Chủ đề report"
@@ -316,7 +312,6 @@ useEffect(() => {
                             onChange={handleExpiredTimeChange}
                           />
                         </div>
-                        
                       </div>
                       <div className="col-md-6">
                         <div className="form-group">
@@ -326,30 +321,27 @@ useEffect(() => {
                             placeholder="Mô tả"
                             className="form-control"
                             value={requestDescription}
-                            onChange={(e) => setrequestDescription(e.target.value)}
+                            onChange={(e) =>
+                              setrequestDescription(e.target.value)
+                            }
                           />
                         </div>
-                        <div className="form-group">
-                          <label>Tên đồ án: </label>
-                          <div className="form-group">
-                      {project ? (
-                        <p
-                          style={{ cursor: 'default', margin: '5px 0', fontWeight: 'bold' }}
-                        >
-                          {project.projectName}
-                        </p>
-                      ) : (
-                        <p>Nhóm chưa có đồ án</p>
-                      )}
-                    </div>
-                        </div>
+                        
                       </div>
                     </div>
-                    {dateError && <div className="alert alert-danger">{dateError}</div>}
+                    {dateError && (
+                      <div className="alert alert-danger">{dateError}</div>
+                    )}
                     {error && <div className="error">{error}</div>}
-                    {successMessage && <div className="success">{successMessage}</div>}
-                    <button className="btn btn-primary mt-3" type="submit" disabled={!!dateError}>
-                      Thêm
+                    {successMessage && (
+                      <div className="success">{successMessage}</div>
+                    )}
+                    <button
+                      className="btn btn-primary mt-3"
+                      type="submit"
+                      disabled={!!dateError}
+                    >
+                      Gửi
                     </button>
                   </form>
                 </div>

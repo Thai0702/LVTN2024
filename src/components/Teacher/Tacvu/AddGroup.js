@@ -13,7 +13,7 @@ const AddGroup = () => {
   const [groupData, setGroupData] = useState({
     classId: classId,
     groupName: "",
-    leaderId: "",
+    projectId: null,
   });
 
   const [currentGroupCount, setCurrentGroupCount] = useState(1);
@@ -69,7 +69,7 @@ const AddGroup = () => {
 
   const handleCreateGroup = async (e) => {
     e.preventDefault();
-    if (!groupData.groupName || !groupData.leaderId) {
+    if (!groupData.groupName) {
       window.alert("Vui lòng điền đầy đủ thông tin.");
       return;
     }
@@ -87,11 +87,8 @@ const AddGroup = () => {
 
       if (response.ok) {
         alert("Thêm nhóm thành công!");
-        // Navigate to the appropriate route based on the group count
         if (currentGroupCount + 1 >= numberOfGroup) {
-          navigate(`/project/${classId}`); // Redirect to the project page
-        } else {
-          navigate(`/group/${classId}`); // Stay on the group page
+          navigate(`/project/${classId}`);
         }
       } else {
         window.alert("Thêm nhóm thất bại!");
@@ -139,16 +136,6 @@ const AddGroup = () => {
             <div className="card">
               <div className="card-body">
                 <h2 className="card-title">Tạo nhóm</h2>
-                <div className="form-group">
-                  <label>Mã leader </label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    name="leaderId"
-                    value={groupData.leaderId}
-                    onChange={handleChange}
-                  />
-                </div>
                 <div className="form-group">
                   <label>Tên nhóm: </label>
                   <input

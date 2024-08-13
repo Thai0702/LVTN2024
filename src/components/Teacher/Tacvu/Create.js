@@ -4,6 +4,8 @@ import "./css/main.css";
 import { Link, useNavigate } from 'react-router-dom';
 import { BE_URL } from '../../../utils/Url_request';
 import { createClass } from '../../../services/apiServiceClass';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import axios from 'axios';
 const Create = () => {
   const navigate = useNavigate();
@@ -91,19 +93,13 @@ const Create = () => {
     fetchUsers();
   }, []);
 
-  // useEffect(() => {
-  //   const fetchClasses = async () => {
-  //     try {
-  //       const response = await fetch(`${BE_URL}/api-gv/class`);
-  //       const classData = await response.json();
-  //       setClassList(classData);
-  //     } catch (error) {
-  //       console.error('Error:', error);
-  //     }
-  //   };
 
-  //   fetchClasses();
-  // }, [classList]); 
+// Function to remove HTML tags from the CKEditor content
+const handleDescriptionChange = (event, editor) => {
+  const data = editor.getData();
+  const plainText = data.replace(/<[^>]+>/g, ''); // Remove all HTML tags
+  setClassData({ ...classData, description: plainText });
+};
 
   return (
     <div>
@@ -128,9 +124,11 @@ const Create = () => {
             </div>
             <div className="form-group">
               <label>Mô tả: </label>
-              <textarea
-                className="form-control" name='description'
-                value={classData.description} onChange={handleChange}></textarea>
+              <CKEditor
+                editor={ClassicEditor}
+                data={classData.description}
+                onChange={handleDescriptionChange}
+              />
             </div>
             <button className="btn btn-primary" onClick={handleCreate}>Tạo</button>
           </div>

@@ -165,7 +165,7 @@ const Score = () => {
             <DetailClass />
             <div className="score">
                 <div className="">
-                <p className="listmember">List Member Group</p>
+                <p className="listmember">Danh sách bảng điểm báo cáo của nhóm</p>
                     <div className="table-responsive">
                         {loading ? (
                             <p>Loading...</p>
