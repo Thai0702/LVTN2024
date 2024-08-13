@@ -11,7 +11,7 @@ const Join = () => {
   const [classList, setClassList] = useState([]);
   const navigate = useNavigate();
 
-  // Handle input change
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setClassData({
@@ -20,7 +20,7 @@ const Join = () => {
     });
   };
 
-  // Handle form submission
+
   const handleJoin = async () => {
     if (!classData.inviteCode) {
       window.alert('Vui lòng điền mã lớp.');
@@ -45,14 +45,7 @@ const Join = () => {
         window.alert('User already in class!');
       }
 
-      // if(response.status!==200){
-      //   console.log(" xin chao ban");
-
-      //   // const data = await response.json();
-      //   // console.log(data);
-      //   // setClassList([...classList, data]);         
-      // }
-      // window.location.reload(false);      
+      
     } catch (error) {
       console.error('Error:', error);
       window.alert('Failed to join class. Please try again.');

@@ -11,11 +11,11 @@ import change from './imgAdmin/change.png'
 
 function NavbarAdmin() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
-  const [projectText, setProjectText] = useState('Hỗ trợ giảng viên'); // State variable for project text
+  const [projectText, setProjectText] = useState('Hỗ trợ giảng viên'); 
   const [isSetting, setIsSetting] = useState(false);
   const [isAccount, setIsAccount] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Trạng thái đăng nhập
-  const [username, setUsername] = useState(''); // Tên người dùng
+  const [isLoggedIn, setIsLoggedIn] = useState(true); 
+  const [username, setUsername] = useState(''); 
   useEffect(() => {
     const userLoggedIn = localStorage.getItem('isLoggedIn');
     const savedUsername = localStorage.getItem('username');
@@ -37,7 +37,7 @@ function NavbarAdmin() {
     setIsSetting(!isSetting);
   }
   const fullName = localStorage.getItem('fullName');
-  // Chạy lại effect khi classList thay đổi
+
   const handleLinkClick = (text) => {
     setProjectText(text);
     setIsMenuOpen(true);
@@ -48,7 +48,7 @@ function NavbarAdmin() {
     <header className="header">
 
       <div className="logo" onClick={toggleMenu}>
-        <img src={menu} /> {projectText} {/* Dynamic project text */}
+        <img src={menu} /> {projectText} 
       </div>
 
 
@@ -95,9 +95,6 @@ function NavbarAdmin() {
                 <span>Hi !{fullName}</span>
               </li>
               <li>
-                {/* <Link to='/login' onClick={handleLogout} style={{ textDecoration: 'none' }}>
-                  Đăng xuất
-                </Link> */}
                 <Link to='/regiterAdmin' style={{ textDecoration: 'none' }}>
                   Đăng ký
                 </Link>

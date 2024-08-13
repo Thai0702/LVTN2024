@@ -6,16 +6,14 @@ import { BE_URL } from '../../../utils/Url_request';
 import { createClass } from '../../../services/apiServiceClass';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-// import axios from 'axios';
+
 const Create = () => {
   const navigate = useNavigate();
   const [classData, setClassData] = useState({
     subjectName: '',
     schoolYear: '',
     description: '',
-    // numberOfGroup: '',
-    // memberPerGroup: '',
-    // groupRegisterMethod: ''
+
   });
   const [users, setUsers] = useState([]);
   const [classList, setClassList] = useState([]);
@@ -24,41 +22,7 @@ const Create = () => {
     setClassData({ ...classData, [e.target.name]: e.target.value });
   };
 
-  // const handleCreate = async () => {
-  //   for (const key in classData) {
-  //     if (!classData[key]) {
-  //       window.alert('Vui lòng điền đầy đủ thông tin.');
-  //       return;
-  //     }
-  //   }
-  //   try {
-  //     // const groupSelection = classData.groupRegisterMethod === 'STUDENT' || classData.groupRegisterMethod === 'TEARCH' ? classData.groupRegisterMethod : 'RANDOM';
-
-
-  //     // Lấy token từ localStorage
-  //     const token = localStorage.getItem('token');
-
-  //     const response = await fetch(`${BE_URL}/api-gv/class`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': 'Bearer ' + token // Thêm token vào header
-  //       },
-  //       body: JSON.stringify({ ...classData })
-  //     });
-
-  //     const data = await response.json();
-  //     console.log(data);
-
-  //     setClassList([...classList, data]);
-  //     window.alert("Tạo lớp môn học thành công!!!")
-  //     navigate('/');
-  //     window.location.reload(false);
-
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // };
+  
 
   const handleCreate = async () => {
     for (const key in classData) {
@@ -94,10 +58,10 @@ const Create = () => {
   }, []);
 
 
-// Function to remove HTML tags from the CKEditor content
+
 const handleDescriptionChange = (event, editor) => {
   const data = editor.getData();
-  const plainText = data.replace(/<[^>]+>/g, ''); // Remove all HTML tags
+  const plainText = data.replace(/<[^>]+>/g, ''); 
   setClassData({ ...classData, description: plainText });
 };
 

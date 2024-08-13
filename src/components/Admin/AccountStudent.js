@@ -7,7 +7,7 @@ const AccountSV = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [listaccount, setListAcoount] = useState([]);
   const fileInputRef = useRef(null);
-  //lấy danh sách report of class id
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const fetchData = async () => {
@@ -17,19 +17,17 @@ const AccountSV = () => {
             Authorization: `Bearer ${token}`
           },
           params: {
-            search: searchTerm // Send search term if available
+            search: searchTerm 
           }
         });
         setListAcoount(response.data);
       } catch (error) {
         console.error("Error fetching account list:", error);
-        // Handle error (display a message to the user)
       }
     };
     fetchData();
   }, [searchTerm]);
-  // upload file
-  // upload file
+
   const handleFileUpload = async () => {
     const token = localStorage.getItem("token");
     const file = fileInputRef.current.files[0];
@@ -44,7 +42,6 @@ const AccountSV = () => {
           },
         });
         window.alert("File uploaded successfully!");
-        // Load lại trang sau khi thêm thành công
         window.location.reload(false);
       } catch (error) {
         window.alert("File uploaded fail!");
@@ -71,7 +68,6 @@ const AccountSV = () => {
 
     const confirmed = window.confirm("Bạn có chắc muốn xóa tài khoản này không?");
     if (!confirmed) {
-      // Do not delete if user does not confirm
       return;
     }
 
@@ -89,7 +85,7 @@ const AccountSV = () => {
       );
 
       if (responseDelete.ok) {
-        // Remove project from list if deletion is successful
+
         setListAcoount((prevListReport) =>
           prevListReport.filter((account) => account.userId !== userId)
         );
@@ -150,7 +146,6 @@ const AccountSV = () => {
                   <th scope="col-3">Họ tên</th>
                   <th scope="col">Email</th>
 
-                  {/* <th scope="col-2">Password</th> */}
                   <th scope="col-4">Hành động</th>
                 </tr>
               </thead>
@@ -167,7 +162,6 @@ const AccountSV = () => {
                       <button
                         className="btn btn-danger w-100 w-md-auto"
                         type="button"
-                        // onClick={handleDeleteAccount(account.userId)}
                         onClick={() => handleDeleteAccount(account.userId)}
                       >
                         DELETE

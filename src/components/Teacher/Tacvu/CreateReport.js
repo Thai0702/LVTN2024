@@ -4,7 +4,7 @@ import axios from "axios";
 import { BE_URL } from "../../../utils/Url_request";
 import Navbar from "../Home/Navbar";
 import DetailClass from "../Class/DetailClass";
-import "./css/createreport.css"; // Import the CSS file
+import "./css/createreport.css"; 
 import {
   addReportRequest,
   fetchListProject,
@@ -26,7 +26,6 @@ const CreateReport = () => {
 
   const handleAddReportRequest = async (e) => {
     e.preventDefault();
-    // Kiểm tra không được bỏ trống các trường
     if (!expiredTime || !expiredDate || !requestTile || !requestDescription) {
       window.alert("Vui lòng điền đầy đủ thông tin.");
       return;
@@ -37,7 +36,6 @@ const CreateReport = () => {
         `${BE_URL}/api-gv/create/request`,
         {
           subjectClass: classId,
-          // requestOfProject: requestOfProject,
           expiredTime: expiredTime,
           expiredDate: expiredDate,
           expiredAction: 2,
@@ -48,16 +46,14 @@ const CreateReport = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token, // Thêm token vào header
+            Authorization: "Bearer " + token, 
           },
         }
       );
       if (response.status !== 200) {
         setsubjectClass("");
-        // setrequestOfProject("");
         setexpiredTime("");
         setexpiredDate("");
-        // setexpiredAction('');
         setrequestTile("");
         setrequestDescription("");
         window.alert("Report created successfully !");
@@ -69,154 +65,6 @@ const CreateReport = () => {
     }
   };
 
-  // const handleAddReportRequest = async (e) => {
-  //   e.preventDefault();
-  //   if ( !expiredTime || !expiredDate || !requestTile || !requestDescription) {
-  //     window.alert("Vui lòng điền đầy đủ thông tin.");
-  //     return;
-  //   }
-
-  //   // Validate date and time
-  //   const currentDate = new Date();
-  //   const selectedDate = new Date(`${expiredDate}T${expiredTime}`);
-
-  //   if (selectedDate <= currentDate) {
-  //     setDateError("Ngày và giờ hết hạn không được nhỏ hơn ngày và giờ hiện tại.");
-  //     return;
-  //   } else {
-  //     setDateError("");
-  //   }
-
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const response = await axios.post(
-  //       `${BE_URL}/api-gv/create/request`,
-  //       {
-  //         subjectClass: classId,
-  //         requestOfProject,
-  //         expiredTime,
-  //         expiredDate,
-  //         expiredAction: 2,
-  //         requestTile,
-  //         requestOfGroup: groupId,
-  //         requestDescription,
-  //       },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       }
-  //     );
-  //     if (response.status === 200) {
-  //       setrequestOfProject("");
-  //       setexpiredTime("");
-  //       setexpiredDate("");
-  //       setrequestTile("");
-  //       setrequestDescription("");
-  //       window.alert("Tạo báo cáo thành công!!!");
-  //       navigate(`/stream/${classId}`);
-  //       window.location.reload(false);
-  //     }
-  //   } catch (error) {
-  //     window.alert("Tạo báo cáo thất bại!!!");
-  //   }
-  // };
-
-  // const handleExpiredDateChange = (e) => {
-  //   setexpiredDate(e.target.value);
-  //   validateDateTime(e.target.value, expiredTime);
-  // };
-
-  // const handleExpiredTimeChange = (e) => {
-  //   setexpiredTime(e.target.value);
-  //   validateDateTime(expiredDate, e.target.value);
-  // };
-
-  // const validateDateTime = (date, time) => {
-  //   const currentDate = new Date();
-  //   const selectedDate = new Date(`${date}T${time}`);
-
-  //   if (selectedDate <= currentDate) {
-  //     setDateError("Ngày và giờ hết hạn không được nhỏ hơn ngày và giờ hiện tại.");
-  //   } else {
-  //     setDateError("");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   const fetchListProject = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `${BE_URL}/api-gv/group/projects/${groupId}`,
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: "Bearer " + token,
-  //           },
-  //         }
-  //       );
-
-  //       if (!response.ok) {
-  //         throw new Error("Network response not ok");
-  //       }
-  //       const data = await response.json();
-  //       setListProject(data);
-  //     } catch (error) {
-  //       console.log("error to fetching", error);
-  //     }
-  //   };
-  //   fetchListProject();
-  // }, [groupId]);
-
-  // const handleAddReportRequest = async (e) => {
-  //   e.preventDefault();
-  //   if ( !expiredTime || !expiredDate || !requestTile || !requestDescription) {
-  //     window.alert("Vui lòng điền đầy đủ thông tin.");
-  //     return;
-  //   }
-
-  //   const currentDate = new Date();
-  //   const selectedDate = new Date(`${expiredDate}T${expiredTime}`);
-
-  //   if (selectedDate <= currentDate) {
-  //     setDateError("Ngày và giờ hết hạn không được nhỏ hơn ngày và giờ hiện tại.");
-  //     return;
-  //   } else {
-  //     setDateError("");
-  //   }
-
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const reportRequestData = {
-  //       subjectClass: classId,
-  //       requestOfProject,
-  //       expiredTime,
-  //       expiredDate,
-  //       expiredAction: 2,
-  //       requestTile,
-  //       requestOfGroup: groupId,
-  //       requestDescription,
-  //     };
-
-  //     const response = await addReportRequest(reportRequestData, token);
-
-  //     if (response.status === 200) {
-  //       setrequestOfProject("");
-  //       setexpiredTime("");
-  //       setexpiredDate("");
-  //       setrequestTile("");
-  //       setrequestDescription("");
-  //       window.alert("Tạo báo cáo thành công!!!");
-  //       navigate(`/stream/${classId}`);
-  //       window.location.reload(false);
-  //     }
-  //   } catch (error) {
-  //     window.alert("Tạo báo cáo thất bại!!!");
-  //   }
-  // };
 
   const handleExpiredDateChange = (e) => {
     setexpiredDate(e.target.value);
@@ -260,7 +108,6 @@ const CreateReport = () => {
     }
   }, [groupId]);
 
-  // Set dự án ngay khi component được mount
   useEffect(() => {
     if (project) {
       setrequestOfProject(project.projectId);
@@ -297,7 +144,6 @@ const CreateReport = () => {
                             placeholder="Ngày hết hạn"
                             className="form-control"
                             value={expiredDate}
-                            // onChange={(e) => setexpiredDate(e.target.value)}
                             onChange={handleExpiredDateChange}
                           />
                         </div>
@@ -308,7 +154,6 @@ const CreateReport = () => {
                             className="form-control"
                             placeholder="Thời gian hết hạn"
                             value={expiredTime}
-                            // onChange={(e) => setexpiredTime(e.target.value)}
                             onChange={handleExpiredTimeChange}
                           />
                         </div>

@@ -14,28 +14,7 @@ const RegisterAdmin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (!username || !password || !phone || !fullname) {
-    //   setError('Vui lòng điền đầy đủ thông tin.');
-    //   return;
-    // }
-    // const usernamePattern = /^[a-zA-Z0-9._]+@gmail.com$/; 
-    // if (!usernamePattern.test(username)) {
-    //   setError('Tên đăng nhập không được chứa ký tự đặc biệt.');
-    //   return;
-    // }
-    // const phonePattern = /^\d+$/;
-    // if (!phonePattern.test(phone)) {
-    //   setError('Số điện thoại chỉ được chứa các chữ số.');
-    //   return;
-    // }
-    // if (password.length < 8) {
-    //   setError('Mật khẩu ít nhât 8 ký tự.');
-    //   return;
-    // }
-    // if (phone.length !== 10) {
-    //   setError('Số điện thoại phải có 10 số.');
-    //   return;
-    // }
+  
     try {
       const response = await axios.post(`${BE_URL}/api/authenticate/registerAdmin`, {
         username: username,
@@ -58,8 +37,7 @@ const RegisterAdmin = () => {
         const { fullName } = userId;
         localStorage.setItem('fullName', fullName);
         console.log("chao", userId);   
-        const {accountId} =userId; // Tách giá trị fullName từ userI
-        // Sử dụng giá trị fullName ở đây, ví dụ: hiển thị trên giao diện
+        const {accountId} =userId; 
         localStorage.setItem('accountId', accountId); 
         navigate('/login');
       } else {

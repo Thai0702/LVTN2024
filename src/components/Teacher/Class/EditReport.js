@@ -33,7 +33,7 @@ const EditReport = () => {
                 }
             );
             if (response.ok) {
-                navigate(`/stream/${classId}`); // Chuyển hướng về trang Home sau khi cập nhật thành công
+                navigate(`/stream/${classId}`); 
             } else {
                 console.error("Failed to update class");
             }

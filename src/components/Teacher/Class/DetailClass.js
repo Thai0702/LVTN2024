@@ -16,12 +16,12 @@ const ClassDetailPage = () => {
     groupRegisterMethod !== undefined &&
     groupRegisterMethod !== "";
 
-  const [activeTab, setActiveTab] = useState('stream'); // Mặc định là 'stream' khi không phù hợp với các điều kiện dưới
+  const [activeTab, setActiveTab] = useState('stream'); 
 
   useEffect(() => {
-    // Lấy phần đầu của path (ví dụ: '/stream/:classId' -> 'stream')
+ 
     const currentTab = location.pathname.split('/')[1];
-    // Đặt giá trị mặc định cho activeTab dựa trên currentTab
+
     switch (currentTab) {
       case 'stream':
       case 'people':
@@ -33,7 +33,7 @@ const ClassDetailPage = () => {
         setActiveTab(currentTab);
         break;
       default:
-        setActiveTab('stream'); // Nếu không phù hợp với bất kỳ tab nào thì mặc định là 'stream'
+        setActiveTab('stream'); 
         break;
     }
   }, [location.pathname]);
@@ -41,8 +41,6 @@ const ClassDetailPage = () => {
   return (
     <div>
       <Navbar />
-      {/* <div className="container-main"> */}
-      {/* <div className="container"> */}
         <div className="container-header">
           <div className="d-flex flex-column flex-md-row justify-content-around container-main">
             {type === "GV" ? (
@@ -144,8 +142,6 @@ const ClassDetailPage = () => {
           </div>
         </div>
       </div>
-    // </div>
-    // </div>
   );
 };
 

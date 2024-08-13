@@ -7,7 +7,7 @@ import css from "./css/showproject.css";
 
 const GroupProjects = () => {
   const { groupId } = useParams();
-  const [projectOfGroup, setProjectOfGroup] = useState(null); // Set default to null
+  const [projectOfGroup, setProjectOfGroup] = useState(null); 
   
   const createdByName = localStorage.getItem("createdByName");
   useEffect(() => {
@@ -15,7 +15,7 @@ const GroupProjects = () => {
       try {
         const response = await fetch(`${BE_URL}/api/getProjectOfGroup/${groupId}`);
         const data = await response.json();
-        setProjectOfGroup(data); // Set the single object
+        setProjectOfGroup(data); 
       } catch (error) {
         console.error("Error fetching project data:", error);
       }
@@ -25,12 +25,12 @@ const GroupProjects = () => {
   }, [groupId]);
   const formatDate = (datetime) => {
     const date = new Date(datetime);
-    return date.toLocaleDateString("en-GB"); // Format: dd/mm/yyyy
+    return date.toLocaleDateString("en-GB"); 
   };
 
   const formatTime = (datetime) => {
     const date = new Date(datetime);
-    return date.toLocaleTimeString("en-GB", { hour: '2-digit', minute: '2-digit' }); // Format: HH:mm
+    return date.toLocaleTimeString("en-GB", { hour: '2-digit', minute: '2-digit' }); 
   };
   return (
     <div>
@@ -52,7 +52,7 @@ const GroupProjects = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {projectOfGroup && ( // Check if projectOfGroup is not null
+                  {projectOfGroup && ( 
                     <tr key={projectOfGroup.projectId} className="text-center align-middle">
                       <td>{projectOfGroup.projectName}</td>
                       <td>{projectOfGroup.projectDescription}</td>

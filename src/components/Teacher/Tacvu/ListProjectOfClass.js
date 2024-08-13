@@ -102,7 +102,6 @@ const ListProjectOfClass = () => {
   };
   //update
   const handleUpdate = (listproject) => {
-    // navigate(`/editclass`, { state: { classItem } }); // Chuyển hướng đến trang chỉnh sửa với dữ liệu lớp học
     navigate(`/editproject/${classId}`, {
       state: { listproject, projectName: listproject.projectName },
     });
@@ -129,7 +128,6 @@ const ListProjectOfClass = () => {
                         <th>Thời gian hết hạn</th>
                         <th>Ngày kết thúc</th>
                         <th colSpan="2">Hành động</th>{" "}
-                        {/* Spanning two columns */}
                       </tr>
                     </thead>
                     <tbody>
@@ -152,8 +150,6 @@ const ListProjectOfClass = () => {
                           <td className="text-center">
                             {listproject.expiredTime}
                           </td>
-
-                          {/* Separate cells for each action */}
                           <td className="text-center">
                             <img src={del} onClick={() =>
                                 handleDeleteProject(listproject.projectId)

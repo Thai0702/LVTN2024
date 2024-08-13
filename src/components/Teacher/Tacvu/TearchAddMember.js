@@ -22,7 +22,7 @@ const TeacherAddMember = () => {
   const toggleUpdateNumber = () => {
     setIsUpdateOpen(!isupdateNumber);
   };
-  // lấy danh sách thành viên của groupId
+
   useEffect(() => {
     const userToken = localStorage.getItem("token");
     if (!userToken) {
@@ -43,8 +43,7 @@ const TeacherAddMember = () => {
     }
   }, [classId, groupId]);
 
-  // Load group list
-  // Load group list and calculate max members of group
+
   useEffect(() => {
     const fetchGroupList = async () => {
       try {
@@ -61,7 +60,7 @@ const TeacherAddMember = () => {
         const data = await response.json();
         setGroupList(data);
 
-        // Calculate max members of group
+
         const memberCounts = await Promise.all(
           data.map((group) =>
             fetch(
@@ -92,7 +91,7 @@ const TeacherAddMember = () => {
 
     fetchGroupList();
   }, [classId, token]);
-  // Load student list
+
   useEffect(() => {
     const fetchStudentList = async () => {
       try {
@@ -111,14 +110,14 @@ const TeacherAddMember = () => {
         }
 
         const data = await response.json();
-        // Filter out students who already have a group
+
         const studentsWithoutGroup = data.filter((student) => {
           return !groupList.some(
             (group) => group.accountId === student.accountId
           );
         });
         setStudentList(studentsWithoutGroup);
-        setDisplayedStudentList(studentsWithoutGroup); // Initialize displayed student list
+        setDisplayedStudentList(studentsWithoutGroup); 
       } catch (error) {
         console.error("Error fetching student list:", error);
       } finally {
@@ -129,7 +128,7 @@ const TeacherAddMember = () => {
     fetchStudentList();
   }, [classId, token, groupList]);
 
-  // Handle checkbox change
+
   const handleCheckboxChange = (studentId) => {
     if (!groupId) {
       alert("Vui lòng chọn nhóm trước khi chọn thành viên");
@@ -150,7 +149,6 @@ const TeacherAddMember = () => {
     });
   };
 
-  // Handle save
   const handleSave = async () => {
     if (selectedStudents.length === 0 || !groupId) {
       alert("Please select at least one student and a group.");
@@ -189,7 +187,7 @@ const TeacherAddMember = () => {
     }
   };
 
-  // Load displayed student list from localStorage on component mount
+
   useEffect(() => {
     const loadDisplayedListFromLocalStorage = () => {
       const updatedLocalStorage =
@@ -204,7 +202,7 @@ const TeacherAddMember = () => {
       loadDisplayedListFromLocalStorage();
     }
   }, [studentList]);
-  // cap nhat
+
   const subjectName = localStorage.getItem("subjectName");
   const schoolYear = localStorage.getItem("schoolYear");
   const numberOfGroup = localStorage.getItem("numberOfGroup");

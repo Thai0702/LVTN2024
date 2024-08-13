@@ -10,17 +10,17 @@ const ListStudent = () => {
             .then(response => response.json())
             .then(data => {
                 setStudentList(data);
-                setLoading(false); // Set loading to false after data is fetched
+                setLoading(false);
             })
             .catch(error => console.error('Error fetching student list:', error));
     }, []);
 
-    // Return a loading indicator if data is still loading
+ 
     if (loading) {
         return <div>Loading...</div>;
     }
 
-    // Return the list of students once data is fetched
+
     return (
         <div className='student-list'>
             <h2>List of Students</h2>

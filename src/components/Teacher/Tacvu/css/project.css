@@ -13,24 +13,23 @@
     width: 250px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) { /* For devices with a width less than 768px (tablets and smaller) */
+@media (max-width: 768px) { 
     .taobaocao {
-        margin-top: 1cm; /* Adjust margin-top for smaller screens */
+        margin-top: 1cm; 
     }
 
     .listproject {
-        margin-top: 2cm; /* Adjust margin-top for smaller screens */
-        margin-left: 0; /* Remove left margin to make it full-width */
-        width: 50%; /* Ensure it takes the full width of the screen */
+        margin-top: 2cm; 
+        margin-left: 0; 
+        width: 50%; 
     }
 
     .card {
-        margin-top: 20px; /* Add some top margin to the card for spacing */
-        border: 1px solid rgb(254, 248, 248); /* Optional: make the border thinner */
+        margin-top: 20px;
+        border: 1px solid rgb(254, 248, 248); 
     }
 
     .add-project {
-        width: 100%; /* Make the add project button full-width on smaller screens */
+        width: 100%; 
     }
 }

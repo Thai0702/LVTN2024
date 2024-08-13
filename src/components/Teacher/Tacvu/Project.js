@@ -12,7 +12,7 @@ const Project = () => {
   const navigate = useNavigate();
   const createClassRef = useRef();
   const { classId } = useParams();
-  /*add project */
+
   const [project_name, setProjectName] = useState("");
   const [description, setDescription] = useState("");
   const [expired_day, setExpiredDay] = useState("");
@@ -22,13 +22,13 @@ const Project = () => {
 
   const handleAddProject = async (e) => {
     e.preventDefault();
-    // Kiểm tra không được bỏ trống các trường
+
     if (!project_name || !description || !expired_day || !expired_time) {
       window.alert("Vui lòng điền đủ thông tin.");
       return;
     }
 
-    // Kiểm tra ngày và giờ hết hạn không được nhỏ hơn ngày và giờ hiện tại
+ 
     const currentDate = new Date();
     const selectedDate = new Date(`${expired_day}T${expired_time}`);
 
@@ -52,22 +52,18 @@ const Project = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token, // Thêm token vào header
+            Authorization: "Bearer " + token, 
           },
         }
       );
       if (response.status === 200) {
-        // Đặt lại các trường nhập
+
         setProjectName("");
         setDescription("");
         setExpiredDay("");
         setExpiredTime("");
         window.alert("Tạo đồ án thành công!!!");
-        // if (groupRegisterMethod === 'Teacher') {
-        //     navigate(`/tearchAdd/${classId}`)
-        // } else {
-        //     navigate(`/group/${classId}`);
-        // }
+
         navigate(`/projectListClass/${classId}`);
       }
     } catch (error) {
@@ -90,17 +86,17 @@ const Project = () => {
     const selectedDate = new Date(`${day}T${time}`);
 
     if (selectedDate <= currentDate) {
-      // setDateError('Ngày và giờ hết hạn không được nhỏ hơn ngày và giờ hiện tại.');
+
       setDateError("Ngày không được nhỏ hơn ngày hiện tại");
     } else {
       setDateError("");
     }
   };
 
-  // hiển thị group của lớp
+
   const [grouptList, setGroupList] = useState([]);
   useEffect(() => {
-    // Fetch the list of students
+
     const token = localStorage.getItem("token");
     fetch(`${BE_URL}/api-gv/classId/group-list/${classId}`, {
       method: "GET",
@@ -116,11 +112,11 @@ const Project = () => {
       .catch((error) => console.error("Error fetching student list:", error));
   }, [classId]);
 
-  // Function to remove HTML tags from the CKEditor content
+
   const handleDescriptionChange = (event, editor) => {
     const data = editor.getData();
-    const plainText = data.replace(/<[^>]+>/g, ""); // Remove all HTML tags
-    setDescription(plainText); // Update the description state
+    const plainText = data.replace(/<[^>]+>/g, ""); 
+    setDescription(plainText); 
   };
   return (
     <div>

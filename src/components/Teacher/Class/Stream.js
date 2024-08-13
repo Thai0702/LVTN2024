@@ -17,7 +17,7 @@ import detail from "../../Admin/imgAdmin/detail.png";
 
 
 const Stream = () => {
-  const { classId } = useParams(); // Lấy classId từ URL
+  const { classId } = useParams(); 
   // hiển thị hi tiết lớp môn học
   const [loading, setLoading] = useState(true);
   const [classDetail, setClassDetail] = useState(null);
@@ -29,8 +29,7 @@ const Stream = () => {
     fetchClassDetail(classId, setClassDetail, setLoading, setError);
   }, [classId]);
 
-  //   hiển thị danh sách report
-  //lấy danh sách report of class id
+
   const [reportList, setreportList] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -51,96 +50,9 @@ const Stream = () => {
     }
   }, [classId]);
 
-  // useEffect(() => {
 
-  //   const token = localStorage.getItem("token");
-
-  //   const fetchReportList = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `${BE_URL}/api-gv/report-request/${classId}`,
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: "Bearer " + token,
-  //           },
-  //         }
-  //       );
-
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok");
-  //       }
-
-  //       const data = await response.json();
-  //       setreportList(data);
-  //     } catch (error) {
-  //       console.error("Error fetching report list:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchReportList();
-  // }, [classId]);
 
   const [listReport, setListReport] = useState([]);
-  //xoa report
-
-  // const handleDeleteReport = async (requestId) => {
-  //   if (!requestId) {
-  //     console.error("request ID is missing or undefined");
-  //     window.alert("request ID is missing or undefined");
-  //     return;
-  //   }
-
-  //   const token = localStorage.getItem("token");
-  //   if (!token) {
-  //     console.error("No token found");
-  //     window.alert("No token found");
-  //     return;
-  //   }
-
-  //   const confirmed = window.confirm("Bạn có chắc muốn xóa request này không?");
-  //   if (!confirmed) {
-  //     // Do not delete if user does not confirm
-  //     return;
-  //   }
-
-  //   try {
-  //     const responseDelete = await fetch(
-  //       `${BE_URL}/api-gv/report-request/delete/${requestId}`,
-  //       {
-  //         method: "DELETE",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       }
-  //     );
-
-  //     if (responseDelete.ok) {
-  //       // Remove project from list if deletion is successful
-  //       setListReport((prevListReport) =>
-  //         prevListReport.filter((project) => project.requestId !== requestId)
-  //       );
-  //       window.alert("Xóa project thành công.");
-  //       window.location.reload(true);
-  //     } else {
-  //       const errorData = await responseDelete.json();
-  //       console.error(
-  //         "Error deleting project:",
-  //         errorData.message || responseDelete.statusText
-  //       );
-  //       window.alert(
-  //         "Xảy ra lỗi khi xóa project: " +
-  //           (errorData.message || responseDelete.statusText)
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting request:", error);
-  //     window.alert("Xảy ra lỗi khi xóa request.");
-  //   }
-  // };
 
   const handleDeleteReport = async (requestId) => {
     if (!requestId) {
@@ -212,7 +124,7 @@ const Stream = () => {
         }
       );
       if (response.ok) {
-        // Cập nhật trực tiếp danh sách lớp sau khi cập nhật thành công
+
         setListReport((prevList) =>
           prevList.map((item) =>
             item.subjectClassId === updateData.subjectClassId
@@ -228,7 +140,7 @@ const Stream = () => {
           requestDescription: "",
         });
         setShowUpdateForm(false);
-        // Ẩn form cập nhật sau khi cập nhật thành công
+
         window.alert("Sửa thành công !!");
         window.location.reload(true);
       } else {
@@ -238,8 +150,7 @@ const Stream = () => {
       console.error("Error updating class:", error);
     }
   };
-  // add sinh vien bang ma sinh vien
-  ////lấy danh sách report of class id
+
   const [reportSv, setreportSv] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -262,15 +173,15 @@ const Stream = () => {
       } catch (error) {
         console.error("Error fetching report SV:", error);
       } finally {
-        setLoading(false); // Set loading to false after data is fetched or an error occurs
+        setLoading(false); 
       }
     };
     fetchReporSv();
   }, []);
   const navigate = useNavigate();
-  //update report
+ 
+
   const handleUpdate = (listreport) => {
-    // navigate(`/editclass`, { state: { classItem } }); // Chuyển hướng đến trang chỉnh sửa với dữ liệu lớp học
     navigate(`/editreport/${classId}`, {
       state: { listreport, requestTile: listreport.requestTile },
     });

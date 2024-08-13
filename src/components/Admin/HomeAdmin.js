@@ -1,6 +1,6 @@
 import React from 'react'
 import NavbarAdmin from './NavbarAdmin'
-import './css/admin.css'; // Import file CSS cho Header
+import './css/admin.css'; 
 const HomeAdmin = () => {
   return (
     <div>

@@ -21,7 +21,7 @@ const Group = () => {
     groupName: "",
   });
 
-  // Fetch list of groups
+
   const fetchStudentList = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -45,7 +45,7 @@ const Group = () => {
     fetchStudentList();
   }, [classId]);
 
-  // Delete group
+
   const handleDeleteGroup = async (groupId) => {
     if (!groupId) {
       console.error("Group ID is missing or undefined");
@@ -83,7 +83,7 @@ const Group = () => {
     }
   };
 
-  // Update group
+ 
   const handleUpdate = (groupItem) => {
     setUpdateData(groupItem);
     setShowUpdateForm(true);
@@ -93,7 +93,7 @@ const Group = () => {
     e.preventDefault();
     const token = localStorage.getItem("token");
   
-    // Kiểm tra các trường cần thiết
+
     if (updateData.groupName.trim() === "") {
       alert("Vui lòng điền tên nhóm.");
       return;
@@ -160,7 +160,7 @@ const Group = () => {
 
   const isDisabled = groupList.length >= numberOfGroup;
 
-  // Fetch list of projects
+
   const [listProject, setListProject] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -182,7 +182,7 @@ const Group = () => {
       <DetailClass />
       <div className="container-fluid">
         <div className="row">
-          {/* Hàng cho list group */}
+
           <div className="col-12">
             <div className="container-group">
               <div className="row">

@@ -23,7 +23,7 @@ const ListReport = () => {
                     throw new Error("Network response was not ok");
                 }
                 
-                const data = await response.json(); // Sử dụng await để chờ phản hồi JSON
+                const data = await response.json();
                 setListReport(data);
             } catch (error) {
                 console.log("Error fetching report list:", error);
@@ -31,7 +31,7 @@ const ListReport = () => {
         };
 
         fetchListReport();
-    }, []); // Thêm mảng phụ thuộc rỗng để useEffect chỉ chạy một lần
+    }, []); 
 
     return (
         <div>

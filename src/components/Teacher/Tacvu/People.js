@@ -11,7 +11,7 @@ import bin from "../../Admin/imgAdmin/bin.png";
 const People = () => {
   const { classId } = useParams();
   const fileInputRef = useRef(null);
-  // /*show list student of class*/
+
   const [studentList, setStudentList] = useState([]);
   const [loading, setLoading] = useState(true);
   const type = localStorage.getItem("type");
@@ -21,35 +21,7 @@ const People = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [students, setStudents] = useState([]);
 
-  //them danh sach sinh vien
-  // const fetchStudentList = async () => {
-  //   const token = localStorage.getItem("token");
-  //   try {
-  //     const response = await fetch(
-  //       `${BE_URL}/api/class/student-list/${classId}`,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       }
-  //     );
 
-  //     if (!response.ok) {
-  //       throw new Error("Network response was not ok");
-  //     }
-
-  //     const data = await response.json();
-  //     setStudentList(data);
-  //   } catch (error) {
-  //     console.error("Error fetching student list:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchStudentList();
-  // }, [classId]);
 
   const token = localStorage.getItem("token");
   const loadStudentList = async () => {
@@ -72,7 +44,7 @@ const People = () => {
 
 
  
-//xoa sinh vien
+
 
   const handleDeleteSV = async (id) => {
     const token = localStorage.getItem("token");
@@ -109,7 +81,7 @@ const People = () => {
 
   
 
-  // upload file
+
   const handleFileUpload = async () => {
     const token = localStorage.getItem("token");
     const file = fileInputRef.current.files[0];
@@ -120,7 +92,7 @@ const People = () => {
             await uploadFile(classId, token, file);
             window.alert("Dữ liệu đã được tải lên thành công!!!");
             navigate(`/methodGroup/${classId}`);
-            // Load lại trang sau khi thêm thành công
+  
             window.location.reload(false);
         } catch (error) {
             window.alert("Dữ liệu đã được tải lên thất bại!!!");
@@ -132,34 +104,7 @@ const People = () => {
         window.alert("Chưa chọn tệp hoặc chưa chọn lớp!!!");
     }
 };
-  // const handleFileUpload = async () => {
-  //   const token = localStorage.getItem("token");
-  //   const file = fileInputRef.current.files[0];
-  //   if (file) {
-  //     const formData = new FormData();
-  //     formData.append("file", file);
-  //     setLoading(true);
-  //     try {
-  //       await axios.post(`${BE_URL}/api-gv/class/excel/${classId}`, formData, {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       });
-  //       window.alert("Dữ liệu đã được tải lên thành công!!!");
-  //       navigate(`/methodGroup/${classId}`)
-  //       // Load lại trang sau khi thêm thành công
-  //       window.location.reload(false);
-  //     } catch (error) {
-  //       window.alert("Dữ liệu đã được tải lên thất bại!!!");
-  //     }finally {
-  //       setLoading(false);
-  //     }
-  //   } else {
-  //     console.error("Chưa chọn tệp hoặc chưa chọn lớp!!!");
-  //     window.alert("Chưa chọn tệp hoặc chưa chọn lớp!!!");
-  //   }
-  // };
+
 
 
 //them SV bang ma
@@ -177,7 +122,7 @@ const handleAddStudent = async (e) => {
       if (response.status === 200) {
           setStudentId("");
           window.alert("Thêm sinh viên thành công!!!");
-          fetchStudentList(); // Gọi hàm để cập nhật danh sách sinh viên
+          fetchStudentList(); 
       }
   } catch (error) {
       window.alert("Thêm sinh viên thất bại!!!");
@@ -185,36 +130,7 @@ const handleAddStudent = async (e) => {
       setLoading(false);
   }
 };
-  // const handleAddStudent = async (e) => {
-  //   e.preventDefault();
-  //   if (!studentId) {
-  //     window.alert("Vui lòng điền đủ thông tin.");
-  //     return;
-  //   }
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const response = await axios.post(
-  //       `${BE_URL}/api-gv/add-student/class/${classId}`,
-  //       { studentId },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       }
-  //     );
-  //     if (response.status === 200) {
-  //       setStudentId("");
-  //       window.alert("Thêm sinh viên thành công!!!");
-  //       fetchStudentList(); // Fetch the updated list of students
-  //     }
-  //   } catch (error) {
-  //     window.alert("Thêm sinh viên thất bại!!!");
-  //     setStudentId("");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  
 
 
   if (loading) {

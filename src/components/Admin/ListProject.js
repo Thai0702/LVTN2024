@@ -4,7 +4,7 @@ import { BE_URL } from '../../utils/Url_request';
 import listproject from './css/ListProject.css'
 
 const ListProject = () => {
-    const [listProject, setListProject] = useState([]); // Sửa lỗi chính tả 'setListProject'
+    const [listProject, setListProject] = useState([]); 
     
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -23,7 +23,7 @@ const ListProject = () => {
                     throw new Error("Network response was not ok");
                 }
                 
-                const data = await response.json(); // Sử dụng await để chờ phản hồi JSON
+                const data = await response.json(); 
                 setListProject(data);
             } catch (error) {
                 console.log("Error fetching project list:", error);
@@ -31,7 +31,7 @@ const ListProject = () => {
         };
 
         fetchListProject();
-    }, []); // Thêm mảng phụ thuộc rỗng để useEffect chỉ chạy một lần
+    }, []);
 
     return (
         <div>

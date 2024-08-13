@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { BE_URL } from '../../../utils/Url_request';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "../Home/Navbar";
-// import change from './PageTeacher/css/changepass.css'
+
 
 const ChangePass = () => {
     const [changepass, setChangePass] = useState({
@@ -43,7 +43,7 @@ const ChangePass = () => {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token // Thêm token vào header
+                        'Authorization': 'Bearer ' + token 
                     }
                 }
             );
@@ -103,39 +103,6 @@ const ChangePass = () => {
                 </div>
                 </div>
             </div>
-            {/* <div className='container-change'> 
-                <div className='tdmk'>
-            <p>Thay đổi mật khẩu</p>
-            <div className="form-group">
-            <input 
-                type='password'
-                placeholder='Old Password'
-                name='oldPassword'
-                onChange={handleInputChange}
-                value={changepass.oldPassword}
-            />
-            </div>
-            <div className="form-group">
-            <input 
-                type='password'
-                placeholder='New Password'
-                name='newPassword'
-                onChange={handleInputChange}
-                value={changepass.newPassword}
-            />
-            </div>
-            <div className="form-group">
-            <input 
-                type='password'
-                placeholder='Confirm Password'
-                name='confirmNewPassword'
-                onChange={handleInputChange}
-                value={changepass.confirmNewPassword}
-            />
-            </div>
-            <button onClick={changePass}>Change</button> */}
-            {/* </div>
-        </div> */}
         </div>
     );
 };

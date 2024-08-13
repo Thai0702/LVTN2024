@@ -44,7 +44,7 @@ const Document = () => {
         setDocumentDescription("");
         setAttachments([]);
         document.getElementById("fileInput").value = null;
-        fetchReports(); // Fetch updated reports
+        fetchReports();
       } else {
         setMessage("There was an error submitting the report.");
       }
@@ -84,17 +84,7 @@ const Document = () => {
       console.error("Đã xảy ra lỗi khi hủy bài nộp! ", error);
       window.alert("Đã xảy ra lỗi khi hủy bài nộp!");
     }
-    // try {
-    //   const response = await axios.delete(`${BE_URL}/api/upload/resource/delete/${reportId}`);
-    //   if (response.status === 200) {
-    //     fetchReports(); // Fetch updated reports
-    //   } else {
-    //     alert("Error deleting the file. Please try again.");
-    //   }
-    // } catch (error) {
-    //   console.error("There was an error deleting the file!", error);
-    //   alert("Error deleting the file. Please try again.");
-    // }
+  
   };
   return (
     <div>
