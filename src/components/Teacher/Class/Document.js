@@ -44,7 +44,7 @@ const Document = () => {
         setDocumentDescription("");
         setAttachments([]);
         document.getElementById("fileInput").value = null;
-        fetchReports(); // Fetch updated reports
+        fetchReports();
       } else {
         setMessage("There was an error submitting the report.");
       }
@@ -84,6 +84,7 @@ const Document = () => {
       console.error("Đã xảy ra lỗi khi hủy bài nộp! ", error);
       window.alert("Đã xảy ra lỗi khi hủy bài nộp!");
     }
+<<<<<<< HEAD
     // try {
     //   const response = await axios.delete(`${BE_URL}/api/upload/resource/delete/${reportId}`);
     //   if (response.status === 200) {
@@ -95,6 +96,9 @@ const Document = () => {
     //   console.error("There was an error deleting the file!", error);
     //   alert("Error deleting the file. Please try again.");
     // }
+=======
+  
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
   };
   return (
     <div>

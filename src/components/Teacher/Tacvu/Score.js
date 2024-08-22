@@ -11,9 +11,9 @@ const Score = () => {
     const [loading, setLoading] = useState(true);
     const [grades, setGrades] = useState({});
     const [submitMessage, setSubmitMessage] = useState("");
-    const [saveStatus, setSaveStatus] = useState({}); // Track save status per student
+    const [saveStatus, setSaveStatus] = useState({});
 
-    // Keep track of the last save timeout
+
     const saveTimeouts = useRef({});
 
     const fetchStudentListWithGrades = async () => {
@@ -24,7 +24,7 @@ const Score = () => {
             return;
         }
         try {
-            // Fetch student list
+
             const studentResponse = await fetch(
                 `${BE_URL}/api/class/${classId}/group/${groupId}/students`,
                 {
@@ -40,7 +40,7 @@ const Score = () => {
             }
             const studentData = await studentResponse.json();
 
-            // Fetch grades
+
             const gradesResponse = await fetch(
                 `${BE_URL}/api/class/${classId}/group/${groupId}/students/grades/${requestId}`,
                 {
@@ -56,19 +56,17 @@ const Score = () => {
             }
             const gradesData = await gradesResponse.json();
 
-            // Map grades to students
             const studentListWithGrades = studentData.map(student => {
                 const studentGrade = gradesData.find(
                     grade => grade.memberId === student.accountId
                 );
                 return {
                     ...student,
-                    grade: studentGrade ? studentGrade.grade : 0 // Gán điểm nếu tồn tại, không thì là 0
+                    grade: studentGrade ? studentGrade.grade : 0 
                 };
             });
 
             setStudentList(studentListWithGrades);
-            // Cập nhật điểm số khi nhận dữ liệu
             const initialGrades = {};
             studentListWithGrades.forEach((student) => {
                 initialGrades[student.accountId] = student.grade || 0;
@@ -98,12 +96,10 @@ const Score = () => {
             [studentId]: "Pending save..."
         }));
 
-        // Clear any existing timeout for this studentId
         if (saveTimeouts.current[studentId]) {
             clearTimeout(saveTimeouts.current[studentId]);
         }
 
-        // Set a new timeout to save the grade after 3 seconds
         saveTimeouts.current[studentId] = setTimeout(() => {
             submitGrade(studentId, newGrade);
         }, 3000);
@@ -125,7 +121,7 @@ const Score = () => {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`
                     },
-                    body: JSON.stringify([gradeData]) // Send single grade as an array
+                    body: JSON.stringify([gradeData]) 
                 }
             );
 
@@ -140,14 +136,10 @@ const Score = () => {
                 return;
             }
 
-            //setSubmitMessage("Grade submitted successfully!");
             setSaveStatus((prevStatus) => ({
                 ...prevStatus,
                 [studentId]: "Saved"
             }));
-
-            // Optionally, fetch updated grades again if necessary
-            // fetchStudentListWithGrades();
 
         } catch (error) {
             console.error("Error submitting grade:", error);
@@ -191,8 +183,8 @@ const Score = () => {
                                                     type="number"
                                                     min="0"
                                                     max="10"
-                                                    step="0.5" // Use step="0.1" for more granularity
-                                                    value={grades[member.accountId] || 0} // Hiển thị điểm hiện tại
+                                                    step="0.5" 
+                                                    value={grades[member.accountId] || 0} 
                                                     onChange={(e) =>
                                                         handleGradeChange(
                                                             member.accountId,
@@ -200,7 +192,6 @@ const Score = () => {
                                                         )
                                                     }
                                                 />
-                                                {/* <span className="grade-scale">/10</span> */}
                                             </td>
                                             <td>
                                                 {saveStatus[member.accountId] || "Saved"}
@@ -211,7 +202,6 @@ const Score = () => {
                             </table>
                         )}
                     </div>
-                    {/* {submitMessage && <p className="mt-2">{submitMessage}</p>} */}
                 </div>
             </div>
         </div>

@@ -17,7 +17,7 @@ import detail from "../../Admin/imgAdmin/detail.png";
 
 
 const Stream = () => {
-  const { classId } = useParams(); // Lấy classId từ URL
+  const { classId } = useParams(); 
   // hiển thị hi tiết lớp môn học
   const [loading, setLoading] = useState(true);
   const [classDetail, setClassDetail] = useState(null);
@@ -29,8 +29,12 @@ const Stream = () => {
     fetchClassDetail(classId, setClassDetail, setLoading, setError);
   }, [classId]);
 
+<<<<<<< HEAD
   //   hiển thị danh sách report
   //lấy danh sách report of class id
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
   const [reportList, setreportList] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -51,6 +55,7 @@ const Stream = () => {
     }
   }, [classId]);
 
+<<<<<<< HEAD
   // useEffect(() => {
 
   //   const token = localStorage.getItem("token");
@@ -141,6 +146,11 @@ const Stream = () => {
   //     window.alert("Xảy ra lỗi khi xóa request.");
   //   }
   // };
+=======
+
+
+  const [listReport, setListReport] = useState([]);
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
 
   const handleDeleteReport = async (requestId) => {
     if (!requestId) {
@@ -212,7 +222,7 @@ const Stream = () => {
         }
       );
       if (response.ok) {
-        // Cập nhật trực tiếp danh sách lớp sau khi cập nhật thành công
+
         setListReport((prevList) =>
           prevList.map((item) =>
             item.subjectClassId === updateData.subjectClassId
@@ -228,7 +238,7 @@ const Stream = () => {
           requestDescription: "",
         });
         setShowUpdateForm(false);
-        // Ẩn form cập nhật sau khi cập nhật thành công
+
         window.alert("Sửa thành công !!");
         window.location.reload(true);
       } else {
@@ -238,8 +248,7 @@ const Stream = () => {
       console.error("Error updating class:", error);
     }
   };
-  // add sinh vien bang ma sinh vien
-  ////lấy danh sách report of class id
+
   const [reportSv, setreportSv] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -262,15 +271,21 @@ const Stream = () => {
       } catch (error) {
         console.error("Error fetching report SV:", error);
       } finally {
-        setLoading(false); // Set loading to false after data is fetched or an error occurs
+        setLoading(false); 
       }
     };
     fetchReporSv();
   }, []);
   const navigate = useNavigate();
+<<<<<<< HEAD
   //update report
   const handleUpdate = (listreport) => {
     // navigate(`/editclass`, { state: { classItem } }); // Chuyển hướng đến trang chỉnh sửa với dữ liệu lớp học
+=======
+ 
+
+  const handleUpdate = (listreport) => {
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
     navigate(`/editreport/${classId}`, {
       state: { listreport, requestTile: listreport.requestTile },
     });

@@ -21,7 +21,11 @@ const Group = () => {
     groupName: "",
   });
 
+<<<<<<< HEAD
   // Fetch list of groups
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
   const fetchStudentList = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -61,6 +65,24 @@ const Group = () => {
     const confirmed = window.confirm("Bạn có chắc muốn xóa nhóm này không?");
     if (!confirmed) return;
 
+<<<<<<< HEAD
+=======
+  const handleDeleteGroup = async (groupId) => {
+    if (!groupId) {
+      console.error("Group ID is missing or undefined");
+      window.alert("Group ID is missing or undefined");
+      return;
+    }
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found");
+      window.alert("No token found");
+      return;
+    }
+    const confirmed = window.confirm("Bạn có chắc muốn xóa nhóm này không?");
+    if (!confirmed) return;
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
     try {
       const response = await fetch(`${BE_URL}/api/group/delete/${groupId}`, {
         method: "DELETE",
@@ -83,7 +105,11 @@ const Group = () => {
     }
   };
 
+<<<<<<< HEAD
   // Update group
+=======
+ 
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
   const handleUpdate = (groupItem) => {
     setUpdateData(groupItem);
     setShowUpdateForm(true);
@@ -93,7 +119,11 @@ const Group = () => {
     e.preventDefault();
     const token = localStorage.getItem("token");
   
+<<<<<<< HEAD
     // Kiểm tra các trường cần thiết
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
     if (updateData.groupName.trim() === "") {
       alert("Vui lòng điền tên nhóm.");
       return;
@@ -160,7 +190,11 @@ const Group = () => {
 
   const isDisabled = groupList.length >= numberOfGroup;
 
+<<<<<<< HEAD
   // Fetch list of projects
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
   const [listProject, setListProject] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -182,7 +216,11 @@ const Group = () => {
       <DetailClass />
       <div className="container-fluid">
         <div className="row">
+<<<<<<< HEAD
           {/* Hàng cho list group */}
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
           <div className="col-12">
             <div className="container-group">
               <div className="row">

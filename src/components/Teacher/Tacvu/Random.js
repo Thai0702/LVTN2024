@@ -11,25 +11,14 @@ const ClassDetailPage = () => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const classId = 3;
-  // useEffect(() => {
-  //   const fetchStudents = async () => {
-  //     try {
-  //       const response = await axios.get(`http://localhost:8080/api/class/3/student-list`);
-  //       const studentList = response.data;
-  //       setStudents(studentList);
-  //     } catch (error) {
-  //       console.error('Lỗi khi lấy danh sách sinh viên:', error);
-  //     }
-  //   };
-  //   fetchStudents();
-  // }, [3]);
+  
   useEffect(() => {
     const fetchStudents = async () => {
         try {
             const studentList = await fetchStudentsAPI(classId);
             setStudents(studentList);
         } catch (error) {
-            // Lỗi đã được xử lý trong API
+
         }
     };
 
@@ -37,36 +26,7 @@ const ClassDetailPage = () => {
 }, [classId]);
 
 
-    // const generateRandomGroup = () => {
-    //   if (!groupSize || isNaN(groupSize) || groupSize <= 0) {
-    //     setError('Vui lòng nhập một số nguyên dương.');
-    //     return;
-    //   }
-      
-    //   if (groupSize > students.length) {
-    //     setError('Không đủ sinh viên để tạo nhóm.');
-    //     return;
-    //   }
-    
-    //   const tempStudents = [...students]; // Tạo một bản sao của danh sách sinh viên
-    //   const randomGroupMembers = [];
-      
-    //   for (let i = 0; i < groupSize; i++) {
-    //     const randomIndex = Math.floor(Math.random() * tempStudents.length);
-    //     const selectedStudent = tempStudents.splice(randomIndex, 1)[0]; // Loại bỏ sinh viên đã chọn khỏi danh sách tạm thời
-    //     randomGroupMembers.push(selectedStudent.studentId);
-    //   }   
-    //   console.log(randomGroupMembers)
-    //   const finalGroupName = groupName.trim() || `Group ${Math.floor(Math.random() * 6) + 1}`;
-    
-    //   const randomGroup = {
-    //     groupName: finalGroupName,
-    //     members: randomGroupMembers
-    //   };
-    
-    //   setRandomGroup(randomGroup);
-    //   setError('');
-    // };
+   
     const handleGenerateGroup = () => {
       try {
           const group = generateRandomGroup(students, groupSize, groupName);

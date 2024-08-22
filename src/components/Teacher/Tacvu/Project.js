@@ -12,6 +12,7 @@ const Project = () => {
   const navigate = useNavigate();
   const createClassRef = useRef();
   const { classId } = useParams();
+<<<<<<< HEAD
   /*add project */
   const [project_name, setProjectName] = useState("");
   const [description, setDescription] = useState("");
@@ -32,6 +33,28 @@ const Project = () => {
     const currentDate = new Date();
     const selectedDate = new Date(`${expired_day}T${expired_time}`);
 
+=======
+
+  const [project_name, setProjectName] = useState("");
+  const [description, setDescription] = useState("");
+  const [expired_day, setExpiredDay] = useState("");
+  const [expired_time, setExpiredTime] = useState("");
+  const [dateError, setDateError] = useState("");
+  const groupRegisterMethod = localStorage.getItem("groupRegisterMethod");
+
+  const handleAddProject = async (e) => {
+    e.preventDefault();
+
+    if (!project_name || !description || !expired_day || !expired_time) {
+      window.alert("Vui lòng điền đủ thông tin.");
+      return;
+    }
+
+ 
+    const currentDate = new Date();
+    const selectedDate = new Date(`${expired_day}T${expired_time}`);
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
     if (selectedDate <= currentDate) {
       window.alert(
         "Ngày tháng năm không hợp lệ, vui lòng chọn ngày tháng năm khác."
@@ -52,11 +75,16 @@ const Project = () => {
         {
           headers: {
             "Content-Type": "application/json",
+<<<<<<< HEAD
             Authorization: "Bearer " + token, // Thêm token vào header
+=======
+            Authorization: "Bearer " + token, 
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
           },
         }
       );
       if (response.status === 200) {
+<<<<<<< HEAD
         // Đặt lại các trường nhập
         setProjectName("");
         setDescription("");
@@ -121,6 +149,68 @@ const Project = () => {
     const data = editor.getData();
     const plainText = data.replace(/<[^>]+>/g, ""); // Remove all HTML tags
     setDescription(plainText); // Update the description state
+=======
+
+        setProjectName("");
+        setDescription("");
+        setExpiredDay("");
+        setExpiredTime("");
+        window.alert("Tạo đồ án thành công!!!");
+
+        navigate(`/projectListClass/${classId}`);
+      }
+    } catch (error) {
+      window.alert("Thêm dự án thất bại!!!");
+    }
+  };
+
+  const handleExpiredDayChange = (e) => {
+    setExpiredDay(e.target.value);
+    validateDateTime(e.target.value, expired_time);
+  };
+
+  const handleExpiredTimeChange = (e) => {
+    setExpiredTime(e.target.value);
+    validateDateTime(expired_day, e.target.value);
+  };
+
+  const validateDateTime = (day, time) => {
+    const currentDate = new Date();
+    const selectedDate = new Date(`${day}T${time}`);
+
+    if (selectedDate <= currentDate) {
+
+      setDateError("Ngày không được nhỏ hơn ngày hiện tại");
+    } else {
+      setDateError("");
+    }
+  };
+
+
+  const [grouptList, setGroupList] = useState([]);
+  useEffect(() => {
+
+    const token = localStorage.getItem("token");
+    fetch(`${BE_URL}/api-gv/classId/group-list/${classId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setGroupList(data);
+      })
+      .catch((error) => console.error("Error fetching student list:", error));
+  }, [classId]);
+
+
+  const handleDescriptionChange = (event, editor) => {
+    const data = editor.getData();
+    const plainText = data.replace(/<[^>]+>/g, ""); 
+    setDescription(plainText); 
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
   };
   return (
     <div>

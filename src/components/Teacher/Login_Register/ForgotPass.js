@@ -29,7 +29,7 @@ const ForgotPass = () => {
 
             if (response.status === 200) {
                 window.alert("Mã OTP đã được gửi tới email của bạn");
-                navigate('/reset_pass'); // Navigate to the OTP entry page
+                navigate('/reset_pass'); 
             } else {
                 window.alert("Đã xảy ra lỗi. Vui lòng thử lại sau.");
             }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import React, { useState, useEffect, useRef } from "react";
 // import { useLocation } from 'react-router-dom';
 // import "../Login_Register/Login"; 
@@ -608,6 +609,8 @@
 
 
 
+=======
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
 
 import React, { useState, useEffect, useRef } from "react";
 import "../Login_Register/Login"; 
@@ -628,10 +631,10 @@ import "./css/navbar.css"
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
-  const [projectText, setProjectText] = useState("Hỗ trợ giảng viên"); // State variable for project text
+  const [projectText, setProjectText] = useState("Hỗ trợ giảng viên"); 
   const [isCreate, setIsCreate] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Trạng thái đăng nhập
-  const [username, setUsername] = useState(""); // Tên người dùng
+  const [isLoggedIn, setIsLoggedIn] = useState(true); 
+  const [username, setUsername] = useState(""); 
   const navigate = useNavigate();
   const { classId } = useParams();
   const [isSetting, setIsSetting] = useState(false);
@@ -645,7 +648,7 @@ function Navbar() {
     }
   }, []);
   const handleLogout = () => {
-    // Xóa token và tên người dùng từ localStorage
+
     localStorage.clear();
     setIsLoggedIn(false);
     setUsername("");
@@ -670,10 +673,10 @@ function Navbar() {
 
     fetchUsers();
   }, []);
-  // lay userId by account
+
   useEffect(() => {
     const fetchClasses = async () => {
-      // Lấy token từ localStorage
+
       const userId = localStorage.getItem("accountId");
       const token = localStorage.getItem("token");
       
@@ -690,7 +693,7 @@ function Navbar() {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: "Bearer " + token, // Thêm token vào header
+              Authorization: "Bearer " + token, 
             },
           }
         );
@@ -710,7 +713,7 @@ function Navbar() {
   }, []);
   const fullName = localStorage.getItem("fullName");
 
-  //get all class of
+
   useEffect(() => {
     const fetchClasses = async () => {
       try {
@@ -751,7 +754,7 @@ function Navbar() {
 
 
 
-  // Chạy lại effect khi classList thay đổi
+
   const handleLinkClick = (text) => {
     setProjectText(text);
     setIsMenuOpen(true);
@@ -761,9 +764,9 @@ function Navbar() {
     setIsCreate(!isCreate);
   };
 
-  // Ref for the create class component
+
   const createClassRef = useRef();
-  /*click hide of element*/
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -790,7 +793,7 @@ function Navbar() {
     setIsStudentOpen(isStudentOpen);
   };
 
-  // hiển thị hi tiết lớp môn học
+
   const [loading, setLoading] = useState(true);
   const [classDetail, setClassDetail] = useState(null);
   const [error, setError] = useState("");
@@ -813,7 +816,7 @@ function Navbar() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token, // Add token to header
+            Authorization: "Bearer " + token, 
           },
         });
         if (!response.ok) {
@@ -882,8 +885,6 @@ function Navbar() {
                       <Link
                         to="/login"
                         onClick={handleLogout}
-                        // style={{ textDecoration: 'none' }}
-                        // className="link"
                       >
                         Đăng xuất
                       </Link>
@@ -893,8 +894,6 @@ function Navbar() {
                   <li>
                     <Link
                       to="/login"
-                      // style={{ textDecoration: 'none' }}
-                      // className="link"
                     >
                       Đăng nhập
                     </Link>
@@ -914,7 +913,7 @@ function Navbar() {
                 <Link
                   to="/"
                   className="link"
-                  // onClick={() => handleLinkClick('Home')}
+
                 >
                   <div className="menu_1">
                     <img src={home} /> Trang chủ
@@ -922,7 +921,7 @@ function Navbar() {
                 </Link>
                 {type === 'GV' ? (
                   <Link className="link"
-                  //  onClick={() => handleLinkClick('Teaching')}
+
                    >
                     <div className="menu_1" onClick={toggleTeaching}>
                       <img src={teach} alt="Teaching" /> Lớp đã tạo
@@ -930,7 +929,7 @@ function Navbar() {
                   </Link>
                 ) : (
                   <Link className="link" 
-                  // onClick={() => handleLinkClick('Student')}
+
                   >
                     <div className="menu_1" onClick={toggleStudent}>
                       <img src={student} alt="Student" /> Lớp đã tham gia
@@ -943,7 +942,11 @@ function Navbar() {
                       {classList.map((classItem) => (
                         <li
                           key={classItem.id}
+<<<<<<< HEAD
                            //onClick={() => handleLinkClick('Teaching >' + classItem.subjectName)}
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
                            style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}
                         >
                           <img src={iconClass} alt="Class" />
@@ -975,7 +978,11 @@ function Navbar() {
                       {classListStudent.map((classItem) => (
                         <li key={classItem.id}
                         style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}
+<<<<<<< HEAD
                          //onClick={() => handleLinkClick('Student >' + classItem.subjectName)}
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
                         >
                           <img src={iconClass} alt="Class" />
                           <Link to={`/class/${classItem.subjectClassId}`}
@@ -999,7 +1006,7 @@ function Navbar() {
                 
                 <Link
                   className="link"
-                  // onClick={() => handleLinkClick('Setting')}
+
                 >
                   <div className="menu_1 setting" onClick={togglesetting}>
                     <img src={setting} /> Cài đặt
@@ -1010,7 +1017,7 @@ function Navbar() {
                   <Link
                     to={`/change_pass`}
                     className="link"
-                    // onClick={() => handleLinkClick('Change password')}
+
                   >
                     <div className="class-list-teach1">
                       <img src={arrow} /> Đổi mật khẩu

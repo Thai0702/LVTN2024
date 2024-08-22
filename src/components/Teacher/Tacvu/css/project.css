@@ -13,6 +13,7 @@
     width: 250px;
 }
 
+<<<<<<< HEAD
 /* Responsive adjustments */
 @media (max-width: 768px) { /* For devices with a width less than 768px (tablets and smaller) */
     .taobaocao {
@@ -32,5 +33,25 @@
 
     .add-project {
         width: 100%; /* Make the add project button full-width on smaller screens */
+=======
+@media (max-width: 768px) { 
+    .taobaocao {
+        margin-top: 1cm; 
+    }
+
+    .listproject {
+        margin-top: 2cm; 
+        margin-left: 0; 
+        width: 50%; 
+    }
+
+    .card {
+        margin-top: 20px;
+        border: 1px solid rgb(254, 248, 248); 
+    }
+
+    .add-project {
+        width: 100%; 
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
     }
 }

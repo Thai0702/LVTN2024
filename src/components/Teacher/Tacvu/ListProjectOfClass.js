@@ -102,7 +102,10 @@ const ListProjectOfClass = () => {
   };
   //update
   const handleUpdate = (listproject) => {
+<<<<<<< HEAD
     // navigate(`/editclass`, { state: { classItem } }); // Chuyển hướng đến trang chỉnh sửa với dữ liệu lớp học
+=======
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
     navigate(`/editproject/${classId}`, {
       state: { listproject, projectName: listproject.projectName },
     });
@@ -129,7 +132,10 @@ const ListProjectOfClass = () => {
                         <th>Thời gian hết hạn</th>
                         <th>Ngày kết thúc</th>
                         <th colSpan="2">Hành động</th>{" "}
+<<<<<<< HEAD
                         {/* Spanning two columns */}
+=======
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
                       </tr>
                     </thead>
                     <tbody>
@@ -152,8 +158,11 @@ const ListProjectOfClass = () => {
                           <td className="text-center">
                             {listproject.expiredTime}
                           </td>
+<<<<<<< HEAD
 
                           {/* Separate cells for each action */}
+=======
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
                           <td className="text-center">
                             <img src={del} onClick={() =>
                                 handleDeleteProject(listproject.projectId)

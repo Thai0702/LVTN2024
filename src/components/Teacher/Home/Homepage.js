@@ -6,13 +6,17 @@ import css from "./css/showclass.css";
 import home from './css/home.css';
 import "./css/main.css"
 const Home = () => {
+<<<<<<< HEAD
   //const [showMenu, setShowMenu] = useState(null);
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      // Nếu không có token, chuyển hướng đến trang đăng nhập
+
       navigate('/login');
     }
     console.log("hello",token);
@@ -37,7 +41,7 @@ const Home = () => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token // Thêm token vào header
+            'Authorization': 'Bearer ' + token 
           }
         });
 
@@ -55,7 +59,7 @@ const Home = () => {
     fetchClasses();
   }, []);
 
-  // get list class of student 
+
   useEffect(() => {
     const fetchClasses = async () => {
       try {
@@ -93,7 +97,11 @@ const Home = () => {
     const token = localStorage.getItem('token');
     try {
       
+<<<<<<< HEAD
       //kiem tra them sinh vien vào class
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
       const responseSV = await fetch(`${BE_URL}/api/class/student-list/${classId}`, {
         method: 'GET',
         headers: {
@@ -102,11 +110,15 @@ const Home = () => {
         }
       });
       const dataSV = await responseSV.json(); 
+<<<<<<< HEAD
       // Nếu lớp đã thêm nhóm, hiển thị thông báo và không xóa
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
       if (dataSV.length > 0) {
         alert("Không thể xóa vì đã thêm sinh viên vào lớp");
       } else {
-        // Nếu lớp chưa thêm nhóm, tiến hành xóa
+
         window.confirm("Bạn có chắc muốn xóa lớp này không?");
         await fetch(`${BE_URL}/api-gv/class/delete/${classId}`, {
           method: 'DELETE',
@@ -115,7 +127,7 @@ const Home = () => {
             'Authorization': 'Bearer ' + token
           }
         });
-        // Cập nhật lại danh sách lớp sau khi xóa thành công
+
         setClassList(prevList => prevList.filter(item => item.subjectClassId !== classId));
       }
     } catch (error) {
@@ -124,7 +136,6 @@ const Home = () => {
   };
 
   const handleUpdate = (classItem) => {
-    // navigate(`/editclass`, { state: { classItem } }); // Chuyển hướng đến trang chỉnh sửa với dữ liệu lớp học
     navigate(`/editclass`, { state: { classItem, subjectName: classItem.subjectName } }); 
   };
   const handleMenuToggle = (classId) => {
@@ -135,7 +146,7 @@ const Home = () => {
   const [showMenu, setShowMenu] = useState(null);
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Kiểm tra xem click có nằm trong menu hay không
+
       if (showMenu && !event.target.closest('.menu-container, .menu')) {
         setShowMenu(null);
       }

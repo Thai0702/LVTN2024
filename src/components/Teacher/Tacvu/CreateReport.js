@@ -4,7 +4,11 @@ import axios from "axios";
 import { BE_URL } from "../../../utils/Url_request";
 import Navbar from "../Home/Navbar";
 import DetailClass from "../Class/DetailClass";
+<<<<<<< HEAD
 import "./css/createreport.css"; // Import the CSS file
+=======
+import "./css/createreport.css"; 
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
 import {
   addReportRequest,
   fetchListProject,
@@ -26,7 +30,10 @@ const CreateReport = () => {
 
   const handleAddReportRequest = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD
     // Kiểm tra không được bỏ trống các trường
+=======
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
     if (!expiredTime || !expiredDate || !requestTile || !requestDescription) {
       window.alert("Vui lòng điền đầy đủ thông tin.");
       return;
@@ -37,7 +44,10 @@ const CreateReport = () => {
         `${BE_URL}/api-gv/create/request`,
         {
           subjectClass: classId,
+<<<<<<< HEAD
           // requestOfProject: requestOfProject,
+=======
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
           expiredTime: expiredTime,
           expiredDate: expiredDate,
           expiredAction: 2,
@@ -48,16 +58,18 @@ const CreateReport = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token, // Thêm token vào header
+            Authorization: "Bearer " + token, 
           },
         }
       );
       if (response.status !== 200) {
         setsubjectClass("");
+<<<<<<< HEAD
         // setrequestOfProject("");
+=======
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
         setexpiredTime("");
         setexpiredDate("");
-        // setexpiredAction('');
         setrequestTile("");
         setrequestDescription("");
         window.alert("Report created successfully !");
@@ -69,6 +81,7 @@ const CreateReport = () => {
     }
   };
 
+<<<<<<< HEAD
   // const handleAddReportRequest = async (e) => {
   //   e.preventDefault();
   //   if ( !expiredTime || !expiredDate || !requestTile || !requestDescription) {
@@ -217,6 +230,8 @@ const CreateReport = () => {
   //     window.alert("Tạo báo cáo thất bại!!!");
   //   }
   // };
+=======
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
 
   const handleExpiredDateChange = (e) => {
     setexpiredDate(e.target.value);
@@ -260,7 +275,10 @@ const CreateReport = () => {
     }
   }, [groupId]);
 
+<<<<<<< HEAD
   // Set dự án ngay khi component được mount
+=======
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
   useEffect(() => {
     if (project) {
       setrequestOfProject(project.projectId);
@@ -297,7 +315,6 @@ const CreateReport = () => {
                             placeholder="Ngày hết hạn"
                             className="form-control"
                             value={expiredDate}
-                            // onChange={(e) => setexpiredDate(e.target.value)}
                             onChange={handleExpiredDateChange}
                           />
                         </div>
@@ -308,7 +325,6 @@ const CreateReport = () => {
                             className="form-control"
                             placeholder="Thời gian hết hạn"
                             value={expiredTime}
-                            // onChange={(e) => setexpiredTime(e.target.value)}
                             onChange={handleExpiredTimeChange}
                           />
                         </div>

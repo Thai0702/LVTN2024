@@ -9,7 +9,7 @@ import axios from "axios";
 const ListAccount = () => {
   const [listaccount, setListAcoount] = useState([]);
   const fileInputRef = useRef(null);
-  //lấy danh sách report of class id
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const fetchAccounttList = async () => {
@@ -34,8 +34,7 @@ const ListAccount = () => {
     };
     fetchAccounttList();
   });
-  // upload file
-  // upload file
+
   const handleFileUpload = async () => {
     const token = localStorage.getItem("token");
     const file = fileInputRef.current.files[0];
@@ -50,7 +49,7 @@ const ListAccount = () => {
           },
         });
         window.alert("File uploaded successfully!");
-        // Load lại trang sau khi thêm thành công
+
         window.location.reload(false);
       } catch (error) {
         window.alert("File uploaded fail!");
@@ -77,7 +76,7 @@ const ListAccount = () => {
 
     const confirmed = window.confirm("Bạn có chắc muốn xóa tài khoản này không?");
     if (!confirmed) {
-      // Do not delete if user does not confirm
+
       return;
     }
 
@@ -95,7 +94,7 @@ const ListAccount = () => {
       );
 
       if (responseDelete.ok) {
-        // Remove project from list if deletion is successful
+
         setListAcoount((prevListReport) =>
           prevListReport.filter((account) => account.userId !== userId)
         );
@@ -129,7 +128,7 @@ const ListAccount = () => {
   });
   const handleUpdate = (classItem) => {
     setUpdateData(classItem);
-    setShowUpdateForm(true); // Hiển thị form cập nhật khi nhấp vào "Cập nhật"
+    setShowUpdateForm(true);
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -154,16 +153,11 @@ const ListAccount = () => {
         }
       );
       if (response.ok) {
-        // Cập nhật trực tiếp danh sách lớp sau khi cập nhật thành công
-        // setListAcoount((prevList) =>
-        //   prevList.map((item) =>
-        //     item.subjectClassId === updateData.userId ? updateData : item
-        //   )
-        // );
+
         window.alert("Sửa tài khoản thành công!")
         setShowUpdateForm(false);
         
-        // fetchAccounttList();
+
       } else {
         console.error("Failed to update project");
       }
@@ -201,7 +195,7 @@ const ListAccount = () => {
                   <th scope="col-3">Họ tên</th>
                   <th scope="col">Email</th>
                   <th scope="col">Type</th>
-                  {/* <th scope="col-2">Password</th> */}
+
                   <th scope="col-4">Hành động</th>
                 </tr>
               </thead>
@@ -212,7 +206,7 @@ const ListAccount = () => {
                     <td>{account.fullName}</td>
                     <td>{account.email}</td>
                     <td>{account.type}</td>
-                    {/* <td>{account.password}</td> */}
+
                     <td className="d-grid gap-2 d-md-flex justify-content-md-end">
                       <button
                         className="btn btn-warning me-md-2 w-100 w-md-auto"
@@ -225,20 +219,6 @@ const ListAccount = () => {
                             updateData.userId === account.userId && (
                               <div className="update-form-project mt-2">
                                 <form onSubmit={handleSubmit}>
-                                  {/* <div className="mb-3">
-                                    <label htmlFor="password">
-                                      Password:{" "}
-                                    </label>
-                                    <input
-                                      id="password"
-                                      type="text"
-                                      name="password"
-                                      value={updateData.password}
-                                      onChange={handleInputChange}
-                                      // placeholder=""
-                                      className="form-control"
-                                    />
-                                  </div> */}
                                   <div className="mb-3">
                                     <label htmlFor="email">
                                       Email:{" "}
@@ -249,7 +229,6 @@ const ListAccount = () => {
                                       name="email"
                                       value={updateData.email}
                                       onChange={handleInputChange}
-                                      // placeholder="Mô tả"
                                       className="form-control"
                                     />
                                   </div>
@@ -263,7 +242,6 @@ const ListAccount = () => {
                                       name="type"
                                       value={updateData.type}
                                       onChange={handleInputChange}
-                                      // placeholder="Ngày hết hạn"
                                       className="form-control"
                                     />
                                   </div>
@@ -277,7 +255,6 @@ const ListAccount = () => {
                                       name="phoneNumber"
                                       value={updateData.phoneNumber}
                                       onChange={handleInputChange}
-                                      // placeholder="Thời gian hết hạn"
                                       className="form-control"
                                     />
                                   </div>
@@ -291,7 +268,6 @@ const ListAccount = () => {
                                       name="fullName"
                                       value={updateData.fullName}
                                       onChange={handleInputChange}
-                                      // placeholder="Thời gian hết hạn"
                                       className="form-control"
                                     />
                                   </div>
@@ -308,7 +284,6 @@ const ListAccount = () => {
                       <button
                         className="btn btn-danger w-100 w-md-auto"
                         type="button"
-                        // onClick={handleDeleteAccount(account.userId)}
                         onClick={() => handleDeleteAccount(account.userId)}
                       >
                         DELETE

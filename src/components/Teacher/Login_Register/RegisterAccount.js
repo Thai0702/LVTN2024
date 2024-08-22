@@ -58,8 +58,7 @@ const Register = () => {
         const { fullName } = userId;
         localStorage.setItem('fullName', fullName);
         console.log("chao", userId);   
-        const {accountId} =userId; // Tách giá trị fullName từ userI
-        // Sử dụng giá trị fullName ở đây, ví dụ: hiển thị trên giao diện
+        const {accountId} =userId; 
         localStorage.setItem('accountId', accountId); 
         const {type}=userId;
         localStorage.setItem('type',type);

@@ -10,7 +10,7 @@ const UpdateReport = () => {
                         type="text"
                         name="requestOfProject"                      
                         placeholder="Report của group"
-                        readOnly // Marking this field as readOnly
+                        readOnly 
                     />
                     <input
                         type="time"

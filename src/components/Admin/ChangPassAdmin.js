@@ -43,7 +43,7 @@ const ChangPassAdmin = () => {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token // Thêm token vào header
+                        'Authorization': 'Bearer ' + token 
                     }
                 }
             );

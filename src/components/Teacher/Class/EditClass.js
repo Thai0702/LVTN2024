@@ -6,7 +6,7 @@ import Navbar from "../Home/Navbar";
 const EditClass = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const classItem = location.state.classItem; // Dữ liệu lớp học được truyền qua state
+  const classItem = location.state.classItem; 
 
   const [updateData, setUpdateData] = useState(classItem);
 
@@ -34,7 +34,7 @@ const EditClass = () => {
         }
       );
       if (response.ok) {
-        navigate("/"); // Chuyển hướng về trang Home sau khi cập nhật thành công
+        navigate("/"); 
       } else {
         console.error("Failed to update class");
       }
@@ -91,39 +91,6 @@ const EditClass = () => {
         </div>
       </div>
     </div>
-    // <div >
-    //     <form onSubmit={handleSubmit}>
-    //     <input
-    //       type="text"
-    //       name="subjectName"
-    //       value={updateData.subjectName}
-    //       onChange={handleInputChange}
-    //       placeholder="Tên môn học"
-    //     />
-    //     <input
-    //       type="text"
-    //       name="schoolYear"
-    //       value={updateData.schoolYear}
-    //       onChange={handleInputChange}
-    //       placeholder="Năm học"
-    //     />
-    //     <input
-    //       type="text"
-    //       name="numberOfGroup"
-    //       value={updateData.numberOfGroup || ''}
-    //       onChange={handleInputChange}
-    //       placeholder="Số nhóm"
-    //     />
-    //     <input
-    //       type="text"
-    //       name="memberPerGroup"
-    //       value={updateData.memberPerGroup || ''}
-    //       onChange={handleInputChange}
-    //       placeholder="Số thành viên mỗi nhóm"
-    //     />
-    //     <button type="submit">Lưu</button>
-    //   </form>
-    // </div>
   );
 };
 

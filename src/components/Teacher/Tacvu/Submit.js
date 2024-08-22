@@ -10,9 +10,9 @@ const Submit = () => {
     const { requestId, classId } = useParams();
     const [reportTitle, setReportTitle] = useState('');
     const [reportDescription, setReportDescription] = useState('');
-    const [attachments, setAttachments] = useState([]); // Changed to an array
+    const [attachments, setAttachments] = useState([]); 
     const [reports, setReports] = useState([]);
-    const [isSubmitted, setIsSubmitted] = useState(false); // New state
+    const [isSubmitted, setIsSubmitted] = useState(false); 
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
@@ -23,8 +23,7 @@ const Submit = () => {
         formData.append('reportOfRequest', requestId);
         formData.append('reportTitle', reportTitle);
         formData.append('reportDescription', reportDescription);
-        
-        // Append each selected file to FormData
+
         attachments.forEach(file => {
             formData.append('attachment', file);
         });
@@ -36,13 +35,13 @@ const Submit = () => {
             });
             if (response.status === 200 || response.status === 201) {
                 alert('Submit success!!');
-                // Reset form fields
+
                 setIsSubmitted(true);
                 setReportTitle('');
                 setReportDescription('');
-                setAttachments([]); // Reset attachments
-                document.getElementById('fileInput').value = null; // Clear file input
-                // Fetch lại báo cáo mới
+                setAttachments([]); 
+                document.getElementById('fileInput').value = null; 
+
                 const newReports = await getAllSubmitReportsByRequestId(requestId);
                 setReports(newReports);
                 navigate(`/upload/${classId}/${requestId}`);
@@ -55,8 +54,8 @@ const Submit = () => {
         }
     };
     const handleFileChange = (e) => {
-        const files = Array.from(e.target.files); // Convert FileList to array
-        setAttachments(files); // Set the state to the array of files
+        const files = Array.from(e.target.files);
+        setAttachments(files); 
     };
   return (
     <div>
@@ -87,7 +86,7 @@ const Submit = () => {
                                         className="form-control"
                                         id="fileInput"
                                         onChange={handleFileChange}
-                                        multiple // Allow multiple file selection
+                                        multiple 
                                         required
                                     />
                                     <button className="btn btn-primary" type="submit">Nộp</button>

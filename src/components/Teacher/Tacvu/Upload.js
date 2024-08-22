@@ -36,7 +36,7 @@ const GoogleDriverPicker = () => {
     setIsSubmit(!isSubmit);
   };
 
-  const [isExpired, setIsExpired] = useState(false); // State to check if the deadline has passed
+  const [isExpired, setIsExpired] = useState(false); 
 
   useEffect(() => {
     const fetchReportDetail = async () => {
@@ -65,7 +65,7 @@ const GoogleDriverPicker = () => {
         const data = await response.json();
         setReportDetail(data);
 
-        // Check if the current time is past the expiration time
+
         const currentTime = new Date();
         const expirationTime = new Date(
           `${data.expiredDate}T${data.expiredTime}`

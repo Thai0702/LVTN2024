@@ -38,9 +38,8 @@ const Login = () => {
         console.log("chao", userId);   
         const { fullName } = userId;
         const {accountId} =userId;
-        const {type}=userId; // Tách giá trị fullName từ userId
-        console.log("fullName:", fullName); // In giá trị fullName vào console
-        // Sử dụng giá trị fullName ở đây, ví dụ: hiển thị trên giao diện
+        const {type}=userId; 
+        console.log("fullName:", fullName); 
         localStorage.setItem('accountId', accountId); 
         localStorage.setItem('fullName', fullName);
         localStorage.setItem('type',type);
@@ -78,7 +77,10 @@ const Login = () => {
               {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
             </div>
             <p className="mt-3">Quên mật khẩu! <Link to="/forgot_pass"> Lấy lại mật khẩu!</Link></p>
+<<<<<<< HEAD
             {/* <p className="mt-3"> <Link to="/forgot_pass">Quên mật khẩu! </Link></p> */}
+=======
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
           </div>
         </div>
       </div>    

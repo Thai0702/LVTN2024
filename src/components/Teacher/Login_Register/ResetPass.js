@@ -25,7 +25,7 @@ const ResetPass = () => {
             return;
         }
         try {
-            console.log("Sending request with data:", changePass); // Log the data being sent
+            console.log("Sending request with data:", changePass); 
             const response = await axios.post(`${BE_URL}/api/authenticate/reset-password`, {
                 username: changePass.username,
                 otp: changePass.otp,
@@ -33,13 +33,12 @@ const ResetPass = () => {
             });
             if (response.status === 200) {
                 window.alert("Thay đổi mật khẩu thành công");
-                navigate('/login'); // Navigate to the login page
+                navigate('/login'); 
             } else {
                 window.alert("Đã xảy ra lỗi. Vui lòng thử lại sau.");
             }
         } catch (error) {
             if (error.response) {
-                // The request was made and the server responded with a status code outside the range of 2xx
                 console.error("Response data:", error.response.data);
                 console.error("Response status:", error.response.status);
                 console.error("Response headers:", error.response.headers);
@@ -49,11 +48,11 @@ const ResetPass = () => {
                     window.alert("Đã xảy ra lỗi. Vui lòng thử lại sau.");
                 }
             } else if (error.request) {
-                // The request was made but no response was received
+
                 console.error("Request data:", error.request);
                 window.alert("Không nhận được phản hồi từ máy chủ. Vui lòng thử lại sau.");
             } else {
-                // Something happened in setting up the request that triggered an Error
+
                 console.error("Error message:", error.message);
                 window.alert("Đã xảy ra lỗi. Vui lòng thử lại sau.");
             }

@@ -7,7 +7,10 @@ const AccountTearch = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [listaccount, setListAcoount] = useState([]);
   const fileInputRef = useRef(null);
+<<<<<<< HEAD
   //lấy danh sách report of class id
+=======
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
   useEffect(() => {
     const token = localStorage.getItem("token");
     const fetchData = async () => {
@@ -17,19 +20,31 @@ const AccountTearch = () => {
             Authorization: `Bearer ${token}`
           },
           params: {
+<<<<<<< HEAD
             search: searchTerm // Send search term if available
+=======
+            search: searchTerm 
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
           }
         });
         setListAcoount(response.data);
       } catch (error) {
         console.error("Error fetching account list:", error);
+<<<<<<< HEAD
         // Handle error (display a message to the user)
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
       }
     };
     fetchData();
   }, [searchTerm]);
+<<<<<<< HEAD
   // upload file
   // upload file
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
   const handleFileUpload = async () => {
     const token = localStorage.getItem("token");
     const file = fileInputRef.current.files[0];
@@ -44,7 +59,11 @@ const AccountTearch = () => {
           },
         });
         window.alert("File uploaded successfully!");
+<<<<<<< HEAD
         // Load lại trang sau khi thêm thành công
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
         window.location.reload(false);
       } catch (error) {
         window.alert("File uploaded fail!");
@@ -71,7 +90,11 @@ const AccountTearch = () => {
 
     const confirmed = window.confirm("Bạn có chắc muốn xóa tài khoản này không?");
     if (!confirmed) {
+<<<<<<< HEAD
       // Do not delete if user does not confirm
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
       return;
     }
 
@@ -89,7 +112,11 @@ const AccountTearch = () => {
       );
 
       if (responseDelete.ok) {
+<<<<<<< HEAD
         // Remove project from list if deletion is successful
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
         setListAcoount((prevListReport) =>
           prevListReport.filter((account) => account.userId !== userId)
         );
@@ -167,7 +194,11 @@ const AccountTearch = () => {
                       <button
                         className="btn btn-danger w-100 w-md-auto"
                         type="button"
+<<<<<<< HEAD
                         // onClick={handleDeleteAccount(account.userId)}
+=======
+
+>>>>>>> bceddffe7ace06cec518b7a3c9cba2137b8ab815
                         onClick={() => handleDeleteAccount(account.userId)}
                       >
                         DELETE
