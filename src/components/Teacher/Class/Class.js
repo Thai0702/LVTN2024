@@ -2,6 +2,7 @@ import React, { useState ,useEffect,useRef } from 'react';
 import Navbar from "../Home/Navbar";
 import css from "../Home/css/main.css";
 import add from "../../img/add.png";
+import Sidebar from '../Home/Sidebar';
 
 const Class = () => {
     const [isClassworkopen, setIsClasswork] = useState(false);

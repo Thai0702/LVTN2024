@@ -77,8 +77,8 @@ const Login = () => {
               <button className="btn btn-primary" onClick={handleLogin}>Đăng nhập</button>
               {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
             </div>
-            <p className="mt-3">Không có tài khoản? <Link to="/register"> Đăng ký ngay!</Link></p>
-            <p className="mt-3"> <Link to="/forgot_pass">Quên mật khẩu! </Link></p>
+            <p className="mt-3">Quên mật khẩu! <Link to="/forgot_pass"> Lấy lại mật khẩu!</Link></p>
+            {/* <p className="mt-3"> <Link to="/forgot_pass">Quên mật khẩu! </Link></p> */}
           </div>
         </div>
       </div>    

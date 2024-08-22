@@ -1,7 +1,7 @@
 .showmember {
   display: flex;
   flex-direction: column; 
-  background-color: #8dd8d3;
+  background-color: #aec2c0;
   position: absolute;
   top: 3.8cm; 
   left: 6.9cm; 
@@ -11,7 +11,7 @@
   overflow: auto; 
 }
 
-h1 {
+h2 {
   text-align: center;
 }
 

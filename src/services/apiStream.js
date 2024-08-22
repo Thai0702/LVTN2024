@@ -31,7 +31,7 @@ export const fetchClassDetail = async (classId, setClassDetail, setLoading, setE
 
         const classDetailData = await response.json();
         setClassDetail(classDetailData);
-        const { memberPerGroup, groupRegisterMethod, subjectName, schoolYear, numberOfGroup, description } = classDetailData;
+        const { memberPerGroup, groupRegisterMethod, subjectName, schoolYear, numberOfGroup, description, createdByName } = classDetailData;
 
         localStorage.setItem("memberPerGroup", memberPerGroup);
         localStorage.setItem("groupRegisterMethod", groupRegisterMethod);
@@ -39,6 +39,7 @@ export const fetchClassDetail = async (classId, setClassDetail, setLoading, setE
         localStorage.setItem("schoolYear", schoolYear);
         localStorage.setItem("numberOfGroup", numberOfGroup);
         localStorage.setItem("description", description);
+        localStorage.setItem("createdByName", createdByName);
 
     } catch (error) {
         console.error("Error:", error);

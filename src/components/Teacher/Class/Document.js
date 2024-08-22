@@ -9,6 +9,9 @@ import { getAllDocumentByClass } from "../../../services/apiService";
 import { deleteResourceById } from "../../../services/apiService";
 import "./css/document.css";
 import cancel from "../../img/cancel.png";
+import del from "../../Admin/imgAdmin/delete.png";
+import drive from "../../Admin/imgAdmin/drive.png";
+
 
 const Document = () => {
   const { classId } = useParams();
@@ -19,6 +22,7 @@ const Document = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [reports, setReports] = useState([]);
+  const type = localStorage.getItem("type");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,14 +76,14 @@ const Document = () => {
 
   const handleDelete = async (resourceId) => {
     try {
-          await deleteResourceById(resourceId);
-          const newDocuments = await getAllDocumentByClass(resourceId);
-          setReports(newDocuments);
-          return;
-        } catch (error) {
-          console.error("Đã xảy ra lỗi khi hủy bài nộp! ", error);
-          window.alert("Đã xảy ra lỗi khi hủy bài nộp!");
-        }
+      await deleteResourceById(resourceId);
+      const newDocuments = await getAllDocumentByClass(resourceId);
+      setReports(newDocuments);
+      return;
+    } catch (error) {
+      console.error("Đã xảy ra lỗi khi hủy bài nộp! ", error);
+      window.alert("Đã xảy ra lỗi khi hủy bài nộp!");
+    }
     // try {
     //   const response = await axios.delete(`${BE_URL}/api/upload/resource/delete/${reportId}`);
     //   if (response.status === 200) {
@@ -98,67 +102,80 @@ const Document = () => {
       <DetailClass />
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-6 mb-4">
-            <div className="card-document">
-              <div className="card-body">
-                <form onSubmit={handleSubmit}>
-                  <input
-                    value={decriptionResource}
-                    className="form-control"
-                    onChange={(e) => setDocumentDescription(e.target.value)}
-                    placeholder="Document Description"
-                  />
-                  <input
-                    type="file"
-                    className="form-control"
-                    id="fileInput"
-                    onChange={handleFileChange}
-                    multiple
-                    required
-                  />
-                  <button className="btn btn-primary mt-3" type="submit">
-                    Nộp
-                  </button>
-                </form>
-                {message && <p className="text-danger mt-2">{message}</p>}
+          {type === "GV" && (
+            <div className="col-md-6 mb-4">
+              <div className="card-document">
+                <div className="card-body">
+                  <form onSubmit={handleSubmit}>
+                    <input
+                      value={decriptionResource}
+                      className="form-control"
+                      onChange={(e) => setDocumentDescription(e.target.value)}
+                      placeholder="Document Description"
+                    />
+                    <input
+                      type="file"
+                      className="form-control"
+                      id="fileInput"
+                      onChange={handleFileChange}
+                      multiple
+                      required
+                    />
+                    <button className="btn btn-primary mt-3" type="submit">
+                      Gửi
+                    </button>
+                  </form>
+                  {message && <p className="text-danger mt-2">{message}</p>}
+                </div>
               </div>
             </div>
-          </div>
+          )}
           <div className="col-md-6 mb-4">
             {reports.length > 0 && (
               <div className="card-danhsach">
                 <div className="card-body">
                   <table className="table table-bordered custom-table">
+                    <thead>
+                      <tr className="text-center align-middle">
+                        <th className="text-center">Tài liệu</th>
+                        <th className="text-center">Hành động</th>
+                      </tr>
+                    </thead>
                     <tbody>
                       {reports.map((report) => (
-                        <div key={report.id}>
-                          {report.uploadedLink.split(", ").map((url, index) => (
-                            <div
-                              key={index}
-                              className="report-item d-flex align-items-center mb-2"
-                            >
-                              <img
-                                className="drive me-2"
-                                src={logo_drive}
-                                alt="Drive logo"
-                              />
-                              <a
-                                href={url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="me-auto"
-                              >
-                                {report.decriptionResource}
-                              </a>
-                              <button
-                                className="btn btn-danger btn-sm ms-2"
-                                onClick={() => handleDelete(report.resourceId)}
-                              >
-                                X
-                              </button>
-                            </div>
-                          ))}
-                        </div>
+                        <tr key={report.id}>
+                          <td className="text-center align-middle">
+                            {report.uploadedLink
+                              .split(", ")
+                              .map((url, index) => (
+                                <div
+                                  key={index}
+                                  className="report-item d-flex align-items-center mb-2"
+                                >
+                                  <img                              
+                                    src={drive}
+                                    alt="Drive logo"
+                                  />
+                                  <a
+                                    href={url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="me-auto"
+                                  >
+                                    {report.decriptionResource}
+                                  </a>
+                                </div>
+                              ))}
+                          </td>
+                          <td className="text-center align-middle">
+                            <img
+                              src={del}
+                              alt="Delete"
+                              onClick={() => handleDelete(report.resourceId)}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td>
+                        </tr>
                       ))}
                     </tbody>
                   </table>

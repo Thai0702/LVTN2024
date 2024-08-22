@@ -4,6 +4,7 @@ import DetailClass from "../Class/DetailClass";
 import "./css/upload.css";
 import cancel from "../../img/cancel.png";
 import logo_drive from "../../img/logo_drive.png";
+import bin from "../../Admin/imgAdmin/bin.png";
 import {
   deleteAllSubmitReportsByRequestId,
   deleteSubmitReportsBySubmitId,
@@ -66,7 +67,9 @@ const GoogleDriverPicker = () => {
 
         // Check if the current time is past the expiration time
         const currentTime = new Date();
-        const expirationTime = new Date(`${data.expiredDate}T${data.expiredTime}`);
+        const expirationTime = new Date(
+          `${data.expiredDate}T${data.expiredTime}`
+        );
         if (currentTime > expirationTime) {
           setIsExpired(true);
         }
@@ -271,46 +274,55 @@ const GoogleDriverPicker = () => {
                     {reports.length > 0 && (
                       <div className="aaa">
                         <table className="table table-bordered custom-table">
+                          <thead>
+                            <tr>
+                              <th className="text-center" colSpan="2">Bài báo cáo của nhóm</th>
+                            </tr>
+                          </thead>
                           <tbody>
                             {reports.map((report) => (
-                              <div key={report.id}>
-                                {report.attachment_URL
-                                  .split(", ")
-                                  .map((url, index) => {
-                                    const fileName = url.split("id=").pop();
-                                    return (
-                                      <div
-                                        key={index}
-                                        className="report-item d-flex align-items-center mb-2"
-                                      >
-                                        <img
-                                          className="drive me-2"
-                                          src={logo_drive}
-                                          alt="Drive logo"
-                                        />
-                                        <a
-                                          href={url}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="me-auto"
-                                        >
-                                          {report.reportTitle}
-                                        </a>
-                                        <span
-                                          onClick={() =>
-                                            handleDeleteSubmit(report.submitId)
-                                          }
+                              <tr key={report.id}>
+                                <td>
+                                  {report.attachment_URL
+                                    .split(", ")
+                                    .map((url, index) => {
+                                      const fileName = url.split("id=").pop();
+                                      return (
+                                        <div
+                                          key={index}
+                                          className="report-item d-flex align-items-center mb-"
                                         >
                                           <img
-                                            className="cancel ms-3"
-                                            src={cancel}
-                                            alt="Cancel icon"
+                                            className="drive me-2"
+                                            src={logo_drive}
+                                            alt="Drive logo"
                                           />
-                                        </span>
-                                      </div>
-                                    );
-                                  })}
-                              </div>
+                                          <a
+                                            href={url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="me-auto"
+                                          >
+                                            {report.reportTitle}
+                                          </a>
+                                        </div>
+                                      );
+                                    })}
+                                </td>
+                                <td className="text-center align-middle">
+                                  <span
+                                    onClick={() =>
+                                      handleDeleteSubmit(report.submitId)
+                                    }
+                                  >
+                                    <img
+                                      src={bin}
+                                      alt="Cancel icon"
+                                      style={{ cursor: "pointer" }}
+                                    />
+                                  </span>
+                                </td>
+                              </tr>
                             ))}
                           </tbody>
                         </table>
@@ -319,15 +331,12 @@ const GoogleDriverPicker = () => {
                     {type === "SV" && (
                       <div className="row mt-3">
                         <div className="col-12 d-flex justify-content-between flex-column flex-md-row">
-                          {!isClick && !isExpired &&(
+                          {!isClick && !isExpired && (
                             <Link
                               to={`/submit/${classId}/${requestId}`}
                               className="d-flex no-underline mb-2 mb-md-0"
                             >
-                              <button
-                                className="btn btn-primary btn-bc w-100 mb-2 mb-md-0"
-                                // disabled={isExpired}
-                              >
+                              <button className="btn btn-primary btn-bc w-100 mb-2 mb-md-0">
                                 Thêm báo cáo
                               </button>
                             </Link>
@@ -375,21 +384,24 @@ const GoogleDriverPicker = () => {
                         rows="3"
                       />
                     </div>
-                    {type === "GV" && (
-                      <div className="mb-3">
-                        <Link
-                          to={`/score/report/${classId}/${requestId}/${reportDetail.requestOfGroup}`}
-                        >
-                          <button className="btn btn-primary">Chấm điểm</button>
-                        </Link>
-                      </div>
-                    )}
                     <button
-                      className="btn btn-danger w-100"
+                      className="btn btn-danger w-100 mb-3"
                       onClick={handleFeedback}
                     >
                       Gửi
                     </button>
+                    {type === "GV" && (
+                      <div className="mb-3">
+                      {reports.length > 0 && (
+                        <Link
+                          to={`/score/report/${classId}/${requestId}/${reportDetail.requestOfGroup}`}
+                        >
+                          <button className="btn btn-primary w-100">Chấm điểm</button>
+                        </Link>
+                      )}
+                      </div>
+                    )}
+                    
                   </div>
                 </div>
               </div>

@@ -1,10 +1,69 @@
-.link {
-    color: inherit; /* Sử dụng màu kế thừa từ phần tử cha */
+/* .link {
+    color: inherit; 
     text-decoration: none;
-    /* background-color: blueviolet; */
   }
   
   .link:active {
-    color: inherit; /* Đảm bảo màu chữ không thay đổi khi nhấp vào */
+    color: inherit;
+  }
+   */
+
+
+   .sidebar-container {
+    position: relative;
+   
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #f8f9fa;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 500;
+    padding-top: 60px; 
+    overflow: auto;
+    transition: transform 0.3s ease; /* Smooth transition */
+  }
+  
+  .sidebar-hidden {
+    transform: translateX(-100%); /* Hide the sidebar */
+  }
+  
+  .content {
+    transition: margin-left 0.3s ease; /* Smooth transition */
+  }
+  
+  .content-sidebar-open {
+    margin-left: 250px; /* Shift content to the right when sidebar is open */
+  }
+  
+  
+  .menu-item {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .menu-item img {
+    margin-right: 10px;
+  }
+  
+  .link {
+    text-decoration: none;
+    color: black;
+    display: flex;
+    align-items: center;
+  }
+  
+  .header {
+    padding: 15px;
+    background-color: #bac2ca;
+    color: white;
+  }
+  
+  .header .logo img {
+    cursor: pointer;
   }
   

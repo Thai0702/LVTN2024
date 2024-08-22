@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { BE_URL } from "../../../utils/Url_request";
 import Navbar from "../Home/Navbar";
 import DetailClass from "./DetailClass";
 import css from "./css/Stream.css";
 import axios from "axios";
-import { deleteReportRequest, fetchClassDetail, fetchReportList } from "../../../services/apiStream";
+import {
+  deleteReportRequest,
+  fetchClassDetail,
+  fetchReportList,
+} from "../../../services/apiStream";
+import Sidebar from "../Home/Sidebar";
+import del from "../../Admin/imgAdmin/delete.png";
+import update from "../../Admin/imgAdmin/update.png";
+import detail from "../../Admin/imgAdmin/detail.png";
+
 
 const Stream = () => {
   const { classId } = useParams(); // Lấy classId từ URL
@@ -15,63 +24,10 @@ const Stream = () => {
   const [error, setError] = useState("");
   const fullName = localStorage.getItem("fullName");
   const type = localStorage.getItem("type");
-  // useEffect(() => {
-  //   const fetchClassDetail = async () => {
-  //     const token = localStorage.getItem("token");
-  //     if (!token) {
-  //       setError("No token found");
-  //       setLoading(false);
-  //       return;
-  //     }
-
-  //     if (!classId) {
-  //       setError("Class ID is required");
-  //       setLoading(false);
-  //       return;
-  //     }
-
-  //     try {
-  //       const response = await fetch(`${BE_URL}/api-gv/class/get/${classId}`, {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + token, // Add token to header
-  //         },
-  //       });
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok");
-  //       }
-  //       const classDetailData = await response.json();
-  //       setClassDetail(classDetailData);
-  //       console.log("chao:", classDetailData);
-  //       const { memberPerGroup } = classDetailData;
-  //       localStorage.setItem("memberPerGroup", memberPerGroup);
-  //       const { groupRegisterMethod } = classDetailData;
-  //       localStorage.setItem("groupRegisterMethod", groupRegisterMethod);
-  //       const { subjectName } = classDetailData;
-  //       localStorage.setItem("subjectName", subjectName);
-  //       const { schoolYear } = classDetailData;
-  //       localStorage.setItem("schoolYear", schoolYear);
-  //       console.log("số lượng thành viên nhóm:", memberPerGroup);
-  //       const { numberOfGroup } = classDetailData;
-  //       localStorage.setItem("numberOfGroup", numberOfGroup);
-  //       console.log("số lượng nhóm:", numberOfGroup);
-  //       const { description } = classDetailData;
-  //       localStorage.setItem("description", description);
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //       setError("Failed to fetch class detail");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchClassDetail();
-  // }, [classId]);
-
+  
   useEffect(() => {
     fetchClassDetail(classId, setClassDetail, setLoading, setError);
   }, [classId]);
-
 
   //   hiển thị danh sách report
   //lấy danh sách report of class id
@@ -80,20 +36,20 @@ const Stream = () => {
     const token = localStorage.getItem("token");
 
     const loadReportList = async () => {
-        try {
-            const data = await fetchReportList(classId, token);
-            setreportList(data);
-        } catch (error) {
-            console.error("Error loading report list:", error);
-        } finally {
-            setLoading(false);
-        }
+      try {
+        const data = await fetchReportList(classId, token);
+        setreportList(data);
+      } catch (error) {
+        console.error("Error loading report list:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     if (classId) {
-        loadReportList();
+      loadReportList();
     }
-}, [classId]);
+  }, [classId]);
 
   // useEffect(() => {
 
@@ -121,20 +77,14 @@ const Stream = () => {
   //     } catch (error) {
   //       console.error("Error fetching report list:", error);
   //     } finally {
-  //       setLoading(false); 
+  //       setLoading(false);
   //     }
   //   };
   //   fetchReportList();
   // }, [classId]);
 
-
-
-
-
-
-
   const [listReport, setListReport] = useState([]);
-//xoa report
+  //xoa report
 
   // const handleDeleteReport = async (requestId) => {
   //   if (!requestId) {
@@ -194,48 +144,44 @@ const Stream = () => {
 
   const handleDeleteReport = async (requestId) => {
     if (!requestId) {
-        console.error("request ID is missing or undefined");
-        window.alert("request ID is missing or undefined");
-        return;
+      console.error("request ID is missing or undefined");
+      window.alert("request ID is missing or undefined");
+      return;
     }
 
     const token = localStorage.getItem("token");
     if (!token) {
-        console.error("No token found");
-        window.alert("No token found");
-        return;
+      console.error("No token found");
+      window.alert("No token found");
+      return;
     }
 
     const confirmed = window.confirm("Bạn có chắc muốn xóa request này không?");
     if (!confirmed) {
-        return;
+      return;
     }
 
     try {
-        const responseDelete = await deleteReportRequest(requestId, token);
+      const responseDelete = await deleteReportRequest(requestId, token);
 
-        if (responseDelete.status === 200) {
-            setListReport((prevListReport) =>
-                prevListReport.filter((project) => project.requestId !== requestId)
-            );
-            window.alert("Xóa request thành công.");
-            window.location.reload(true);
-        } else {
-            console.error(
-                "Error deleting request:",
-                responseDelete.statusText
-            );
-            window.alert("Xảy ra lỗi khi xóa request.");
-        }
-    } catch (error) {
-        console.error("Error deleting request:", error);
+      if (responseDelete.status === 200) {
+        setListReport((prevListReport) =>
+          prevListReport.filter((project) => project.requestId !== requestId)
+        );
+        window.alert("Xóa request thành công.");
+        window.location.reload(true);
+      } else {
+        console.error("Error deleting request:", responseDelete.statusText);
         window.alert("Xảy ra lỗi khi xóa request.");
+      }
+    } catch (error) {
+      console.error("Error deleting request:", error);
+      window.alert("Xảy ra lỗi khi xóa request.");
     }
-};
-
+  };
 
   const [showUpdateForm, setShowUpdateForm] = useState(false);
-  
+
   // update
   const [updateData, setUpdateData] = useState({
     requestOfProject: "",
@@ -321,6 +267,14 @@ const Stream = () => {
     };
     fetchReporSv();
   }, []);
+  const navigate = useNavigate();
+  //update report
+  const handleUpdate = (listreport) => {
+    // navigate(`/editclass`, { state: { classItem } }); // Chuyển hướng đến trang chỉnh sửa với dữ liệu lớp học
+    navigate(`/editreport/${classId}`, {
+      state: { listreport, requestTile: listreport.requestTile },
+    });
+  };
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -335,13 +289,27 @@ const Stream = () => {
     <div>
       <Navbar />
       <DetailClass />
+
       <div className="container-stream">
+        <li>
+          <a
+            href="https://docs.google.com/document/d/1ENdOZI8vmVZyLxHy9QZVZvJBqCzvefKw/edit?usp=drive_link&ouid=
+        105753820574402795694&rtpof=true&sd=true"
+          >
+            Tài liệu hướng dẫn sử dụng
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://docs.google.com/spreadsheets/d/1eqbVrt93ZJmFtpkQ68cvG3jLpFPykVG6/edit?usp=
+      drive_link&ouid=105753820574402795694&rtpof=true&sd=true"
+          >
+            Mẫu file Excel danh sách sinh viên
+          </a>
+        </li>
         <h4 className="name">
-          Giáo viên hướng dẫn : {classDetail.createdByName} - {classDetail.description}
+          Giáo viên hướng dẫn : {classDetail.createdByName}
         </h4>
-        {/* <div className="body-stream">
-          <p>{classDetail.subjectName}</p>
-        </div> */}
         <div
           className="body-stream"
           style={{ display: "flex", gap: "10px", alignItems: "center" }}
@@ -349,7 +317,7 @@ const Stream = () => {
           <span>
             <strong>Tên lớp môn học:</strong> {classDetail.subjectName}
           </span>
-          
+
           <span>
             <strong>Năm học:</strong> {classDetail.schoolYear}
           </span>
@@ -375,38 +343,37 @@ const Stream = () => {
                         <tr>
                           <th className="text-center">Chủ đề</th>
                           <th className="text-center">Ngày và giờ hết hạn</th>
-                          <th className="text-center">Hành động</th>
+                          <th className="text-center" colSpan="3">
+                           Hành động
+                          </th>{" "}
                         </tr>
                       </thead>
                       <tbody>
                         {type === "GV"
                           ? reportList.map((report) => (
                               <tr key={report.requestId}>
-                                <td className="text-center">
+                                <td className="text-center align-middle">
                                   {report.requestTile}
                                 </td>
-                                <td className="text-center">
+                                <td className="text-center align-middle">
                                   {report.expiredDate} / {report.expiredTime}
                                 </td>
+                                {/* Separate cells for each action */}
                                 <td className="text-center">
-                                  <div className="d-flex justify-content-center">
-                                    <Link
-                                      to={`/upload/${classId}/${report.requestId}`}
-                                      className="btn btn-primary me-2"
-                                      style={{ width: "120px" }}
-                                    >
-                                      Xem chi tiết
-                                    </Link>
-                                    <button
-                                      className="btn btn-danger"
-                                      onClick={() =>
-                                        handleDeleteReport(report.requestId)
-                                      }
-                                      style={{ width: "120px" }}
-                                    >
-                                      DELETE
-                                    </button>
-                                  </div>
+                                  <Link
+                                    to={`/upload/${classId}/${report.requestId}`}
+                                  >
+                                    <img src={detail}/>
+                                  </Link>
+                                  
+                                </td>
+                                <td className="text-center">
+                                  <img src={del} onClick={() =>
+                                      handleDeleteReport(report.requestId)
+                                    }/>
+                                </td>
+                                <td className="text-center">
+                                  <img src={update} onClick={() => handleUpdate(report)}/>
                                 </td>
                               </tr>
                             ))
@@ -422,10 +389,8 @@ const Stream = () => {
                                 <td className="text-center">
                                   <Link
                                     to={`/upload/${classId}/${reportsv.requestId}`}
-                                    className="btn btn-primary"
-                                    style={{ width: "120px" }}
                                   >
-                                    Xem chi tiết
+                                    <img src={detail} />
                                   </Link>
                                 </td>
                               </tr>

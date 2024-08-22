@@ -5,10 +5,15 @@ import menu from './imgAdmin/menu.png';
 import account from './imgAdmin/account.png'
 import setting from './imgAdmin/setting.png'
 import arrow from './imgAdmin/arrow.png'
+import dot from './imgAdmin/dot.png'
+import change from './imgAdmin/change.png'
+
+
 function NavbarAdmin() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const [projectText, setProjectText] = useState('Hỗ trợ giảng viên'); // State variable for project text
   const [isSetting, setIsSetting] = useState(false);
+  const [isAccount, setIsAccount] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Trạng thái đăng nhập
   const [username, setUsername] = useState(''); // Tên người dùng
   useEffect(() => {
@@ -22,7 +27,10 @@ function NavbarAdmin() {
   }, []);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen(isMenuOpen);
+  };
+  const toggleAccount = () => {
+    setIsAccount(!isAccount);
 
   };
   const togglesetting = () => {
@@ -49,29 +57,33 @@ function NavbarAdmin() {
           <Link to='/homAdmin' className='link' onClick={() => handleLinkClick('Home')}>
             <div className='menu_1'> <img src={home} /> Home</div>
           </Link>
-          <Link className='link' onClick={() => handleLinkClick('Account')} to='/listAccount'>
-            <div className='menu_1' ><img src={account} /> Account </div>
+          <Link className='link'>
+            <div className='menu_1' onClick={toggleAccount}><img src={account} /> Account </div>
           </Link>
-          {/* <Link className='link' onClick={() => handleLinkClick('Class')} to='/listClass'>
-            <div className='menu_1'><img src={classAdmin} /> Class</div>
-          </Link>
-          <Link className='link' onClick={() => handleLinkClick('Group')} to='/listGroup'>
-            <div className='menu_1'><img src={group} />Group</div>
-          </Link>
-          <Link className='link' onClick={() => handleLinkClick('Project')} to='/listProject'>
-            <div className='menu_1'><img src={project} />Project</div>
-          </Link>
-          <Link className='link' onClick={() => handleLinkClick('Report')} to='/listReport'>
-            <div className='menu_1'><img src={report} />Report</div>
-          </Link> */}
+          {isAccount && (
+            <>
+              <Link to="/accountTearch" className="link">
+                <div className="class-list-teach">
+                  <img src={dot} alt="Arrow" />
+                  Account Tearch
+                </div>
+              </Link>
+              <Link to="/accountStudent" className="link">
+                <div className="class-list-teach">
+                  <img src={dot} alt="Arrow" />
+                  Account Student
+                </div>
+              </Link>
+            </>
+          )}
           <Link className='link' onClick={() => handleLinkClick('Setting')}>
             <div className='menu_1' onClick={togglesetting}><img src={setting} />Setting</div>
           </Link>
           {isSetting && (
             <Link to={`/changepassAdmin`} className='link' onClick={() => handleLinkClick('Change password')}>
               <div className='class-list-teach'>
-                <img src={arrow} /> Change password
-              </div></Link>
+                <img src={change} /> Change password
+                </div></Link>
           )}
         </div>
       )}

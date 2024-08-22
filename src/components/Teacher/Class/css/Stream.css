@@ -78,4 +78,7 @@
   .name{
     top: -10px;
   }
+  .no-wrap {
+    white-space: nowrap;
+  }
   

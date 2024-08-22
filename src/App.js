@@ -10,6 +10,8 @@ import ListClass from "./components/Admin/ListClass.js";
 import ListGroup from "./components/Admin/ListGroup.js";
 import ListProject from "./components/Admin/ListProject.js";
 import ListReport from "./components/Admin/ListReport.js";
+import AccountStudent from "./components/Admin/AccountStudent.js";
+import AccountTeacher from "./components/Admin/AccountTeacher.js";
 
 //GIAOVIEN
 import Login from "./components/Teacher/Login_Register/Login.js";
@@ -41,60 +43,15 @@ import Upload from "./components/Teacher/Tacvu/Upload.js"
 import Submit from "./components/Teacher/Tacvu/Submit.js";
 import Request from "./components/Teacher/Tacvu/Request.js";
 import ShowProject from "./components/Teacher/Tacvu/ShowProject.js"
-
-
+import ListProjectOfClass from "./components/Teacher/Tacvu/ListProjectOfClass.js";
+import EditProject from "./components/Teacher/Class/EditProject.js"
+import EditReport from "./components/Teacher/Class/EditReport.js"
 
 //SINHVIEN
 import Join from './components/Sinhvien/Join.js'
 import Score from "./components/Teacher/Tacvu/Score.js";
 import Document from "./components/Teacher/Class/Document.js";
 
-
-// import Login from "./components/auth/Login.js";
-// import RegisterPage from "./components/auth/PageMain/RegisterAccount.js";
-// import RegisterAdmin from "./components/auth/pageAdmin/RegisterAdmin.js";
-// import Homepage from "./Page/Homepage.js";
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import Join from './components/auth/Join.js'
-// import Create from "./components/auth/Create.js";
-// import Class from "./components/auth/Class.js";
-// import ShowClass from "./components/auth/ShowClass.js";
-// import DetailClass from "./components/auth/DetailClass.js";
-// import Admin from "./components/auth/Admin.js";
-// import People from "./components/auth/PageMain/People.js";
-// import Project from "./components/auth/PageMain/Project.js";
-// import Group from "./components/auth/PageMain/Group.js";
-// import ListStudent from "./components/auth/PageMain/ListStudent.js";
-// import Random from "./components/auth/PageMain/Random.js";
-// import Add from "./components/auth/PageMain/Add.js";
-
-// import ShowMemberGroup from "./Page/ShowMemberGroup.js";
-// import ForgotPass from "./components/auth/ForgotPass.js";
-// import ResetPass from "./components/auth/ResetPass.js";
-// import ChangePass from "./components/auth/ChangePass.js";
-// import HomeAdmin from "./components/auth/pageAdmin/HomeAdmin.js";
-// import ChangPassAdmin from "./components/auth/pageAdmin/ChangPassAdmin.js";
-// import ListAccount from "./components/auth/pageAdmin/ListAccount.js";
-// import ListClass from "./components/auth/pageAdmin/ListClass.js";
-// import ListGroup from "./components/auth/pageAdmin/ListGroup.js";
-// import ListProject from "./components/auth/pageAdmin/ListProject.js";
-// import ListReport from "./components/auth/pageAdmin/ListReport.js";
-// import ShowMemberGroup from './components/auth/PageTeacher/ShowMemberGroup.js';
-// import CreateReport from "./components/auth/PageTeacher/CreateReport.js";
-// page class detail
-// import Stream from "./components/auth/PageMain/Stream.js";
-// import AddGroup from "./components/auth/PageMain/AddGroup.js";
-//page tearch
-// import UpdateReport from "./components/auth/PageTeacher/UpdateReport.js";
-// import TearchAddMember from "./components/auth/PageMain/TearchAddMember.js";
-
-
-// import EditClass from "./Page/EditClass.js";
-// import MethodAddGroup from "./components/auth/PageMain/MethodAddGroup.js";
-
-// import Upload from "./components/auth/PageMain/Upload.js"
-// import Submit from "./components/auth/PageMain/Submit.js";
-// import Request from "./components/auth/PageMain/Request.js";
 
 const App = () => {
   return (
@@ -172,6 +129,18 @@ const App = () => {
 
           
           <Route path="/document/:classId" element={<Document/>}/>
+
+          <Route path="/projectListClass/:classId" element={<ListProjectOfClass/>}/>
+
+          <Route path="/editproject/:classId" element={<EditProject/>}/>
+
+
+
+          <Route path="/accountStudent" element={<AccountStudent/>}/>
+          <Route path="/accountTearch" element={<AccountTeacher/>}/>
+
+          <Route path="/editreport/:classId" element={<EditReport/>}/>
+
 
         </Routes>
       </div>

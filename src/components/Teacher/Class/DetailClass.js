@@ -132,6 +132,13 @@ const ClassDetailPage = () => {
                 >
                   <div className={`header-1 ${activeTab === 'group' ? 'active' : ''}`}>Group</div>
                 </Link>
+                <Link 
+                  className='link' 
+                  to={`/document/${classId}`}
+                  onClick={() => setActiveTab('document')}
+                >
+                  <div className={`header-1 ${activeTab === 'document' ? 'active' : ''}`}>Tài liệu</div>
+                </Link>
               </>
             )}
           </div>

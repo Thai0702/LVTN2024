@@ -6,7 +6,7 @@ import Navbar from "../Home/Navbar";
 import DetailClass from "../Class/DetailClass";
 import peoplecss from "./css/people.css";
 import { fetchStudentList, deleteStudent, uploadFile, addStudent } from "../../../services/apiPeople";
-
+import bin from "../../Admin/imgAdmin/bin.png";
 
 const People = () => {
   const { classId } = useParams();
@@ -226,8 +226,7 @@ const handleAddStudent = async (e) => {
       <Navbar />
       <DetailClass />
       <div className="container-people">
-      File hướng dẫn: <a href="https://docs.google.com/spreadsheets/d/1eqbVrt93ZJmFtpkQ68cvG3jLpFPykVG6/edit?usp=
-      drive_link&ouid=105753820574402795694&rtpof=true&sd=true">Tài liệu hướng dẫn</a>
+      
         {type==="GV"&&(
           <div className="container-p mt-3 custom-width">
             
@@ -258,18 +257,20 @@ const handleAddStudent = async (e) => {
               <div className="table-responsive">
                 <table className="table table-striped table-bordered custom-table">
                   <thead>
-                    <tr>
+                    <tr className="text-center align-middle">
                       <th>STT</th>
                       <th>Mã lớp</th>
                       <th>Tên lớp</th>
                       <th>Tên sinh viên</th>
                       <th>Mã sinh viên</th>
-                      {type === "GV" && <th>Hành động</th>}
+                      {type === "GV" && <th className="text-center" colSpan="3">
+                            Hành động
+                          </th>}
                     </tr>
                   </thead>
                   <tbody>
                     {studentList.map((student, index) => (
-                      <tr key={student.classId}>
+                      <tr key={student.classId} className="text-center align-middle">
                         <td>{index + 1}</td>
                         <td>{student.classId}</td>
                         <td>{student.subjectName}</td>
@@ -278,13 +279,7 @@ const handleAddStudent = async (e) => {
                         {type === "GV" && (
                           <td>
                             <div className="d-grid gap-2 d-md-flex justify-content-md-center">
-                              <button
-                                className="btn btn-danger"
-                                type="button"
-                                onClick={() => handleDeleteSV(student.accountId)}
-                              >
-                                Remove
-                              </button>
+                              <img src={bin} onClick={() => handleDeleteSV(student.accountId)}/>
                             </div>
                           </td>
                         )}

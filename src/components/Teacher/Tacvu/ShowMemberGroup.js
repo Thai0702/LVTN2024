@@ -419,7 +419,7 @@ if (userToken) {
               
               </button> */}
 
-        <h1>Group Member</h1>
+        <h2>Danh sách thành viên nhóm</h2>
         <div className="container-chung">
           <div className="">
             {type !== "GV" &&
@@ -451,7 +451,7 @@ if (userToken) {
             >
               <table className="table table-striped table-bordered custom-table">
                 <thead>
-                  <tr>
+                  <tr className="text-center align-middle">
                     <th>STT</th>
                     <th>Tên sinh viên</th>
                     <th>Mã số sinh viên</th>

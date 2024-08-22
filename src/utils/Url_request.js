@@ -1,6 +1,6 @@
 // const BE_URL = "https://luanvan-1.onrender.com";
-const BE_URL = "https://luanvan-2.onrender.com"
-// const BE_URL = "http://localhost:8080";
+// const BE_URL = "https://luanvan-2.onrender.com"
+const BE_URL = "http://localhost:8080";
 // "http://localhost:8080/api";
 // "https://luanvan.onrender.com/api"
 // Module Account
